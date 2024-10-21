@@ -23,7 +23,7 @@ const config: DocsThemeConfig = {
   chat: {
     link: 'https://discord.gg/WBqyA2JH',
   },
-  docsRepositoryBase: 'https://github.com/vkrunjs/vkrun',
+  docsRepositoryBase: 'https://github.com/shuding/nextra-docs-template',
   footer: {
     component: 
       <div style={{
