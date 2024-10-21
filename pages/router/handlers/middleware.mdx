@@ -1,0 +1,106 @@
+## Router - Middleware
+
+**Middleware** are functions that run before the final route controller in the handler chain. They can perform operations like modifying the request/response objects, logging, authentication checks, and more. Middleware functions typically call `next()` to pass control to the next handler.
+
+Middleware provides flexibility and reusability by allowing multiple operations to be performed in sequence. Middleware can be applied either to individual routes or globally to all routes in the application.
+
+
+### Applying Middleware Globally
+
+To apply middleware globally (to all routes), use `app.use(middleware)`. This ensures that the middleware runs on every incoming request, regardless of the route.
+
+### Example: Global Middleware
+
+In this example, `loggerMiddleware` is applied globally to all routes:
+
+```ts
+import v from 'vkrun'
+
+const app = v.App()
+
+const loggerMiddleware = (req: v.Request, res: v.Response, next: v.NextFunction) => {
+  console.log(`Request received for ${req.method} ${req.url}`)
+  next() // Move to the next handler
+}
+
+// Apply middleware globally
+app.use(loggerMiddleware)
+
+app.get('/route-a', (req: v.Request, res: v.Response) => {
+  res.send('This is Route A')
+})
+
+app.get('/route-b', (req: v.Request, res: v.Response) => {
+  res.send('This is Route B')
+})
+
+app.server().listen(3000, () => {
+  console.log('Vkrun started on port 3000')
+})
+```
+
+In this example:
+
+`loggerMiddleware` is applied globally using `app.use()`, which means it will log every request to both `/route-a` and `/route-b`, as well as any other routes added later.
+
+### Applying Middleware to Specific Routes
+
+In addition to global middleware, you can apply middleware to specific routes by passing the middleware function as a parameter in the route definition.
+
+### Example: Single Middleware
+
+This middleware logs a message before the controller handles the request:
+
+```ts
+import v from 'vkrun'
+
+const app = v.App()
+
+const loggerMiddleware = (req: v.Request, res: v.Response, next: v.NextFunction) => {
+  console.log('Request received')
+  next() // Move to the next handler
+}
+
+const controller = (req: v.Request, res: v.Response) => {
+  res.send('Hello World!')
+}
+
+app.get('/hello-world', loggerMiddleware, controller)
+```
+
+In this example, when a client sends a GET request to `/hello-world`, the `loggerMiddleware` runs first, logs `'Request received'`, and then passes `control` to the controller, which sends `'Hello World!'` as the response.
+
+### Example: Multiple Middleware Functions
+
+You can have multiple middleware functions chained together:
+
+```ts
+import v from 'vkrun'
+
+const app = v.App()
+
+const authMiddleware = (req: v.Request, res: v.Response, next: v.NextFunction) => {
+  const isAuthenticated = true // Simulate authentication check
+  if (!isAuthenticated) {
+    return res.status(401).send('Unauthorized')
+  }
+  next() // If authenticated, move to the next handler
+}
+
+const loggerMiddleware = (req: v.Request, res: v.Response, next: v.NextFunction) => {
+  console.log('Request is authorized')
+  next()
+}
+
+const controller = (req: v.Request, res: v.Response) => {
+  res.send('Welcome, authenticated user!')
+}
+
+app.get('/secure-route', authMiddleware, loggerMiddleware, controller)
+```
+
+In this case, two middleware functions are executed before the final controller:
+
+- `authMiddleware` checks if the user is authenticated. If they are not, it sends a `401` Unauthorized response. Otherwise, it calls `next()` to pass control.
+- `loggerMiddleware` logs a message and then passes control to the controller.
+- The `controller` sends the final response, `'Welcome, authenticated user!'`.

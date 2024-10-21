@@ -1,0 +1,62 @@
+## Running Your Project
+
+Update your `package.json` to include scripts:
+
+```json
+"scripts": {
+  "start": "node dist/index.js",
+  "dev": "ts-node src/index.ts",
+  "build": "tsc"
+}
+```
+
+After the change it will look like:
+
+```json
+{
+  "name": "my-project",
+  "version": "1.0.0",
+  "main": "index.ts",
+  "scripts": {
+    "start": "node dist/index.js",
+    "dev": "ts-node src/index.ts",
+    "build": "tsc"
+  },
+  "dependencies": {
+    "vkrun": "*"
+  },
+  "devDependencies": {
+    "typescript": "*",
+    "ts-node": "*",
+    "@types/node": "*"
+  }
+}
+```
+
+#### To start the development server:
+
+###### NPM
+  ```bash
+  npm run dev
+  ```
+
+###### YARN
+  ```bash
+  yarn dev
+  ```
+
+#### To start the production server:
+
+###### NPM
+  ```bash
+  npm run build
+  npm run start
+  ```
+
+###### YARN
+  ```bash
+  yarn build
+  yarn start
+  ```
+
+Happy coding with **VkrunJS**!

@@ -1,0 +1,53 @@
+## Router - Error Handling
+
+VkrunJS allows adding an error-handling middleware to ensure that if any exception occurs in a route, the application does not crash, and a standard error response is provided.
+
+To implement error handling, add an error middleware using `app.use()`. This error middleware takes four parameters: `error`, `req`, `res`, and `next`. VkrunJS automatically forwards captured errors to this middleware, allowing you to define a custom response when an error occurs.
+
+### Example: Error Handling Middleware
+
+```ts
+import v from 'vkrun'
+
+// Define the error-handling middleware
+const errorHandler = (error: v.ErrorHandler, req: v.Request, res: v.Response, next: v.NextFunction) => {
+  res.status(500).send('Internal Server Error') // Returns a standard error message
+}
+
+const app = v.App()
+
+// Add the error middleware to the application
+app.use(errorHandler)
+
+// Route without internal error handling, uses middleware
+app.get('/example-a', (req: v.Request, res: v.Response) => {
+  throw new Error('Any Error') // This will be caught by the error handling middleware
+
+  res.status(200).send('GET method route')
+})
+
+// Route with internal error handling using try-catch
+app.get('/example-b', (req: v.Request, res: v.Response) => {
+  try {
+    throw new Error('Any Error')
+
+    res.status(200).send('GET method route')
+  } catch (error) {
+    res.status(503).send('503 - Service Unavailable!') // Custom error message handled within the route
+  }
+})
+
+app.server().listen(3000, () => {
+  console.log('Vkrun started on port 3000')
+})
+```
+
+### Key Points
+
+- **Middleware for General Error Handling**: In the `/example-a` route, the error is thrown without being caught in the route itself. The middleware defined as `errorHandler` automatically catches the error and returns a `500` Internal Server Error response, preventing the application from crashing.
+- **Controller-Level Error Handling**: In the `/example-b` route, the error is handled directly within the controller using a `try-catch` block. This allows for a custom response (`503 - Service Unavailable`) when an error occurs, providing flexibility to return different status codes and messages based on the specific error scenario.
+- **Fallback Handling with Middleware**: If errors are not handled in the controller (as in `/example-a`), the error-handling middleware will act as a fallback to ensure the application continues running smoothly and returns a consistent error response (`500`).
+
+**Note**: The error-handling middleware should always be added last with `app.use()`, ensuring that it can catch errors from all routes and other middleware.
+
+For more details on middleware, see the [VkrunJS Middleware Documentation](/handlers/error-handling).

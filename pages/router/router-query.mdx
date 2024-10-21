@@ -1,0 +1,29 @@
+## Router - Query Parameters
+
+The Router is responsible for matching routes with the correct structure, including routes that have query parameters. However, the Router itself does not handle parsing or converting these query parameters. For parsing and converting query parameters, you must use the parseData module.
+
+The parseData module ensures that query parameters are parsed correctly and made available via `req.query`. Without parseData, query parameters in the route would not be processed or made available automatically.
+
+### Example: Route Query
+
+In this example, `parseData` is used to parse query parameters, making them accessible in the `req.query` object:
+
+- path: `/query?firstName=Mario&lastName=Elvio`
+
+```ts
+import v from 'vkrun'
+
+const app = v.App()
+app.parseData()
+
+app.get('/query', (req: v.Request, res: v.Response) => {
+  const firstName = req.query.firstName
+  // firstName equal 'Mario'
+
+  const lastName = req.query.lastName
+  // lastName equal 'Elvio'
+  res.status(200).end()
+})
+```
+
+see more about parse data: [parseData documentation](/parse-data/introduction)

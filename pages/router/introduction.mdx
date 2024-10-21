@@ -1,0 +1,28 @@
+## Router - Introduction
+
+Router is a VkrunJS module for creating endpoints (URIs) of an application that respond to client requests.
+
+Routes are created using Router methods that correspond to HTTP methods. For example, `router.get()` handles GET requests and `router.post()` handles POST requests. After creating all the routes, it is necessary to inject the Router instance into the `use` method of the VkrunJS app.
+
+Routing methods specify a callback function that is called when the application receives a request to a specified HTTP route and method. The VkrunJS app listens for requests that match the routes and methods, and when there is a match, it calls the specified callback function.
+
+Example:
+
+```ts
+import v from 'vkrun'
+
+const app = v.App()
+const router = v.Router()
+
+// When calling the route below it responds with the text hello world
+router.get('/', (req: v.Request, res: v.Response) => {
+  res.setHeader('Content-Type', 'text/plain')
+  res.status(200).end('Hello World!')
+})
+
+app.use(router)
+
+app.server().listen(3000, () => {
+  console.log('VkrunJS started on port 3000')
+})
+``

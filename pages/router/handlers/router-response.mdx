@@ -1,0 +1,93 @@
+# Router - Response
+
+VkrunJS extends the standard Node.js `http.ServerResponse` with additional methods to simplify response handling. These methods allow you to set status codes, send JSON responses, add cookies, and more.
+
+> **Note:** The `ServerResponse` object used in VkrunJS is based on the version of Node.js installed, so there may be slight variations in functionality. For more details on native Node.js methods, refer to the [Node.js ServerResponse documentation](https://nodejs.org/api/http.html#class-httpserverresponse).
+
+## Response Methods Provided by Vkrun
+
+| Method                | Description                                                    |
+|-----------------------|----------------------------------------------------------------|
+| `response.status()`    | Set the HTTP status code for the response.                     |
+| `response.setCookie()` | Add a cookie to the response header.                           |
+| `response.json()`      | Send a JSON-formatted response.                                |
+| `response.send()`      | Send a response with any type of data.                         |
+| `response.clearCookie()` | Remove a cookie from the response by setting its expiration.  |
+
+### Example: `response.status()`
+
+Sets the HTTP status code for the response.
+
+```ts
+response.status(200)
+```
+
+### Example: `response.setCookie()`
+
+Adds a cookie to the response header.
+
+```ts
+const cookieValue = 'cookie-value'
+response.setCookie('cookie-name', cookieValue, {
+  httpOnly: true,
+  secure: true,
+  expires: 'Wed, 09 Jun 2024 10:18:14 GMT',
+  maxAge: 3600,
+  path: '/',
+  sameSite: 'Strict',
+  domain: '.example.com',
+  priority: 'Low'
+})
+```
+
+#### Cookie Options
+
+```ts
+interface CookieOptions {
+  httpOnly?: boolean
+  secure?: boolean
+  expires?: string
+  maxAge?: number
+  path?: string
+  sameSite?: 'Strict' | 'Lax' | 'None'
+  domain?: string
+  priority?: 'Low' | 'Medium' | 'High'
+}
+```
+
+The `setCookie()` method supports several options for configuring cookies, including security options like `httpOnly` and `secure`.
+
+### Example: `response.json()`
+
+Sends a JSON response to the client and sets the `Content-Type` header to `application/json`.
+
+```ts
+response.json({ message: 'Hello, world!' })
+```
+
+This method also automatically serializes the object to JSON and stores the response body internally in the `_body` property.
+
+### Example: `response.send()`
+
+Sends a response with any type of data. If the `Content-Type` header is already set, it sends the data according to the specified type. If not, it defaults to `text/plain`.
+
+```ts
+response.send('Hello, world!')
+// Sends the response with 'text/plain' content-type by default.
+```
+
+If the `Content-Type` is set manually (e.g., to `application/json`), it will send the data accordingly:
+
+```ts
+response.setHeader('Content-Type', 'application/json')
+response.send({ message: 'Hello, world!' })
+// Sends the response as JSON
+```
+
+### Example: `response.clearCookie()`
+
+Removes a cookie by setting its expiration to a past date.
+
+```ts
+response.clearCookie('cookie-name')
+```

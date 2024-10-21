@@ -1,7 +1,7 @@
 {
-  "name": "nextra-docs-template",
+  "name": "vkrunjs-documentation",
   "version": "0.0.1",
-  "description": "Nextra docs template",
+  "description": "VkrunJS documentation",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

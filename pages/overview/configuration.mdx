@@ -1,0 +1,67 @@
+## Setting Up the Project
+
+### 1. Creating a New Project
+
+If you're starting a new project, follow these steps:
+
+1. Create a `src` directory:
+  ```bash
+  mkdir src
+  ```
+
+  The `src` directory will contain your source files, including the `index.js` (or `index.ts` for TypeScript) file.
+
+2. Inside the `src` directory, create your main entry file:
+  ```bash
+  touch src/index.ts
+  ```
+
+3. Add the code to the `index.ts` file:
+  ```ts
+  import v from 'vkrun'
+
+  const app = v.App()
+
+  app.get('/', (req: v.Request, res: v.Response) => {
+    res.status(200).send('Hello World!')
+  })
+
+  app.server().listen(3000, () => {
+    console.log('VkrunJS started on port 3000')
+  })
+  ```
+
+4. Create `tsconfig.json`:
+  ```json
+  {
+    "compilerOptions": {
+      "target": "ES2021",
+      "module": "commonjs",
+      "outDir": "./dist",
+      "rootDir": "./src",
+      "strict": true,
+      "esModuleInterop": true,
+      "skipLibCheck": true,
+      "forceConsistentCasingInFileNames": true,
+      "sourceMap": true,
+      "declaration": true
+    },
+    "exclude": ["./dist"],
+    "include": ["src/**/*"]
+  }
+  ```
+
+---
+
+## Project Structure
+
+Ensure your project structure follows this pattern:
+
+```bash
+my-project/
+├── src/
+│   └── index.ts
+├── package.json
+├── tsconfig.json
+└── node_modules
+```

@@ -1,11 +1,59 @@
-# Introduction
- 
-Welcome to Nextra! This is a basic docs template. You can use it as a starting point for your own project :)
+##### VkrunJS is a Node.js framework for building server-side applications.
 
-## What is Nextra?
+> Simplyfing the development of applications with support for JavaScript and TypeScript. VkrunJS also provides a robust, opinion-free, and scalable solution for your needs.
 
-A **simple**, **powerful** and **flexible** site generation framework with everything you love from Next.js.
+## Installation
 
-## Documentation
+###### NPM
 
-The documentation is available at [https://nextra.site](https://nextra.site).
+```bash
+npm install vkrun
+```
+
+###### YARN
+
+```bash
+yarn add vkrun
+```
+
+## Quick Start
+
+```ts
+import v from 'vkrun'
+
+const app = v.App()
+
+app.get('/', (req, res) => {
+  res.status(200).send('Hello World!')
+})
+
+app.server().listen(3000, () => {
+  console.log('VkrunJS started on port 3000')
+})
+```
+
+## Example projects
+
+If you are looking for practical examples of how to use our framework in different scenarios, just click the link below:
+
+[Example Projects](https://github.com/vkrunjs/vkrun/tree/main/examples)
+
+Feel free to browse the different designs and try out what best suits your needs. If you have any questions or suggestions about the examples, do not hesitate to contact us by opening a new Issue.
+
+## Security Issues
+
+If you discover a security vulnerability in Express, please see [Security Policies and Procedures](/security).
+
+## Contributing
+
+The VkrunJS project appreciates all constructive contributions. Contributions come in many forms, from code for bug fixes and enhancements to additions and corrections to documentation, additional tests, triaging of received pull requests and issues, and much more!
+
+Refer to the [Contribution Guide](/contributing) for more technical details on how to contribute.
+
+## Contributors
+
+The original author of VkrunJS and current lead maintainer is [Mario Elvio](https://www.linkedin.com/in/marioelvio)
+
+## License
+
+VkrunJS is an [MIT-licensed](/license) open source project.

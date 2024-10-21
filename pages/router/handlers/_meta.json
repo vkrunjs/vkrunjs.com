@@ -1,0 +1,7 @@
+{
+  "controller": "Controller",
+  "middleware": "Middleware",
+  "error-handling": "Error Handling",
+  "router-request": "Request",
+  "router-response": "Response"
+}

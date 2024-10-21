@@ -1,0 +1,42 @@
+## Router - Request
+
+VkrunJS utilizes the `http.IncomingMessage` from Node.js' `createServer` to handle requests. The **IncomingMessage** object provides methods and properties to access the data sent by the client in an HTTP request. For more details on the native **IncomingMessage**, refer to the [Node.js IncomingMessage documentation](https://nodejs.org/api/http.html#class-httpincomingmessage).
+
+> **Note:** It's important to note that the version of **IncomingMessage** used in VkrunJS depends on the Node.js version installed in your environment. Therefore, there might be slight variations in functionality between different Node.js versions.
+
+### Request Properties
+
+Some examples of native properties provided by `http.IncomingMessage`:
+
+| Property              | Description                                                    |
+|-----------------------|----------------------------------------------------------------|
+| `req.method`          | The HTTP method used for the request (GET, POST, PUT, etc.).    |
+| `req.url`             | The full URL of the request.                                    |
+| `req.headers`         | An object containing request headers.                           |
+
+[Node.js IncomingMessage documentation](https://nodejs.org/api/http.html#class-httpincomingmessage).
+
+### Example: Basic Request Object
+
+```ts
+app.get('/example', (req: v.Request, res: v.Response) => {
+  console.log(req.method)  // Outputs: GET
+  console.log(req.url)      // Outputs: /example?name=John
+  console.log(req.headers)  // Outputs: { host: 'localhost:3000', ... }
+  res.status(200).end('Request received')
+})
+```
+
+In addition to the native properties provided by **IncomingMessage**, VkrunJS allows for parsing query strings, URL parameters, and body data through the **parseData** middleware. This middleware adds `req.query`, `req.params`, and `req.body` to the request object.
+
+| Property              | Description                                                    |
+|-----------------------|----------------------------------------------------------------|
+| `req.params`          | Parameters parsed from the URL (e.g., `/:id` in `/users/:id`).  |
+| `req.query`           | An object containing query parameters (e.g., `?name=John`).     |
+| `req.body`            | The body data of the request (for POST, PUT and PATCH requests).           |
+
+### Key Points
+
+- The request object in VkrunJS is based on Node.js' `http.IncomingMessage`.
+- You can access request data such as URL parameters, query strings, and headers directly when using **parseData**.
+- Body data is not parsed automatically; use the **parseData** middleware for handling body content.
