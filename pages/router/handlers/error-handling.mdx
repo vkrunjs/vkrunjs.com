@@ -14,7 +14,7 @@ Add the error-handling middleware using `app.error()`. This middleware takes fou
 import v from 'vkrun'
 
 // Define the error-handling middleware
-const errorHandler = (error: v.ErrorHandler, req: v.Request, res: v.Response) => {
+const errorHandler = (error: any, req: v.Request, res: v.Response) => {
   res.status(500).send('Internal Server Error')
 }
 
