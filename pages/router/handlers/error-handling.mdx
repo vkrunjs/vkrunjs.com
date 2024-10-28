@@ -1,8 +1,12 @@
 ## Router - Error Handling
 
-VkrunJS allows adding an error-handling middleware to ensure that if any exception occurs in a route, the application does not crash, and a standard error response is provided.
+VkrunJS allows adding error-handling middleware to ensure that if any exception occurs in a synchronous route, the application doesn’t crash, and a standard error response is provided.
 
-To implement error handling, add an error middleware using `app.use()`. This error middleware takes four parameters: `error`, `req`, `res`, and `next`. VkrunJS automatically forwards captured errors to this middleware, allowing you to define a custom response when an error occurs.
+### Implementing Error Handling Middleware
+
+Add the error-handling middleware using `app.error()`. This middleware takes four parameters: `error`, `req`, `res`. VkrunJS automatically forwards captured errors from synchronous handlers to this middleware, allowing you to define a custom response.
+
+> **Note**: The error middleware does not capture errors in asynchronous handlers. For those cases, wrap the code in `try-catch` within the controller.
 
 ### Example: Error Handling Middleware
 
@@ -10,30 +14,29 @@ To implement error handling, add an error middleware using `app.use()`. This err
 import v from 'vkrun'
 
 // Define the error-handling middleware
-const errorHandler = (error: v.ErrorHandler, req: v.Request, res: v.Response, next: v.NextFunction) => {
-  res.status(500).send('Internal Server Error') // Returns a standard error message
+const errorHandler = (error: v.ErrorHandler, req: v.Request, res: v.Response) => {
+  res.status(500).send('Internal Server Error')
 }
 
 const app = v.App()
 
-// Add the error middleware to the application
-app.use(errorHandler)
+// Add the error middleware
+app.error(errorHandler)
 
-// Route without internal error handling, uses middleware
+// Route without internal error handling (synchronous)
 app.get('/example-a', (req: v.Request, res: v.Response) => {
-  throw new Error('Any Error') // This will be caught by the error handling middleware
+  throw new Error('Any Error') // Caught by the middleware
 
   res.status(200).send('GET method route')
 })
 
-// Route with internal error handling using try-catch
-app.get('/example-b', (req: v.Request, res: v.Response) => {
+// Route with internal error handling (asynchronous)
+app.get('/example-b', async (req: v.Request, res: v.Response) => {
   try {
-    throw new Error('Any Error')
-
-    res.status(200).send('GET method route')
+    await someAsyncOperation()
+    res.status(200).send('Async GET method route')
   } catch (error) {
-    res.status(503).send('503 - Service Unavailable!') // Custom error message handled within the route
+    res.status(503).send('503 - Service Unavailable') // Necessary in asynchronous handlers
   }
 })
 
@@ -44,10 +47,12 @@ app.server().listen(3000, () => {
 
 ### Key Points
 
-- **Middleware for General Error Handling**: In the `/example-a` route, the error is thrown without being caught in the route itself. The middleware defined as `errorHandler` automatically catches the error and returns a `500` Internal Server Error response, preventing the application from crashing.
-- **Controller-Level Error Handling**: In the `/example-b` route, the error is handled directly within the controller using a `try-catch` block. This allows for a custom response (`503 - Service Unavailable`) when an error occurs, providing flexibility to return different status codes and messages based on the specific error scenario.
-- **Fallback Handling with Middleware**: If errors are not handled in the controller (as in `/example-a`), the error-handling middleware will act as a fallback to ensure the application continues running smoothly and returns a consistent error response (`500`).
+- **Middleware for General Error Handling in Synchronous Routes**: In synchronous routes, the `errorHandler` middleware captures thrown errors, as seen in `/example-a`, and returns a `500` response.
+- **Error Handling in Asynchronous Handlers**: For asynchronous routes, like `/example-b`, `try-catch` must be used directly in the controller, as the middleware won’t catch exceptions in asynchronous code.
+- **Fallback with Middleware**: For synchronous handlers, the error middleware acts as a fallback to ensure a consistent response and prevent the application from crashing.
 
-**Note**: The error-handling middleware should always be added last with `app.use()`, ensuring that it can catch errors from all routes and other middleware.
+### Best Practice
+
+Using `try-catch` is always the best approach for handling errors, especially in asynchronous routes, as it ensures that all potential issues are managed within the controller, leading to a more predictable and resilient application behavior.
 
 For more details on middleware, see the [VkrunJS Middleware Documentation](/handlers/error-handling).
