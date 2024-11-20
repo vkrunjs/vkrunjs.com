@@ -4,5 +4,6 @@
   "big-int": ".bigInt",
   "boolean": ".boolean",
   "date": ".date",
-  "equal": ".equal"
+  "equal": ".equal",
+  "not-equal": ".notEqual"
 }
