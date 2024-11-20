@@ -1,0 +1,28 @@
+---
+title: "Schema Boolean"
+description: "Learn how to use the .boolean method in VkrunJS to validate Boolean values with precision and reliability."
+---
+
+## Schema - Boolean
+
+The `.boolean` method is used to validate whether a given value is of type `boolean`. It ensures that the input is either `true` or `false`, making it useful for validating data like toggle states, flags, or any binary value.
+
+This method is essential for enforcing strict type validation where only Boolean values are acceptable.
+
+---
+
+### Example
+
+Below is an example of how to use `.boolean` to validate whether a value is a valid Boolean:
+
+```ts
+import { schema } from "vkrun"
+
+const schema = schema().boolean()
+
+const validateA = schema.validate(false)   // Valid Boolean
+const validateB = schema.validate("false") // Invalid, string is not a Boolean
+
+console.log(validateA) // true
+console.log(validateB) // false
+```

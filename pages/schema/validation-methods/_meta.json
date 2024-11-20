@@ -1,5 +1,7 @@
 {
   "string": ".string",
   "number": ".number",
-  "big-int": ".bigInt"
+  "big-int": ".bigInt",
+  "boolean": ".boolean",
+  "date": ".date"
 }
