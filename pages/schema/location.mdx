@@ -1,0 +1,139 @@
+---
+title: "Schema - Location"
+description: "Learn how to use the .setLocation method in Schema to customize error messages for different validation rules and languages."
+---
+
+## Schema - Location
+
+The `.setLocation()` method in Schema allows you to customize the default error messages for each validation method. This is especially useful when you want to provide more meaningful or user-friendly messages in your application, or when you need to change the language of the validation messages.
+
+You can use specific keywords to change the error message format. Available keywords depend on the validation method you're using. Below is a breakdown of how to customize error messages for various validation methods in Schema.
+
+### Available Keywords
+
+- **string**:
+  - **invalidValue**: `[value]` and `[valueName]`
+  - **minWord**: `[value]`, `[valueName]` and `[minWord]`
+  - **uuid**: `[value]` and `[valueName]`
+  - **email**: `[value]` and `[valueName]`
+  - **time**: `[value]`, `[valueName]` and `[type]`
+  - **maxLength**: `[value]`, `[valueName]` and `[maxLength]`
+  - **minLength**: `[value]`, `[valueName]` and `[minLength]`
+
+- **number**:
+  - **invalidValue**: `[value]` and `[valueName]`
+  - **float**: `[value]` and `[valueName]`
+  - **integer**: `[value]` and `[valueName]`
+  - **min**: `[valueName]` and `[min]`
+  - **max**: `[valueName]` and `[max]`
+  - **positive**: `[valueName]`
+  - **negative**: `[valueName]`
+
+- **bigInt**:
+  - **invalidValue**: `[value]` and `[valueName]`
+  - **min**: `[valueName]` and `[min]`
+  - **max**: `[valueName]` and `[max]`
+  - **positive**: `[valueName]`
+  - **negative**: `[valueName]`
+
+- **boolean**:
+  - **invalidValue**: `[value]` and `[valueName]`
+
+- **required**:
+  - `[valueName]` and `[value]`
+
+- **nullable**:
+  - `[valueName]` and `[value]`
+
+- **date**:
+  - **invalidValue**: `[value]`, `[valueName]` and `[type]`
+  - **min**: `[value]`, `[valueName]` and `[refDate]`
+  - **max**: `[value]`, `[valueName]` and `[refDate]`
+
+- **object**:
+  - `[valueName]` and `[value]`
+
+- **array**:
+  - **invalidValue**: `[value]` and `[valueName]`
+  - **min**: `[value]`, `[valueName]` and `[min]`
+  - **max**: `[value]`, `[valueName]` and `[max]`
+
+- **equal**:
+  - `[valueName]` and `[value]`
+
+- **notEqual**:
+  - `[valueName]` and `[value]`
+
+- **oneOf**:
+  - `[valueName]` and `[value]`
+
+- **notOneOf**:
+  - `[valueName]` and `[value]`
+
+---
+
+### Example: Customizing Error Messages
+
+You can change the error messages for different validation rules by calling the `.setLocation()` method with custom message formats. This method is also useful for changing the language of your messages, enabling you to provide translations for your users.
+
+For example, if you need to display validation messages in Portuguese instead of the default English, you can do the following:
+
+```ts
+import { setLocation } from "vkrun"
+
+// Change a specific message for the string invalidValue
+setLocation({
+  string: {
+    invalidValue: '[valueName] deve ser do tipo string!'
+  }
+})
+
+// Or change all messages for string, number, boolean, etc.
+setLocation({
+  string: {
+    invalidValue: '[valueName] deve ser do tipo string!',
+    minWord: '[valueName] deve ter pelo menos [minWord] palavras!',
+    uuid: '[valueName] deve ser do tipo UUID!',
+    email: 'email [value] é inválido!',
+    time: 'o tempo [value] não está no formato [type]!',
+    maxLength: '[valueName] deve ter no máximo [maxLength] caracteres!',
+    minLength: '[valueName] deve ter no mínimo [minLength] caracteres!'
+  },
+  number: {
+    invalidValue: '[valueName] deve ser do tipo número!',
+    float: '[valueName] deve ser um número flutuante!',
+    integer: '[valueName] deve ser um número inteiro!',
+    min: '[valueName] deve ser maior ou igual a [min]!',
+    max: '[valueName] deve ser menor ou igual a [max]!',
+    positive: '[valueName] deve ser positivo!',
+    negative: '[valueName] deve ser negativo!'
+  },
+  bigInt: {
+    invalidValue: '[valueName] deve ser do tipo bigint!',
+    min: '[valueName] deve ser maior ou igual a [min]!',
+    max: '[valueName] deve ser menor ou igual a [max]!',
+    positive: '[valueName] deve ser positivo!',
+    negative: '[valueName] deve ser negativo!'
+  },
+  boolean: {
+    invalidValue: '[valueName] deve ser do tipo boolean!'
+  },
+  required: '[valueName] é obrigatório!',
+  date: {
+    invalidValue: 'a data [valueName] não está no formato [type]!',
+    min: 'a [valueName] [value] deve ser maior ou igual à [refDate]!',
+    max: 'a [valueName] [value] deve ser menor ou igual à [refDate]!'
+  },
+  object: '[valueName] deve ser um objeto!',
+  array: {
+    invalidValue: '[valueName] deve ser um array!',
+    min: 'a lista [valueName] deve ter pelo menos [min] itens!',
+    max: 'a lista [valueName] deve ter no máximo [max] itens!'
+  },
+  nullable: '[valueName] pode ser nulo, mas não pode ser undefined!',
+  equal: 'o valor não corresponde!',
+  notEqual: 'o valor não pode corresponder!',
+  oneOf: 'o valor não tem uma correspondência!',
+  notOneOf: 'o valor não pode ter correspondências!'
+})
+````
