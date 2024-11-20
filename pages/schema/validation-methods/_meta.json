@@ -3,5 +3,6 @@
   "number": ".number",
   "big-int": ".bigInt",
   "boolean": ".boolean",
-  "date": ".date"
+  "date": ".date",
+  "equal": ".equal"
 }

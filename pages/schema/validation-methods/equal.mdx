@@ -1,0 +1,42 @@
+---
+title: "Schema Equal"
+description: "Learn how to use the .equal method in VkrunJS to validate if a value matches a specified reference value."
+---
+
+## Schema - Equal
+
+The `.equal` method is used to validate whether a given value is equal to a specified reference value. It ensures that the input value matches the provided value exactly, making it useful for scenarios where strict equality is required, such as confirming passwords, validating fixed values, or checking for consistency in data.
+
+This method is essential when you need to enforce that the input value must match exactly the value you're comparing it to, including complex objects or nested structures.
+
+---
+
+### Example: Basic Validation with `.equal`
+
+Below is an example of how to use `.equal` to validate whether a value matches a reference value:
+
+```ts
+import { schema } from "vkrun"
+
+const schema = schema().equal({
+  keyA: "any value",
+  keyB: false,
+  keyC: [1, 2, 3]
+})
+
+const validateA = schema.validate({
+  keyA: "any value",
+  keyB: false,
+  keyC: [1, 2, 3]
+})
+
+const validateB = schema.validate({
+  keyA: "any value",
+  keyB: false,
+  keyC: [1, 2, 4] // invalid array
+})
+
+console.log(validateA) // true
+console.log(validateB) // false
+
+```
