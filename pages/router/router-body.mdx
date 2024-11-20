@@ -1,3 +1,8 @@
+---
+title: "Router Body"
+description: 'The "Router Body" page explains how VkrunJS routes handle incoming requests with body data, highlighting the use of the `parseData` module for parsing and converting various body formats like JSON, URL-encoded, and multipart form data, including file uploads.'
+---
+
 ## Router - Body
 
 The Router is responsible for matching routes with the correct structure, including routes that send data in the body. However, the Router itself does not handle parsing or converting the body content. For parsing and converting the body, you must use the parseData module.
@@ -31,12 +36,12 @@ await fetch('http://domain/', {
 Router Example (JSON):
 
 ```ts
-import v from 'vkrun'
+import Vkrun, { Request, Response } from 'vkrun'
 
-const app = v.App()
-app.parseData()
+const vkrun = Vkrun()
+vkrun.parseData()
 
-app.post('/', (req: v.Request, res: v.Response) => {
+vkrun.post('/', (req: Request, res: Response) => {
   const firstName = req.body.firstName
   const lastName = req.body.lastName
   res.status(200).end(`Hello, ${firstName} ${lastName}`)
@@ -62,12 +67,12 @@ await fetch('http://domain/form', {
 Router Example (URL-encoded):
 
 ```ts
-import v from 'vkrun'
+import Vkrun, { Request, Response } from 'vkrun'
 
-const app = v.App()
-app.parseData()
+const vkrun = Vkrun()
+vkrun.parseData()
 
-app.post('/form', (req: v.Request, res: v.Response) => {
+vkrun.post('/form', (req: Request, res: Response) => {
   const firstName = req.body.firstName
   const lastName = req.body.lastName
   res.status(200).end(`Hello, ${firstName} ${lastName}`)
@@ -94,12 +99,12 @@ await fetch('http://domain/upload', {
 Router Example (Multipart Form Data):
 
 ```ts
-import v from 'vkrun'
+import Vkrun, { Request, Response } from 'vkrun'
 
-const app = v.App()
-app.parseData()
+const vkrun = Vkrun()
+vkrun.parseData()
 
-app.post('/upload', (req: v.Request, res: v.Response) => {
+vkrun.post('/upload', (req: Request, res: Response) => {
   const username = req.body.username
   const file = req.files[0] // Assuming a single file upload
   console.log(`Uploaded by ${username}: ${file.filename} (${file.mimetype})`)

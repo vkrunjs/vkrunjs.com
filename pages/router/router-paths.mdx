@@ -1,3 +1,8 @@
+---
+title: "Router Paths"
+description: 'The "Router Paths" page explains how to define and utilize route paths in VkrunJS, covering static paths, dynamic segments, and wildcard (*) patterns. Learn to create flexible and dynamic endpoints tailored to various URL structures.'
+---
+
 ## Router - Paths
 
 Route paths, in combination with a request method, define the endpoints at which requests can be made. Route paths can be strings, string patterns, or wildcards (*).
@@ -7,11 +12,11 @@ Route paths, in combination with a request method, define the endpoints at which
 This route path will match requests to the root route, /.
 
 ```ts
-import v from 'vkrun'
+import Vkrun, { Request, Response } from 'vkrun'
  
-const app = v.App()
+const vkrun = Vkrun()
 
-app.get('/', (req: v.Request, res: v.Response) => {
+vkrun.get('/', (req: Request, res: Response) => {
   res.send('root')
 })
 ```
@@ -19,11 +24,11 @@ app.get('/', (req: v.Request, res: v.Response) => {
 This route path will match requests to /users.
 
 ```ts
-import v from 'vkrun'
+import Vkrun, { Request, Response } from 'vkrun'
  
-const app = v.App()
+const vkrun = Vkrun()
 
-app.get('/users', (req: v.Request, res: v.Response) => {
+vkrun.get('/users', (req: Request, res: Response) => {
   res.send('users')
 })
 ```
@@ -35,11 +40,11 @@ You can use the wildcard `*` in route paths to match any portion of the URL that
 For example, this route path will match requests to `/wildcard/` followed by any string.
 
 ```ts
-import v from 'vkrun'
+import Vkrun, { Request, Response } from 'vkrun'
  
-const app = v.App()
+const vkrun = Vkrun()
 
-app.get('/wildcard/*', (req: v.Request, res: v.Response) => {
+vkrun.get('/wildcard/*', (req: Request, res: Response) => {
   res.send('wildcard route')
 })
 ```

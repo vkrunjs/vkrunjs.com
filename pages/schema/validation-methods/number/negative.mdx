@@ -1,0 +1,30 @@
+---
+title: "Schema Negative"
+description: "Learn how to use the .negative method in VkrunJS to validate that numeric inputs are negative values."
+---
+
+## Schema - Negative
+
+The `.negative` method is used to validate whether a given numeric value is less than zero. It ensures that the input is a negative number, making it useful for scenarios where only negative values are valid, such as temperature drops, debts, or offsets.
+
+This method is particularly useful for enforcing constraints where positive or zero values are invalid.
+
+---
+
+### Example
+
+Below is an example of how to use `.negative` to validate whether a number is negative:
+
+```ts
+import { schema } from "vkrun"
+
+const schema = schema().number().negative()
+
+const validateA = schema.validate(-1)
+const validateB = schema.validate(0)
+const validateC = schema.validate(1)
+
+console.log(validateA) // true
+console.log(validateB) // false
+console.log(validateC) // false
+```

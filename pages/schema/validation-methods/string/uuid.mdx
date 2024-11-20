@@ -1,0 +1,28 @@
+---
+title: "Schema UUID"
+description: "The `.UUID` method validates whether a string conforms to the standard UUID (Universally Unique Identifier) format. It ensures that the input follows the hexadecimal structure, such as `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`. This method is essential for scenarios requiring unique and standardized identifiers, like database keys or API tokens."
+---
+
+## Schema - UUID
+
+The `.UUID` method is used to validate whether a given string is a properly formatted UUID (Universally Unique Identifier). It ensures that the input follows the standard UUID structure, such as "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx", where each "x" is a hexadecimal digit.
+
+This method is particularly useful for scenarios where UUIDs are used as unique identifiers in databases, APIs, or any application requiring standardized unique keys.
+
+---
+
+### Example
+
+Below is an example of how to use `.UUID` to validate whether a string is a valid UUID:
+
+```ts
+import { schema } from "vkrun"
+
+const schema = schema().string().UUID()
+
+const validateA = schema.validate("550e8400-e29b-41d4-a716-446655440000")
+const validateB = schema.validate("123")
+
+console.log(validateA) // true
+console.log(validateB) // false
+```

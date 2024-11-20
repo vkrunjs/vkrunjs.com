@@ -1,3 +1,8 @@
+---
+title: "Router Methods"
+description: 'The "Router Methods" page details the HTTP methods supported by the VkrunJS router, including "GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", and "HEAD". Each method is explained with examples to demonstrate how to define routes that handle specific HTTP requests, ensuring clear and structured application routing.'
+---
+
 ## Router - Methods
 
 A Router method corresponds to an HTTP method and is attached to an instance of the VkrunJS router.
@@ -12,46 +17,85 @@ A Router method corresponds to an HTTP method and is attached to an instance of 
 | `options` | Handles OPTIONS requests. Used to retrieve communication options.          |
 | `head`    | Handles HEAD requests. Used to retrieve only the headers without the body. |
 
-
 Example:
 
 ```ts
-import v from 'vkrun'
+import Vkrun, { Router, Request, Response } from 'vkrun'
 
-const app = v.App()
-const router = v.Router()
+const vkrun = Vkrun()
+const router = Router()
 
-router.get('/', (req: v.Request, res: v.Response) => {
+router.get('/', (req: Request, res: Response) => {
   res.status(200).send('GET method route')
 })
 
-router.post('/', (req: v.Request, res: v.Response) => {
+router.post('/', (req: Request, res: Response) => {
   res.status(200).send('POST method route')
 })
 
-router.put('/', (req: v.Request, res: v.Response) => {
+router.put('/', (req: Request, res: Response) => {
   res.status(200).send('PUT method route')
 })
 
-router.patch('/', (req: v.Request, res: v.Response) => {
+router.patch('/', (req: Request, res: Response) => {
   res.status(200).send('PATCH method route')
 })
 
-router.delete('/', (req: v.Request, res: v.Response) => {
+router.delete('/', (req: Request, res: Response) => {
   res.status(200).send('DELETE method route')
 })
 
-router.options('/', (req: v.Request, res: v.Response) => {
+router.options('/', (req: Request, res: Response) => {
   res.status(200).end('OPTIONS method route')
 })
 
-router.head('/', (req: v.Request, res: v.Response) => {
+router.head('/', (req: Request, res: Response) => {
   res.status(200).end() // The HEAD method does not send data in the response body
 })
 
-app.use(router) // Inject all created routes
+vkrun.use(router) // Inject all created routes
 
-app.server().listen(3000, () => {
+vkrun.server().listen(3000, () => {
+  console.log('VkrunJS started on port 3000')
+})
+```
+
+Equivalent:
+
+```ts
+import Vkrun, { Request, Response } from 'vkrun'
+
+const vkrun = Vkrun()
+
+vkrun.get('/', (req: Request, res: Response) => {
+  res.status(200).send('GET method route')
+})
+
+vkrun.post('/', (req: Request, res: Response) => {
+  res.status(200).send('POST method route')
+})
+
+vkrun.put('/', (req: Request, res: Response) => {
+  res.status(200).send('PUT method route')
+})
+
+vkrun.patch('/', (req: Request, res: Response) => {
+  res.status(200).send('PATCH method route')
+})
+
+vkrun.delete('/', (req: Request, res: Response) => {
+  res.status(200).send('DELETE method route')
+})
+
+vkrun.options('/', (req: Request, res: Response) => {
+  res.status(200).end('OPTIONS method route')
+})
+
+vkrun.head('/', (req: Request, res: Response) => {
+  res.status(200).end() // The HEAD method does not send data in the response body
+})
+
+vkrun.server().listen(3000, () => {
   console.log('VkrunJS started on port 3000')
 })
 ```

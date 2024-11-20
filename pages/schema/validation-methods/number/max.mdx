@@ -1,0 +1,28 @@
+---
+title: "Schema Max"
+description: "Learn how to use the .max method in VkrunJS to validate numeric inputs with a maximum value constraint."
+---
+
+## Schema - Max
+
+The `.max` method is used to validate whether a given value does not exceed a maximum numeric threshold. It ensures that the input value is less than or equal to the specified maximum, providing a way to enforce upper bounds for numeric data.
+
+This method is particularly useful for validating data like maximum prices, ages, or any numeric input requiring an upper limit.
+
+---
+
+### Example
+
+Below is an example of how to use `.max` to validate whether a value meets the maximum allowed value:
+
+```ts
+import { schema } from "vkrun"
+
+const schema = schema().number().max(1)
+
+const validateA = schema.validate(1)
+const validateB = schema.validate(2)
+
+console.log(validateA) // true
+console.log(validateB) // false
+```

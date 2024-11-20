@@ -1,0 +1,28 @@
+---
+title: "Schema Float"
+description: "Learn how to use the .float method in VkrunJS to validate floating-point numbers with precision and flexibility."
+---
+
+## Schema - Float
+
+The `.float` method is used to validate whether a given value is a floating-point number. It ensures that the input is a valid decimal number, differentiating it from integers, and can be further combined with additional validation methods to define specific rules for numeric inputs.
+
+This method is particularly useful for validating data like prices, measurements, or any values that require decimal precision.
+
+---
+
+### Example
+
+Below is an example of how to use `.float` to validate whether a value is a valid floating-point number:
+
+```ts
+import { schema } from "vkrun"
+
+const schema = schema().number().float()
+
+const validateA = schema.validate(123.5) // Valid float
+const validateB = schema.validate(123)   // Invalid float (integer)
+
+console.log(validateA) // true
+console.log(validateB) // false
+```

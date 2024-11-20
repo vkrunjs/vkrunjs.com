@@ -1,0 +1,36 @@
+---
+title: "Schema Validate"
+description: "The .validate method validates data synchronously against a predefined schema. It is designed for scenarios requiring immediate validation, returning a boolean to indicate whether the value meets the schema's rules. This method is suitable for handling data validation in real-time processes or server-side applications."
+---
+
+## Schema - Validate
+
+The `.validate` method is used to validate data synchronously against a predefined schema. It takes a value as input, checks if the value satisfies the schema's validation rules, and returns a boolean indicating whether the value is valid.
+
+---
+
+### Syntax
+
+```ts
+.validate(value: any): boolean
+```
+
+- **value**: The value to be validated.
+
+---
+
+### Example
+
+The following example demonstrates how to use `.validate` to check if a value is a valid number:
+
+```ts
+import { schema } from "vkrun"
+
+const schemaNumber = schema().number()
+
+const validateA = schemaNumber.validate(123)
+const validateB = schemaNumber.validate("123")
+
+console.log(validateA) // true
+console.log(validateB) // false
+```

@@ -1,3 +1,8 @@
+---
+title: "Router Controller"
+description: 'The "Router Controller" page demonstrates how to use controllers in VkrunJS to handle requests and generate responses. Learn how controllers enable separation of concerns, reusability, and cleaner route definitions for building modular and maintainable applications.'
+---
+
 ## Router - Controller
 
 A controller is a callback function that handles the request and generates the response for a specific route. In VkrunJS, a controller is typically used when you have a single function that will handle the request for a particular route.
@@ -7,17 +12,17 @@ A controller is a callback function that handles the request and generates the r
 In this example, the controller `controller` processes the incoming request and sends a response:
 
 ```ts
-import v from 'vkrun'
+import Vkrun, { Request, Response } from 'vkrun'
 
-const app = v.App()
+const vkrun = Vkrun()
 
 // Controller function
-const controller = (req: v.Request, res: v.Response) => {
+const controller = (req: Request, res: Response) => {
   res.send('Hello from the controller!')
 }
 
 // Using the controller in a route
-app.get('/example', controller)
+vkrun.get('/example', controller)
 ```
 
 In the above example:

@@ -2,7 +2,19 @@ import React from 'react'
 import { DocsThemeConfig } from 'nextra-theme-docs'
 
 const config: DocsThemeConfig = {
-  // logo: <span>VkrunJS</span>,
+  head: (
+    <>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <meta property="og:title" content="VkrunJS" />
+      <meta property="og:description" content="VkrunJS is a Node.js framework for building server-side applications." />
+    </>
+  ),
+  useNextSeoProps() {
+    return {
+      titleTemplate: "%s - VkrunJS",
+      defaultTitle: "VkrunJS",
+    }
+  },
   logo: 
     <div style={{
       display: "flex",
@@ -35,7 +47,7 @@ const config: DocsThemeConfig = {
       }}>
       <span>Copyright © {new Date().getFullYear()} MIT by{" "}<a href="https://www.linkedin.com/in/marioelvio" target="_blank">Mario Elvio</a></span>
     </div>
-  },
+  }
 }
 
 export default config

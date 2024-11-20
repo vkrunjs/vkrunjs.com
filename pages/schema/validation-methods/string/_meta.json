@@ -1,0 +1,9 @@
+{
+  "string": "Introduction",
+  "email": ".email",
+  "min-length": ".minLength",
+  "max-length": ".maxLength",
+  "uuid": ".UUID",
+  "min-word": ".minWord",
+  "time": ".time"
+}

@@ -1,0 +1,52 @@
+---
+title: "Schema ValidateAsync"
+description: "The .validateAsync method validates data asynchronously against a predefined schema, supporting values that are Promises. It is designed for scenarios where data validation relies on asynchronous operations, such as fetching input dynamically or handling delayed responses. The method returns a Promise resolving to a boolean, indicating whether the value meets the validation criteria."
+---
+
+## Schema - ValidateAsync
+
+The `.validateAsync` method is used to validate data asynchronously against a predefined schema. It takes a value (or a Promise resolving to a value) as input, checks if the value satisfies the schema's validation rules, and returns a Promise resolving to a boolean indicating whether the value is valid.
+
+---
+
+### Syntax
+
+```ts
+.validateAsync(value: any): Promise<boolean>
+```
+
+- **value**: The value to be validated.
+
+---
+
+### Example
+
+The following example demonstrates how to use `.validateAsync` to check if a value is a valid email:
+
+```ts
+import { schema } from "vkrun"
+
+const schemaNumber = schema().number()
+
+const valueA = async (): Promise<number> => {
+  return await new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(123)
+    }, 100)
+  })
+}
+
+const valueB = async (): Promise<string> => {
+  return await new Promise((resolve) => {
+    setTimeout(() => {
+      resolve("123")
+    }, 100)
+  })
+}
+
+const validateAsyncA = schemaNumber.validate(valueA())
+const validateAsyncB = schemaNumber.validate(valueB())
+
+console.log(validateAsyncA) // true
+console.log(validateAsyncB) // false
+```

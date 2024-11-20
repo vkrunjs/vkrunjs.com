@@ -4,6 +4,6 @@
   "router-methods": "Methods",
   "router-paths": "Paths",
   "router-parameters": "Parameters",
-  "router-query": "Query Parameters",
+  "router-query-parameters": "Query Parameters",
   "router-body": "Body"
 }

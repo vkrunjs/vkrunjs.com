@@ -1,3 +1,8 @@
+---
+title: "Router Request"
+description: 'The "Router Request" page explores how VkrunJS leverages Node.js "http.IncomingMessage" to handle HTTP requests. Learn about native properties like "req.method", "req.url", and "req.headers", and how the "parseData" middleware enhances the request object with "req.params", "req.query", and "req.body" for efficient data parsing and handling.'
+---
+
 ## Router - Request
 
 VkrunJS utilizes the `http.IncomingMessage` from Node.js' `createServer` to handle requests. The **IncomingMessage** object provides methods and properties to access the data sent by the client in an HTTP request. For more details on the native **IncomingMessage**, refer to the [Node.js IncomingMessage documentation](https://nodejs.org/api/http.html#class-httpincomingmessage).
@@ -19,7 +24,11 @@ Some examples of native properties provided by `http.IncomingMessage`:
 ### Example: Basic Request Object
 
 ```ts
-app.get('/example', (req: v.Request, res: v.Response) => {
+import Vkrun, { Request, Response } from 'vkrun'
+
+const vkrun = Vkrun()
+
+vkrun.get('/example', (req: Request, res: Response) => {
   console.log(req.method)  // Outputs: GET
   console.log(req.url)      // Outputs: /example?name=John
   console.log(req.headers)  // Outputs: { host: 'localhost:3000', ... }

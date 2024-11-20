@@ -1,0 +1,30 @@
+---
+title: "Schema Positive"
+description: "Learn how to use the .positive method in VkrunJS to validate that numeric inputs are positive values."
+---
+
+## Schema - Positive
+
+The `.positive` method is used to validate whether a given numeric value is greater than zero. It ensures that the input is a positive number, making it useful for scenarios where only positive values are valid, such as prices, quantities, or indexes.
+
+This method is particularly useful for enforcing constraints where negative or zero values are invalid.
+
+---
+
+### Example
+
+Below is an example of how to use `.positive` to validate whether a number is positive:
+
+```ts
+import { schema } from "vkrun"
+
+const schema = schema().number().positive()
+
+const validateA = schema.validate(1)
+const validateB = schema.validate(0)
+const validateC = schema.validate(-1)
+
+console.log(validateA) // true
+console.log(validateB) // false
+console.log(validateC) // false
+```

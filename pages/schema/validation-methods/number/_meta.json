@@ -1,0 +1,9 @@
+{
+  "number": "Introduction",
+  "float": ".float",
+  "integer": ".integer",
+  "min": ".min",
+  "max": ".max",
+  "positive": ".positive",
+  "negative": ".negative"
+}
