@@ -1,0 +1,32 @@
+---
+title: "Schema Alias"
+description: "Learn how to use the .alias method in VkrunJS to rename properties for validation and error messages."
+---
+
+## Schema - Alias
+
+The `.alias` method is used to rename a property in a schema for validation purposes. It allows you to change the key name for validation and error messages, which is particularly useful when you need to provide more user-friendly or human-readable names in error messages without altering the actual data structure.
+
+This method is essential when validating structured data like user profiles or form submissions, especially when the original property names are not suitable for display in error messages.
+
+---
+
+### Example: Using `.alias` to Rename Properties for Validation
+
+Below is an example of how to use `.alias` to rename properties in the schema:
+
+```ts
+import { schema } from "vkrun"
+
+const schema = schema().object({
+  id: schema().string().UUID(), // original key is "id"
+  fullName: schema().alias("full name").string().minWord(2), // alias changes key name to "full name"
+  description: schema().string().notRequired() // original key is "description"
+})
+
+const validatedSchema = schema.test({
+  id: "3ef7c105-c4ea-444d-bf47-e2e1a49ea613",  // original key "id"
+  fullName: "John Doe", // original key "fullName", but displayed as "full name"
+  description: "A brief description" // original key "description"
+}, 'object_name')
+```

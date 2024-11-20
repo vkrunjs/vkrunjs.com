@@ -1,0 +1,37 @@
+---
+title: "Schema Object"
+description: "Learn how to use the .object method in VkrunJS to validate if a value is an object with the specified properties and their respective validations."
+---
+
+## Schema - Object
+
+The `.object` method is used to validate whether a given value is an object and that it matches a set of specified properties, each with its own schema for validation. It ensures that the input value is an object and that each property adheres to the defined validation rules. This method is essential when you need to validate structured data, such as user profiles, form submissions, or complex objects with specific properties.
+
+---
+
+### Example: Basic Validation with `.object`
+
+Below is an example of how to use `.object` to validate whether an object matches the defined schema for its properties:
+
+```ts
+import { schema } from "vkrun"
+
+const schema = schema().object({
+  id: schema().string().UUID(),
+  fullName: schema().string().minWord(2),
+  description: schema().string().notRequired()
+})
+
+const validateA = schema.validate({
+  id: "3ef7c105-c4ea-444d-bf47-e2e1a49ea613",
+  fullName: "Full Name"
+})
+
+const validateB = schema.validate({
+  id: "3ef7c105-c4ea-444d-bf47-e2e1a49ea613",
+  description: "Description"
+})
+
+console.log(validateA) // true
+console.log(validateB) // false
+```

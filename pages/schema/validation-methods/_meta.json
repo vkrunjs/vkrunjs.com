@@ -5,5 +5,9 @@
   "boolean": ".boolean",
   "date": ".date",
   "equal": ".equal",
-  "not-equal": ".notEqual"
+  "not-equal": ".notEqual",
+  "one-of": ".oneOf",
+  "not-one-of": ".notOneOf",
+  "object": ".object",
+  "alias": ".alias"
 }

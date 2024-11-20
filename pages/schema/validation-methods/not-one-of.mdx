@@ -1,0 +1,33 @@
+---
+title: "Schema NotOneOf"
+description: "Learn how to use the .notOneOf method in VkrunJS to validate if a value does not match any of several specified values or schemas."
+---
+
+## Schema - NotOneOf
+
+The `.notOneOf` method is used to validate whether a given value does not match any of several specified values or schemas. It ensures that the input value must not match any of the provided values or schemas in the array. This method is essential when you need to validate data that must exclude certain possibilities, such as rejecting specific predefined values or structures.
+
+---
+
+### Example: Basic Validation with `.notOneOf`
+
+Below is an example of how to use `.notOneOf` to validate whether a value does not match any of the comparison values or schemas:
+
+```ts
+import { schema } from "vkrun"
+
+// Comparison items can include static values and schemas
+const comparisonItems = ['hello', 'world', schema().boolean()]
+const schema = schema().notOneOf(comparisonItems)
+
+// Validate against the schema
+const validateA = schema.validate('hi')    // No match
+const validateB = schema.validate(42)      // No match
+const validateC = schema.validate('hello') // Match (invalid)
+const validateD = schema.validate(true)    // Match (invalid)
+
+console.log(validateA) // true
+console.log(validateB) // true
+console.log(validateC) // false
+console.log(validateD) // false
+```
