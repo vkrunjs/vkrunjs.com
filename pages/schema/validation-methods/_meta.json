@@ -9,5 +9,8 @@
   "one-of": ".oneOf",
   "not-one-of": ".notOneOf",
   "object": ".object",
-  "alias": ".alias"
+  "alias": ".alias",
+  "not-required": ".notRequired",
+  "nullable": ".nullable",
+  "array": ".array"
 }

@@ -1,0 +1,35 @@
+---
+title: "Schema Nullable"
+description: "Learn how to use the .nullable method in VkrunJS to validate if a value can be null or any other type, except undefined."
+---
+
+## Schema - Nullable
+
+The `.nullable()` method is used to validate whether a value can be `null`. The difference between the `nullable` and `notRequired` methods is:
+
+- **nullable**: It can be `null` or any other type, **except `undefined`**.
+- **notRequired**: It can be `undefined` or any other type.
+
+This method is useful when you want to allow `null` as a valid value but prevent `undefined`.
+
+---
+
+### Example
+
+Below is an example of how to use `.nullable()` to validate whether a value can be `null` or any other type, except `undefined`:
+
+```ts
+import { schema } from "vkrun"
+
+const schema = schema().number().nullable()
+
+const validateA = schema.validate(null)
+const validateB = schema.validate(undefined)
+const validateC = schema.validate("123")
+const validateD = schema.validate(123)
+
+console.log(validateA) // true
+console.log(validateB) // false
+console.log(validateC) // false
+console.log(validateD) // true
+```
