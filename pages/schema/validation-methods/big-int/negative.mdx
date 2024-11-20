@@ -1,0 +1,30 @@
+---
+title: "Schema Negative (BigInt)"
+description: "Learn how to use the .negative method in VkrunJS to validate that BigInt inputs are negative values."
+---
+
+## Schema - Negative (BigInt)
+
+The `.negative` method is used to validate whether a given `BigInt` value is less than zero. It ensures that the input is a negative `BigInt`, making it particularly useful for scenarios where only negative values are allowed, such as tracking debts, offsets, or temperature drops in systems using large integers.
+
+This method is essential for enforcing constraints that disallow positive or zero values in `BigInt` data.
+
+---
+
+### Example
+
+Below is an example of how to use `.negative` to validate whether a `BigInt` value is negative:
+
+```ts
+import { schema } from "vkrun"
+
+const schema = schema().bigInt().negative() // < 0n
+
+const validateA = schema.validate(-1n)  // Valid, negative value
+const validateB = schema.validate(0n)   // Invalid, zero is not negative
+const validateC = schema.validate(1n)   // Invalid, positive value
+
+console.log(validateA) // true
+console.log(validateB) // false
+console.log(validateC) // false
+```

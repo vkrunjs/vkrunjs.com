@@ -1,0 +1,28 @@
+---
+title: "Schema Max (BigInt)"
+description: "Learn how to use the .max method in VkrunJS to validate BigInt inputs with a maximum value constraint."
+---
+
+## Schema - Max (BigInt)
+
+The `.max` method is used to validate whether a given `BigInt` value does not exceed a specified maximum threshold. It ensures that the input value is less than or equal to the defined `BigInt` maximum, providing a robust way to enforce upper bounds for large integer data.
+
+This method is particularly useful for scenarios requiring strict upper limits on large integers, such as financial computations, cryptographic operations, or precise data modeling.
+
+---
+
+### Example
+
+Below is an example of how to use `.max` to validate whether a `BigInt` value meets the maximum allowed value:
+
+```ts
+import { schema } from "vkrun"
+
+const schema = schema().bigInt().max(1n)
+
+const validateA = schema.validate(1n)  // Valid, meets the maximum threshold
+const validateB = schema.validate(2n)  // Invalid, exceeds the maximum threshold
+
+console.log(validateA) // true
+console.log(validateB) // false
+```

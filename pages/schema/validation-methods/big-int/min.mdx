@@ -1,0 +1,28 @@
+---
+title: "Schema Min (BigInt)"
+description: "Learn how to use the .min method in VkrunJS to validate BigInt inputs with a minimum value constraint."
+---
+
+## Schema - Min (BigInt)
+
+The `.min` method is used to validate whether a given `BigInt` value meets a specified minimum threshold. It ensures that the input value is greater than or equal to the defined `BigInt` minimum, providing a robust way to enforce lower bounds for large integer data.
+
+This method is particularly useful for scenarios requiring strict lower limits on large integers, such as cryptographic operations, financial computations, or precise data modeling.
+
+---
+
+### Example
+
+Below is an example of how to use `.min` to validate whether a `BigInt` value meets the minimum required value:
+
+```ts
+import { schema } from "vkrun"
+
+const schema = schema().bigInt().min(2n)
+
+const validateA = schema.validate(2n)  // Valid, meets the minimum threshold
+const validateB = schema.validate(1n)  // Invalid, below the minimum threshold
+
+console.log(validateA) // true
+console.log(validateB) // false
+```

@@ -1,0 +1,30 @@
+---
+title: "Schema Positive (BigInt)"
+description: "Learn how to use the .positive method in VkrunJS to validate that BigInt inputs are positive values."
+---
+
+## Schema - Positive (BigInt)
+
+The `.positive` method is used to validate whether a given `BigInt` value is greater than zero. It ensures that the input is a positive `BigInt`, making it particularly useful for scenarios where only positive values are allowed, such as quantities, indexes, or counts in large-scale systems.
+
+This method is crucial for enforcing constraints that disallow negative or zero values in `BigInt` data.
+
+---
+
+### Example
+
+Below is an example of how to use `.positive` to validate whether a `BigInt` value is positive:
+
+```ts
+import { schema } from "vkrun"
+
+const schema = schema().bigInt().positive() // > 0n
+
+const validateA = schema.validate(1n)  // Valid, positive value
+const validateB = schema.validate(0n)  // Invalid, zero is not positive
+const validateC = schema.validate(-1n) // Invalid, negative value
+
+console.log(validateA) // true
+console.log(validateB) // false
+console.log(validateC) // false
+```
