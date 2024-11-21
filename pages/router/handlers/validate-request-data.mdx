@@ -1,0 +1,93 @@
+---
+title: "Router - Validate Request Data"
+description: 'Learn how to apply validation middleware in VkrunJS for request data. This guide demonstrates how to validate incoming request data using schemas and how to handle validation errors efficiently.'
+---
+
+## Router - Validate Request Data
+
+In this guide, we will focus on **validating request data** before it reaches the controller, ensuring the incoming data (such as parameters, query strings, and body data) is correct and meets your expectations.
+
+### Validate Request Data Middleware
+
+To validate request data, you can use a custom middleware function. This middleware uses a schema to validate parameters, query strings and body data.
+
+```ts
+import v from 'vkrun'
+
+const validateRequestData = (schema: v.SchemaReturn): any => {
+  return (request: v.Request, response: v.Response, next: v.NextFunction) => {
+    const test = schema.test(request, 'routeData')
+    if (test.passedAll) {
+      next() // Validation passed, proceed to the next handler
+    } else {
+      // Custom error response headers and message
+      response.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, private')
+      response.setHeader('Pragma', 'no-cache')
+      response.setHeader('Expires', '0')
+      response.setHeader('X-Content-Type-Options', 'nosniff')
+      response.setHeader('X-Frame-Options', 'DENY')
+      response.setHeader('Content-Security-Policy', 'default-src \'self\'')
+      response.setHeader('X-XSS-Protection', '1; mode=block')
+      // Send the first error message
+      response.status(400).send(test.errors[0].message)
+    }
+  }
+}
+```
+
+### Schema
+
+This example demonstrates how to apply validation middleware to validate request parameters, query strings, and body data:
+
+```ts
+import v from 'vkrun'
+
+// Define the validation schema for parameters, query, and body
+const schemaData = v.schema().object({
+  params: v.schema().object({
+    string: v.schema().string().email(),
+    integer: v.schema().number().integer()
+  }),
+  query: v.schema().object({
+    float: v.schema().number().float(),
+    boolean: v.schema().boolean(),
+    date: v.schema().date()
+  }),
+  body: v.schema().object({
+    string: v.schema().string().email(),
+    integer: v.schema().number().integer(),
+    float: v.schema().number().float(),
+    boolean: v.schema().boolean(),
+    date: v.schema().date()
+  })
+})
+```
+
+### Example:
+
+```ts
+import v from 'vkrun'
+
+const app = v.App()
+app.parseData() // Parsing incoming request data
+
+const controller = (request: v.Request, response: v.Response) => {
+  response.status(200).send('Validation passed!')
+}
+
+// Configuring the route with the validation middleware
+app.post(
+  '/params/:string/:integer/query',
+  validateRequestData(schemaData), // Apply validation to this route
+  controller
+)
+
+app.server().listen(3000, () => {
+  console.log('Server started on port 3000 with Validation enabled')
+})
+```
+
+In this example:
+
+- The `schemaData` defines the validation rules for the request's **parameters** (`params`), **query strings** (`query`), and **body** (`body`).
+- The `v.validateRequestData(schemaData)` middleware validates the incoming data against the schema. If validation fails, it sends an error response. If validation passes, it proceeds to the controller.
