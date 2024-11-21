@@ -19,6 +19,7 @@ You can use specific keywords to change the error message format. Available keyw
   - **time**: `[value]`, `[valueName]` and `[type]`
   - **maxLength**: `[value]`, `[valueName]` and `[maxLength]`
   - **minLength**: `[value]`, `[valueName]` and `[minLength]`
+  - **regex**: `[value]` and `[valueName]``
 
 - **number**:
   - **invalidValue**: `[value]` and `[valueName]`
@@ -37,6 +38,9 @@ You can use specific keywords to change the error message format. Available keyw
   - **negative**: `[valueName]`
 
 - **boolean**:
+  - **invalidValue**: `[value]` and `[valueName]`
+
+- **buffer**:
   - **invalidValue**: `[value]` and `[valueName]`
 
 - **required**:
@@ -97,7 +101,8 @@ setLocation({
     email: 'email [value] é inválido!',
     time: 'o tempo [value] não está no formato [type]!',
     maxLength: '[valueName] deve ter no máximo [maxLength] caracteres!',
-    minLength: '[valueName] deve ter no mínimo [minLength] caracteres!'
+    minLength: '[valueName] deve ter no mínimo [minLength] caracteres!',
+    regex: 'o [valor] não corresponde!',
   },
   number: {
     invalidValue: '[valueName] deve ser do tipo número!',
@@ -118,6 +123,9 @@ setLocation({
   boolean: {
     invalidValue: '[valueName] deve ser do tipo boolean!'
   },
+  buffer: {
+    invalidValue: '[valueName] deve ser do tipo buffer!'
+  },
   required: '[valueName] é obrigatório!',
   date: {
     invalidValue: 'a data [valueName] não está no formato [type]!',
@@ -133,7 +141,7 @@ setLocation({
   nullable: '[valueName] pode ser nulo, mas não pode ser undefined!',
   equal: 'o valor não corresponde!',
   notEqual: 'o valor não pode corresponder!',
-  oneOf: 'o valor não tem uma correspondência!',
-  notOneOf: 'o valor não pode ter correspondências!'
+  oneOf: 'o valor não tem um correspondente!',
+  notOneOf: 'o valor não pode ter um correspondente!'
 })
 ````

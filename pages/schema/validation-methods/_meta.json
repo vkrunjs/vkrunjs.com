@@ -10,6 +10,7 @@
   "not-one-of": ".notOneOf",
   "object": ".object",
   "alias": ".alias",
+  "buffer": ".buffer",
   "not-required": ".notRequired",
   "nullable": ".nullable",
   "array": ".array"

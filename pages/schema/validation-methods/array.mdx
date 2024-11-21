@@ -25,6 +25,7 @@ Below is a table describing the available methods that can be chained with `.arr
 | [`.nullable()`](#nullable)       | Ensures that the array can accept `null` values.                                                  |
 | [`.notRequired()`](#notrequired) | Ensures that the array elements are not required, and can be `undefined` or `null`.                |
 | [`.oneOf()`](#oneof)             | Ensures that the elements inside the array match one of the specified values or schemas.           |
+| [`.buffer()`](#buffer)           | Ensures that the elements inside the array are buffers.                                          |
 | [`.notOneOf()`](#notoneof)       | Ensures that the elements inside the array do not match any of the specified values or schemas.    |
 | [`.date()`](#date)               | Ensures that the elements inside the array are valid dates.                                       |
 
@@ -39,8 +40,8 @@ Validates that the array contains at least the specified number of elements:
 ```ts
 const schema = schema().array({ min: 2 }).string()
 
-const validateA = schema.validate(["hello", "world"]) // true
-const validateB = schema.validate(["hello"])         // false
+const validateA = schema.validate(["hello", "world"])
+const validateB = schema.validate(["hello"])
 
 console.log(validateA) // true
 console.log(validateB) // false
@@ -53,8 +54,8 @@ Validates that the array contains no more than the specified number of elements:
 ```ts
 const schema = schema().array({ max: 3 }).string()
 
-const validateA = schema.validate(["hello", "world", "test"]) // true
-const validateB = schema.validate(["hello", "world", "test", "extra"]) // false
+const validateA = schema.validate(["hello", "world", "test"])
+const validateB = schema.validate(["hello", "world", "test", "extra"])
 
 console.log(validateA) // true
 console.log(validateB) // false
@@ -67,9 +68,11 @@ Validates if the elements inside the array are strings:
 ```ts
 const schema = schema().array().string()
 
-const validateA = schema.validate(["hello", "world"]) const validateB = schema.validate([1, 2])
+const validateA = schema.validate(["hello", "world"])
+const validateB = schema.validate([1, 2])
 
-console.log(validateA) // true console.log(validateB) // false
+console.log(validateA) // true
+console.log(validateB) // false
 ```
 
 #### `.number()`
@@ -79,9 +82,11 @@ Validates if the elements inside the array are numbers:
 ```ts
 const schema = schema().array().number()
 
-const validateA = schema.validate([1, 2, 3]) const validateB = schema.validate([1, "2"])
+const validateA = schema.validate([1, 2, 3])
+const validateB = schema.validate([1, "2"])
 
-console.log(validateA) // true console.log(validateB) // false
+console.log(validateA) // true
+console.log(validateB) // false
 ```
 
 #### `.boolean()`
@@ -91,9 +96,11 @@ Validates if the elements inside the array are booleans:
 ```ts
 const schema = schema().array().boolean()
 
-const validateA = schema.validate([true, false]) const validateB = schema.validate([true, "false"])
+const validateA = schema.validate([true, false])
+const validateB = schema.validate([true, "false"])
 
-console.log(validateA) // true console.log(validateB) // false
+console.log(validateA) // true
+console.log(validateB) // false
 ```
 
 #### `.object()`
@@ -101,11 +108,25 @@ console.log(validateA) // true console.log(validateB) // false
 Validates if the elements inside the array are objects matching a specific schema:
 
 ```ts
-const schema = schema().array().object({ id: schema().string().UUID(), fullName: schema().string().minWord(2) })
+const schema = schema().array().object({
+  id: schema().string().UUID(),
+  fullName: schema().string().minWord(2)
+})
 
-const validateA = schema.validate([ { id: "3ef7c105-c4ea-444d-bf47-e2e1a49ea613", fullName: "Full Name" } ]) const validateB = schema.validate([ { id: "3ef7c105-c4ea-444d-bf47-e2e1a49ea613" } ])
+const validateA = schema.validate([
+  {
+    id: "3ef7c105-c4ea-444d-bf47-e2e1a49ea613",
+    fullName: "Full Name"
+  }
+])
+const validateB = schema.validate([
+  {
+    id: "3ef7c105-c4ea-444d-bf47-e2e1a49ea613"
+  }
+])
 
-console.log(validateA) // true console.log(validateB) // false
+console.log(validateA) // true
+console.log(validateB) // false
 ```
 
 #### `.nullable()`
@@ -115,9 +136,11 @@ Validates if the array can accept `null` values:
 ```ts
 const schema = schema().array().string().nullable()
 
-const validateA = schema.validate([null]) const validateB = schema.validate([undefined])
+const validateA = schema.validate([null])
+const validateB = schema.validate([undefined])
 
-console.log(validateA) // true console.log(validateB) // true
+console.log(validateA) // true
+console.log(validateB) // true
 ```
 
 #### `.notRequired()`
@@ -127,9 +150,11 @@ Validates if the array elements are not required:
 ```ts
 const schema = schema().array().string().notRequired()
 
-const validateA = schema.validate(undefined) // Allowed because it's not required const validateB = schema.validate(["value"]) // Valid array
+const validateA = schema.validate(undefined) // Allowed because it's not required
+const validateB = schema.validate(["value"]) // Valid array
 
-console.log(validateA) // true console.log(validateB) // true
+console.log(validateA) // true
+console.log(validateB) // true
 ```
 
 #### `.oneOf()`
@@ -139,9 +164,13 @@ Validates if the array elements match one of the specified values or schemas:
 ```ts
 const schema = schema().array().oneOf([schema().string(), true])
 
-const validateA = schema.validate([true]) // Matches schema().boolean() const validateB = schema.validate(["hello"]) // Matches schema().string() const validateC = schema.validate([1]) // No match
+const validateA = schema.validate([true]) // Matches schema().boolean()
+const validateB = schema.validate(["hello"]) // Matches schema().string()
+const validateC = schema.validate([1]) // No match
 
-console.log(validateA) // true console.log(validateB) // true console.log(validateC) // false
+console.log(validateA) // true
+console.log(validateB) // true
+console.log(validateC) // false
 ```
 
 #### `.notOneOf()`
@@ -151,9 +180,27 @@ Validates if the array elements do not match any of the specified values or sche
 ```ts
 const schema = schema().array().notOneOf([schema().string(), true])
 
-const validateA = schema.validate([1]) // No match const validateB = schema.validate([true]) // Match schema().boolean() const validateC = schema.validate(["hello"]) // Match schema().string()
+const validateA = schema.validate([1]) // No match
+const validateB = schema.validate([true]) // Match schema().boolean()
+const validateC = schema.validate(["hello"]) // Match schema().string()
 
-console.log(validateA) // true console.log(validateB) // false console.log(validateC) // false
+console.log(validateA) // true
+console.log(validateB) // false
+console.log(validateC) // false
+```
+
+#### `.buffer()`
+
+Validates if the elements inside the array are booleans:
+
+```ts
+const schema = schema().array().buffer()
+
+const validateA = schema.validate([Buffer.from("test"), Buffer.from("test")])
+const validateB = schema.validate([true, "test"])
+
+console.log(validateA) // true
+console.log(validateB) // false
 ```
 
 ---

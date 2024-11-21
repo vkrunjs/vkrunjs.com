@@ -1,0 +1,62 @@
+---
+title: "Schema Regex (String)"
+description: "The `.regex` method validates if a string matches a given regular expression pattern. It allows you to define custom patterns for string validation and ensure that the input meets specific criteria, such as email format or alphanumeric constraints."
+---
+
+## Schema - Regex (String)
+
+The `.regex` method in Schema allows you to validate if a string conforms to a given regular expression pattern. This method is flexible and can be used for any custom string validation that requires a specific format, such as email validation, URL validation, or alphanumeric constraints.
+
+Using `.regex`, you can ensure that the input data matches the desired pattern before proceeding with the application logic. Additionally, you can customize error messages when the validation fails.
+
+---
+
+### Example
+
+Below is an example of how to use `.regex` to validate if a string matches a regular expression pattern for email validation:
+
+```ts
+import { schema } from "vkrun"
+
+const regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+
+const schemaValidation = schema()
+  .string()
+  .regex(regex)
+
+const validateA = schemaValidation.validate("any_email@domain.com")
+const validateB = schemaValidation.validate("invalid_email@domain")
+
+console.log(validateA) // true
+console.log(validateB) // false
+```
+
+In this example:
+
+- We define a regular expression pattern for validating an email address.
+The .regex() method is used to apply the validation.
+- The method returns true if the email is valid and false otherwise.
+
+### Customizing Error Messages
+
+You can customize the error message returned when the validation fails by using the `errorMessage` option. This allows you to define a specific message that will be included in the error response. You can also use placeholders such as `[value]` and `[valueName]` to dynamically insert values into the error message.
+
+```ts
+const schemaValidation = schema()
+  .string()
+  .regex(regex, {
+    errorMessage: "The email [value] is invalid!" // custom error message
+  })
+```
+
+In this example:
+
+- [value] is a placeholder for the actual value being validated (in this case, the email).
+- If the input does not match the regex pattern, the custom error message "The email [value] format is invalid!" will be used, where [value] will be replaced with the invalid email address.
+
+### Available Keywords for Customizing Error Messages
+
+You can use the following keywords for customizing the error message:
+
+- `[value]`: Represents the actual value that is being validated.
+- `[valueName]`: Represents the name you assign to the value, for example, the key in the validation object (e.g., email).
