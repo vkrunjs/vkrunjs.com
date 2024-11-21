@@ -1,6 +1,6 @@
 ---
 title: "Schema Array"
-description: "Learn how to use the .array method in VkrunJS to validate arrays with various value types and constraints."
+description: "Learn how to use the .array method in Schema to validate arrays with various value types and constraints."
 ---
 
 ## Schema - Array
@@ -25,7 +25,8 @@ Below is a table describing the available methods that can be chained with `.arr
 | [`.nullable()`](#nullable)       | Ensures that the array can accept `null` values.                                                  |
 | [`.notRequired()`](#notrequired) | Ensures that the array elements are not required, and can be `undefined` or `null`.                |
 | [`.oneOf()`](#oneof)             | Ensures that the elements inside the array match one of the specified values or schemas.           |
-| [`.buffer()`](#buffer)           | Ensures that the elements inside the array are buffers.                                          |
+| [`.buffer()`](#buffer)           | Ensures that the elements inside the array are buffers.                                           |
+| [`.function()`](#function)       | Ensures that the elements inside the array are functions.                                         |
 | [`.notOneOf()`](#notoneof)       | Ensures that the elements inside the array do not match any of the specified values or schemas.    |
 | [`.date()`](#date)               | Ensures that the elements inside the array are valid dates.                                       |
 
@@ -191,13 +192,27 @@ console.log(validateC) // false
 
 #### `.buffer()`
 
-Validates if the elements inside the array are booleans:
+Validates if the elements inside the array are buffers:
 
 ```ts
 const schema = schema().array().buffer()
 
 const validateA = schema.validate([Buffer.from("test"), Buffer.from("test")])
 const validateB = schema.validate([true, "test"])
+
+console.log(validateA) // true
+console.log(validateB) // false
+```
+
+#### `.function()`
+
+Validates if the elements inside the array are functions:
+
+```ts
+const schema = schema().array().function()
+
+const validateA = schema.validate([() => {}, () => {}])
+const validateB = schema.validate([() => {}, "test"])
 
 console.log(validateA) // true
 console.log(validateB) // false
