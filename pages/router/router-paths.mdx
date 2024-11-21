@@ -12,11 +12,11 @@ Route paths, in combination with a request method, define the endpoints at which
 This route path will match requests to the root route, /.
 
 ```ts
-import Vkrun, { Request, Response } from 'vkrun'
+import v from 'vkrun'
  
-const vkrun = Vkrun()
+const vkrun = v.App()
 
-vkrun.get('/', (req: Request, res: Response) => {
+vkrun.get('/', (req: v.Request, res: v.Response) => {
   res.send('root')
 })
 ```
@@ -24,11 +24,11 @@ vkrun.get('/', (req: Request, res: Response) => {
 This route path will match requests to /users.
 
 ```ts
-import Vkrun, { Request, Response } from 'vkrun'
+import v from 'vkrun'
  
-const vkrun = Vkrun()
+const vkrun = v.App()
 
-vkrun.get('/users', (req: Request, res: Response) => {
+vkrun.get('/users', (req: v.Request, res: v.Response) => {
   res.send('users')
 })
 ```
@@ -40,11 +40,11 @@ You can use the wildcard `*` in route paths to match any portion of the URL that
 For example, this route path will match requests to `/wildcard/` followed by any string.
 
 ```ts
-import Vkrun, { Request, Response } from 'vkrun'
+import v from 'vkrun'
  
-const vkrun = Vkrun()
+const vkrun = v.App()
 
-vkrun.get('/wildcard/*', (req: Request, res: Response) => {
+vkrun.get('/wildcard/*', (req: v.Request, res: v.Response) => {
   res.send('wildcard route')
 })
 ```

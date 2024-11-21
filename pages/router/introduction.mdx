@@ -14,13 +14,13 @@ Routing methods specify a callback function that is called when the application 
 Example:
 
 ```ts
-import Vkrun, { Router, Request, Response } from 'vkrun'
+import v from 'vkrun'
 
-const vkrun = Vkrun()
+const vkrun = v.App()
 const router = Router()
 
 // When calling the route below it responds with the text hello world
-router.get('/', (req: Request, res: Response) => {
+router.get('/', (req: v.Request, res: v.Response) => {
   res.setHeader('Content-Type', 'text/plain')
   res.status(200).end('Hello World!')
 })
@@ -35,12 +35,12 @@ vkrun.server().listen(3000, () => {
 Equivalent:
 
 ```ts
-import Vkrun, { Request, Response } from 'vkrun'
+import v from 'vkrun'
 
-const vkrun = Vkrun()
+const vkrun = v.App()
 
 // When calling the route below it responds with the text hello world
-vkrun.get('/', (req: Request, res: Response) => {
+vkrun.get('/', (req: v.Request, res: v.Response) => {
   res.setHeader('Content-Type', 'text/plain')
   res.status(200).end('Hello World!')
 })

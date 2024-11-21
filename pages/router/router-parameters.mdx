@@ -16,12 +16,12 @@ In this example, `parseData` is used to parse route parameters, making them acce
 - path: `/Mario/Elvio`
 
 ```ts
-import Vkrun, { Request, Response } from 'vkrun'
+import v from 'vkrun'
 
-const vkrun = Vkrun()
+const vkrun = v.App()
 vkrun.parseData()
 
-vkrun.get('/:firstName/:lastName', (req: Request, res: Response) => {
+vkrun.get('/:firstName/:lastName', (req: v.Request, res: v.Response) => {
   const firstName = req.params.firstName
   // firstName equal 'Mario'
 

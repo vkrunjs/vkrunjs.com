@@ -36,12 +36,12 @@ await fetch('http://domain/', {
 Router Example (JSON):
 
 ```ts
-import Vkrun, { Request, Response } from 'vkrun'
+import v from 'vkrun'
 
-const vkrun = Vkrun()
+const vkrun = v.App()
 vkrun.parseData()
 
-vkrun.post('/', (req: Request, res: Response) => {
+vkrun.post('/', (req: v.Request, res: v.Response) => {
   const firstName = req.body.firstName
   const lastName = req.body.lastName
   res.status(200).end(`Hello, ${firstName} ${lastName}`)
@@ -67,12 +67,12 @@ await fetch('http://domain/form', {
 Router Example (URL-encoded):
 
 ```ts
-import Vkrun, { Request, Response } from 'vkrun'
+import v from 'vkrun'
 
-const vkrun = Vkrun()
+const vkrun = v.App()
 vkrun.parseData()
 
-vkrun.post('/form', (req: Request, res: Response) => {
+vkrun.post('/form', (req: v.Request, res: v.Response) => {
   const firstName = req.body.firstName
   const lastName = req.body.lastName
   res.status(200).end(`Hello, ${firstName} ${lastName}`)
@@ -99,12 +99,12 @@ await fetch('http://domain/upload', {
 Router Example (Multipart Form Data):
 
 ```ts
-import Vkrun, { Request, Response } from 'vkrun'
+import v from 'vkrun'
 
-const vkrun = Vkrun()
+const vkrun = v.App()
 vkrun.parseData()
 
-vkrun.post('/upload', (req: Request, res: Response) => {
+vkrun.post('/upload', (req: v.Request, res: v.Response) => {
   const username = req.body.username
   const file = req.files[0] // Assuming a single file upload
   console.log(`Uploaded by ${username}: ${file.filename} (${file.mimetype})`)

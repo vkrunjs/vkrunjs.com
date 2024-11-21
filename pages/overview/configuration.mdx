@@ -22,11 +22,11 @@ If you're starting a new project, follow these steps:
 
 3. Add the code to the `index.ts` file:
   ```ts
-  import Vkrun, { Request, Response } from 'vkrun'
+  import v from 'vkrun'
 
-  const vkrun = Vkrun()
+  const vkrun = v.App()
 
-  vkrun.get('/', (req: Request, res: Response) => {
+  vkrun.get('/', (req: v.Request, res: v.Response) => {
     res.status(200).send('Hello World!')
   })
 

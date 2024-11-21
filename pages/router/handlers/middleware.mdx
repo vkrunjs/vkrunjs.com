@@ -19,11 +19,11 @@ To apply middleware globally (to all routes), use `app.use(middleware)`. This en
 In this example, `loggerMiddleware` is applied globally to all routes:
 
 ```ts
-import Vkrun, { Request, Response, NextFunction } from 'vkrun'
+import v from 'vkrun'
 
-const vkrun = Vkrun()
+const vkrun = v.App()
 
-const loggerMiddleware = (req: Request, res: Response, next: NextFunction) => {
+const loggerMiddleware = (req: v.Request, res: v.Response, next: v.NextFunction) => {
   console.log(`Request received for ${req.method} ${req.url}`)
   next() // Move to the next handler
 }
@@ -31,11 +31,11 @@ const loggerMiddleware = (req: Request, res: Response, next: NextFunction) => {
 // Apply middleware globally
 vkrun.use(loggerMiddleware)
 
-vkrun.get('/route-a', (req: Request, res: Response) => {
+vkrun.get('/route-a', (req: v.Request, res: v.Response) => {
   res.send('This is Route A')
 })
 
-vkrun.get('/route-b', (req: Request, res: Response) => {
+vkrun.get('/route-b', (req: v.Request, res: v.Response) => {
   res.send('This is Route B')
 })
 
@@ -57,16 +57,16 @@ In addition to global middleware, you can apply middleware to specific routes by
 This middleware logs a message before the controller handles the request:
 
 ```ts
-import Vkrun, { Request, Response, NextFunction } from 'vkrun'
+import v from 'vkrun'
 
-const vkrun = Vkrun()
+const vkrun = v.App()
 
-const loggerMiddleware = (req: Request, res: Response, next: NextFunction) => {
+const loggerMiddleware = (req: v.Request, res: v.Response, next: v.NextFunction) => {
   console.log('Request received')
   next() // Move to the next handler
 }
 
-const controller = (req: Request, res: Response) => {
+const controller = (req: v.Request, res: v.Response) => {
   res.send('Hello World!')
 }
 
@@ -80,11 +80,11 @@ In this example, when a client sends a GET request to `/hello-world`, the `logge
 You can have multiple middleware functions chained together:
 
 ```ts
-import Vkrun, { Request, Response, NextFunction } from 'vkrun'
+import v from 'vkrun'
 
-const vkrun = Vkrun()
+const vkrun = v.App()
 
-const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
+const authMiddleware = (req: v.Request, res: v.Response, next: v.NextFunction) => {
   const isAuthenticated = true // Simulate authentication check
   if (!isAuthenticated) {
     return res.status(401).send('Unauthorized')
@@ -92,12 +92,12 @@ const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
   next() // If authenticated, move to the next handler
 }
 
-const loggerMiddleware = (req: Request, res: Response, next: NextFunction) => {
+const loggerMiddleware = (req: v.Request, res: v.Response, next: v.NextFunction) => {
   console.log('Request is authorized')
   next()
 }
 
-const controller = (req: Request, res: Response) => {
+const controller = (req: v.Request, res: v.Response) => {
   res.send('Welcome, authenticated user!')
 }
 

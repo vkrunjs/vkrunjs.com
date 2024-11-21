@@ -23,11 +23,11 @@ yarn add vkrun
 ## Quick Start
 
 ```ts
-import Vkrun from 'vkrun'
+import v from 'vkrun'
 
-const vkrun = Vkrun()
+const vkrun = v.App()
 
-vkrun.get('/', (req, res) => {
+vkrun.get('/', (req: v.Request, res: v.Response) => {
   res.status(200).send('Hello World!')
 })
 
@@ -35,29 +35,3 @@ vkrun.server().listen(3000, () => {
   console.log('VkrunJS started on port 3000')
 })
 ```
-
-## Example projects
-
-If you are looking for practical examples of how to use our framework in different scenarios, just click the link below:
-
-[Example Projects](https://github.com/vkrunjs/vkrun/tree/main/examples)
-
-Feel free to browse the different designs and try out what best suits your needs. If you have any questions or suggestions about the examples, do not hesitate to contact us by opening a new Issue.
-
-## Security Issues
-
-If you discover a security vulnerability in Express, please see [Security Policies and Procedures](/security).
-
-## Contributing
-
-The VkrunJS project appreciates all constructive contributions. Contributions come in many forms, from code for bug fixes and enhancements to additions and corrections to documentation, additional tests, triaging of received pull requests and issues, and much more!
-
-Refer to the [Contribution Guide](/contributing) for more technical details on how to contribute.
-
-## Contributors
-
-The original author of VkrunJS and current lead maintainer is [Mario Elvio](https://www.linkedin.com/in/marioelvio)
-
-## License
-
-VkrunJS is an [MIT-licensed](/license) open source project.

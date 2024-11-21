@@ -16,12 +16,12 @@ In this example, `parseData` is used to parse query parameters, making them acce
 - path: `/query?firstName=Mario&lastName=Elvio`
 
 ```ts
-import Vkrun, { Request, Response } from 'vkrun'
+import v from 'vkrun'
 
-const vkrun = Vkrun()
+const vkrun = v.App()
 vkrun.parseData()
 
-vkrun.get('/query', (req: Request, res: Response) => {
+vkrun.get('/query', (req: v.Request, res: v.Response) => {
   const firstName = req.query.firstName
   // firstName equal 'Mario'
 
