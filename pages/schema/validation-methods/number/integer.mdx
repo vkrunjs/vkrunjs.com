@@ -18,10 +18,10 @@ Below is an example of how to use `.integer` to validate whether a value is a va
 ```ts
 import { schema } from "vkrun"
 
-const schema = schema().number().integer()
+const exampleSchema = schema().number().integer()
 
-const validateA = schema.validate(123)   // Valid integer
-const validateB = schema.validate(123.5) // Invalid integer (float)
+const validateA = exampleSchema.validate(123)   // Valid integer
+const validateB = exampleSchema.validate(123.5) // Invalid integer (float)
 
 console.log(validateA) // true
 console.log(validateB) // false

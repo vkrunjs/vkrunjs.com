@@ -18,10 +18,10 @@ Below is an example of how to use `.minLength` to validate whether a string meet
 ```ts
 import { schema } from "vkrun"
 
-const schema = schema().string().minLength(5)
+const exampleSchema = schema().string().minLength(5)
 
-const validateA = schema.validate("12345")
-const validateB = schema.validate("1234")
+const validateA = exampleSchema.validate("12345")
+const validateB = exampleSchema.validate("1234")
 
 console.log(validateA) // true
 console.log(validateB) // false

@@ -18,11 +18,11 @@ Below is an example of how to use `.negative` to validate whether a `BigInt` val
 ```ts
 import { schema } from "vkrun"
 
-const schema = schema().bigInt().negative() // < 0n
+const exampleSchema = schema().bigInt().negative() // < 0n
 
-const validateA = schema.validate(-1n)  // Valid, negative value
-const validateB = schema.validate(0n)   // Invalid, zero is not negative
-const validateC = schema.validate(1n)   // Invalid, positive value
+const validateA = exampleSchema.validate(-1n)  // Valid, negative value
+const validateB = exampleSchema.validate(0n)   // Invalid, zero is not negative
+const validateC = exampleSchema.validate(1n)   // Invalid, positive value
 
 console.log(validateA) // true
 console.log(validateB) // false

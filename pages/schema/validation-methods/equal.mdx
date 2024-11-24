@@ -18,19 +18,19 @@ Below is an example of how to use `.equal` to validate whether a value matches a
 ```ts
 import { schema } from "vkrun"
 
-const schema = schema().equal({
+const exampleSchema = schema().equal({
   keyA: "any value",
   keyB: false,
   keyC: [1, 2, 3]
 })
 
-const validateA = schema.validate({
+const validateA = exampleSchema.validate({
   keyA: "any value",
   keyB: false,
   keyC: [1, 2, 3]
 })
 
-const validateB = schema.validate({
+const validateB = exampleSchema.validate({
   keyA: "any value",
   keyB: false,
   keyC: [1, 2, 4] // invalid array

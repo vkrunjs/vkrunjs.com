@@ -23,10 +23,10 @@ Below is an example of how to use `.time` to validate whether a value is a valid
 ```ts
 import { schema } from "vkrun"
 
-const schema = schema().string().time("HH:MM")
+const exampleSchema = schema().string().time("HH:MM")
 
-const validateA = schema.validate("20:03") // Valid time
-const validateB = schema.validate("20:1")  // Invalid time
+const validateA = exampleSchema.validate("20:03") // Valid time
+const validateB = exampleSchema.validate("20:1")  // Invalid time
 
 console.log(validateA) // true
 console.log(validateB) // false
@@ -39,10 +39,10 @@ console.log(validateB) // false
 ```ts
 import { schema } from "vkrun"
 
-const schema = schema().string().time("HH:MM:SS")
+const exampleSchema = schema().string().time("HH:MM:SS")
 
-const validateA = schema.validate("13:59:59") // Valid time
-const validateB = schema.validate("13:59")    // Invalid time
+const validateA = exampleSchema.validate("13:59:59") // Valid time
+const validateB = exampleSchema.validate("13:59")    // Invalid time
 
 console.log(validateA) // true
 console.log(validateB) // false
@@ -53,10 +53,10 @@ console.log(validateB) // false
 ```ts
 import { schema } from "vkrun"
 
-const schema = schema().string().time("HH:MM:SS.MS")
+const exampleSchema = schema().string().time("HH:MM:SS.MS")
 
-const validateA = schema.validate("08:30:45.123") // Valid time
-const validateB = schema.validate("08:30:45.1234") // Invalid time
+const validateA = exampleSchema.validate("08:30:45.123") // Valid time
+const validateB = exampleSchema.validate("08:30:45.1234") // Invalid time
 
 console.log(validateA) // true
 console.log(validateB) // false

@@ -18,10 +18,10 @@ Below is an example of how to use `.email` to validate whether a value is a vali
 ```ts
 import { schema } from "vkrun"
 
-const schema = schema().string().email()
+const exampleSchema = schema().string().email()
 
-const validateA = schema.validate("any_email@mail.com")
-const validateB = schema.validate("any_email@mail")
+const validateA = exampleSchema.validate("any_email@mail.com")
+const validateB = exampleSchema.validate("any_email@mail")
 
 console.log(validateA) // true
 console.log(validateB) // false

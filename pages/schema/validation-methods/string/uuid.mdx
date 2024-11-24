@@ -18,10 +18,10 @@ Below is an example of how to use `.UUID` to validate whether a string is a vali
 ```ts
 import { schema } from "vkrun"
 
-const schema = schema().string().UUID()
+const exampleSchema = schema().string().UUID()
 
-const validateA = schema.validate("550e8400-e29b-41d4-a716-446655440000")
-const validateB = schema.validate("123")
+const validateA = exampleSchema.validate("550e8400-e29b-41d4-a716-446655440000")
+const validateB = exampleSchema.validate("123")
 
 console.log(validateA) // true
 console.log(validateB) // false

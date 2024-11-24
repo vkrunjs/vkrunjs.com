@@ -18,10 +18,10 @@ Below is an example of how to use `.min` to validate whether a value meets the m
 ```ts
 import { schema } from "vkrun"
 
-const schema = schema().number().min(1)
+const exampleSchema = schema().number().min(1)
 
-const validateA = schema.validate(1)
-const validateB = schema.validate(0)
+const validateA = exampleSchema.validate(1)
+const validateB = exampleSchema.validate(0)
 
 console.log(validateA) // true
 console.log(validateB) // false

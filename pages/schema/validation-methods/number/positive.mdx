@@ -18,11 +18,11 @@ Below is an example of how to use `.positive` to validate whether a number is po
 ```ts
 import { schema } from "vkrun"
 
-const schema = schema().number().positive()
+const exampleSchema = schema().number().positive()
 
-const validateA = schema.validate(1)
-const validateB = schema.validate(0)
-const validateC = schema.validate(-1)
+const validateA = exampleSchema.validate(1)
+const validateB = exampleSchema.validate(0)
+const validateC = exampleSchema.validate(-1)
 
 console.log(validateA) // true
 console.log(validateB) // false

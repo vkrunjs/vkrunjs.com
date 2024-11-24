@@ -18,10 +18,10 @@ Below is an example of how to use `.string` to validate whether a value is a val
 ```ts
 import { schema } from "vkrun"
 
-const schema = schema().string()
+const exampleSchema = schema().string()
 
-const validateA = schema.validate("any text")
-const validateB = schema.validate(false)
+const validateA = exampleSchema.validate("any text")
+const validateB = exampleSchema.validate(false)
 
 console.log(validateA) // true
 console.log(validateB) // false

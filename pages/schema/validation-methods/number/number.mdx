@@ -18,10 +18,10 @@ Below is an example of how to use `.number` to validate whether a value is a val
 ```ts
 import { schema } from "vkrun"
 
-const schema = schema().number()
+const exampleSchema = schema().number()
 
-const validateA = schema.validate(123) // Valid number
-const validateB = schema.validate("123") // Invalid number (string)
+const validateA = exampleSchema.validate(123) // Valid number
+const validateB = exampleSchema.validate("123") // Invalid number (string)
 
 console.log(validateA) // true
 console.log(validateB) // false

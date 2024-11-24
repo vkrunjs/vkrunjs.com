@@ -18,10 +18,10 @@ Below is an example of how to use `.min` to validate whether a `BigInt` value me
 ```ts
 import { schema } from "vkrun"
 
-const schema = schema().bigInt().min(2n)
+const exampleSchema = schema().bigInt().min(2n)
 
-const validateA = schema.validate(2n)  // Valid, meets the minimum threshold
-const validateB = schema.validate(1n)  // Invalid, below the minimum threshold
+const validateA = exampleSchema.validate(2n)  // Valid, meets the minimum threshold
+const validateB = exampleSchema.validate(1n)  // Invalid, below the minimum threshold
 
 console.log(validateA) // true
 console.log(validateB) // false

@@ -18,10 +18,10 @@ Below is an example of how to use `.max` to validate whether a `BigInt` value me
 ```ts
 import { schema } from "vkrun"
 
-const schema = schema().bigInt().max(1n)
+const exampleSchema = schema().bigInt().max(1n)
 
-const validateA = schema.validate(1n)  // Valid, meets the maximum threshold
-const validateB = schema.validate(2n)  // Invalid, exceeds the maximum threshold
+const validateA = exampleSchema.validate(1n)  // Valid, meets the maximum threshold
+const validateB = exampleSchema.validate(2n)  // Invalid, exceeds the maximum threshold
 
 console.log(validateA) // true
 console.log(validateB) // false

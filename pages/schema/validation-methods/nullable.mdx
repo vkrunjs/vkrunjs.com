@@ -21,12 +21,12 @@ Below is an example of how to use `.nullable()` to validate whether a value can 
 ```ts
 import { schema } from "vkrun"
 
-const schema = schema().number().nullable()
+const exampleSchema = schema().number().nullable()
 
-const validateA = schema.validate(null)
-const validateB = schema.validate(undefined)
-const validateC = schema.validate("123")
-const validateD = schema.validate(123)
+const validateA = exampleSchema.validate(null)
+const validateB = exampleSchema.validate(undefined)
+const validateC = exampleSchema.validate("123")
+const validateD = exampleSchema.validate(123)
 
 console.log(validateA) // true
 console.log(validateB) // false

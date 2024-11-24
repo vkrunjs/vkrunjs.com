@@ -16,10 +16,10 @@ Below is an example of how to use `.minWord` to validate whether a string contai
 ```ts
 import { schema } from "vkrun"
 
-const schema = schema().string().minWord(2)
+const exampleSchema = schema().string().minWord(2)
 
-const validateA = schema.validate("one two")
-const validateB = schema.validate("one")
+const validateA = exampleSchema.validate("one two")
+const validateB = exampleSchema.validate("one")
 
 console.log(validateA) // true
 console.log(validateB) // false

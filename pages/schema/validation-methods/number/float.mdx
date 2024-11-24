@@ -18,10 +18,10 @@ Below is an example of how to use `.float` to validate whether a value is a vali
 ```ts
 import { schema } from "vkrun"
 
-const schema = schema().number().float()
+const exampleSchema = schema().number().float()
 
-const validateA = schema.validate(123.5) // Valid float
-const validateB = schema.validate(123)   // Invalid float (integer)
+const validateA = exampleSchema.validate(123.5) // Valid float
+const validateB = exampleSchema.validate(123)   // Invalid float (integer)
 
 console.log(validateA) // true
 console.log(validateB) // false

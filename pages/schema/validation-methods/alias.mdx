@@ -18,13 +18,13 @@ Below is an example of how to use `.alias` to rename properties in the schema:
 ```ts
 import { schema } from "vkrun"
 
-const schema = schema().object({
+const exampleSchema = schema().object({
   id: schema().string().UUID(), // original key is "id"
   fullName: schema().alias("full name").string().minWord(2), // alias changes key name to "full name"
   description: schema().string().notRequired() // original key is "description"
 })
 
-const validatedSchema = schema.test({
+const validatedSchema = exampleSchema.test({
   id: "3ef7c105-c4ea-444d-bf47-e2e1a49ea613",  // original key "id"
   fullName: "John Doe", // original key "fullName", but displayed as "full name"
   description: "A brief description" // original key "description"

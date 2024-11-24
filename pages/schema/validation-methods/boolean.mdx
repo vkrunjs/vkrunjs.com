@@ -18,10 +18,10 @@ Below is an example of how to use `.boolean` to validate whether a value is a va
 ```ts
 import { schema } from "vkrun"
 
-const schema = schema().boolean()
+const exampleSchema = schema().boolean()
 
-const validateA = schema.validate(false)   // Valid Boolean
-const validateB = schema.validate("false") // Invalid, string is not a Boolean
+const validateA = exampleSchema.validate(false)   // Valid Boolean
+const validateB = exampleSchema.validate("false") // Invalid, string is not a Boolean
 
 console.log(validateA) // true
 console.log(validateB) // false

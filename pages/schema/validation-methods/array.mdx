@@ -39,10 +39,10 @@ Below is a table describing the available methods that can be chained with `.arr
 Validates that the array contains at least the specified number of elements:
 
 ```ts
-const schema = schema().array({ min: 2 }).string()
+const exampleSchema = schema().array({ min: 2 }).string()
 
-const validateA = schema.validate(["hello", "world"])
-const validateB = schema.validate(["hello"])
+const validateA = exampleSchema.validate(["hello", "world"])
+const validateB = exampleSchema.validate(["hello"])
 
 console.log(validateA) // true
 console.log(validateB) // false
@@ -53,10 +53,10 @@ console.log(validateB) // false
 Validates that the array contains no more than the specified number of elements:
 
 ```ts
-const schema = schema().array({ max: 3 }).string()
+const exampleSchema = schema().array({ max: 3 }).string()
 
-const validateA = schema.validate(["hello", "world", "test"])
-const validateB = schema.validate(["hello", "world", "test", "extra"])
+const validateA = exampleSchema.validate(["hello", "world", "test"])
+const validateB = exampleSchema.validate(["hello", "world", "test", "extra"])
 
 console.log(validateA) // true
 console.log(validateB) // false
@@ -67,10 +67,10 @@ console.log(validateB) // false
 Validates if the elements inside the array are strings:
 
 ```ts
-const schema = schema().array().string()
+const exampleSchema = schema().array().string()
 
-const validateA = schema.validate(["hello", "world"])
-const validateB = schema.validate([1, 2])
+const validateA = exampleSchema.validate(["hello", "world"])
+const validateB = exampleSchema.validate([1, 2])
 
 console.log(validateA) // true
 console.log(validateB) // false
@@ -81,10 +81,10 @@ console.log(validateB) // false
 Validates if the elements inside the array are numbers:
 
 ```ts
-const schema = schema().array().number()
+const exampleSchema = schema().array().number()
 
-const validateA = schema.validate([1, 2, 3])
-const validateB = schema.validate([1, "2"])
+const validateA = exampleSchema.validate([1, 2, 3])
+const validateB = exampleSchema.validate([1, "2"])
 
 console.log(validateA) // true
 console.log(validateB) // false
@@ -95,10 +95,10 @@ console.log(validateB) // false
 Validates if the elements inside the array are booleans:
 
 ```ts
-const schema = schema().array().boolean()
+const exampleSchema = schema().array().boolean()
 
-const validateA = schema.validate([true, false])
-const validateB = schema.validate([true, "false"])
+const validateA = exampleSchema.validate([true, false])
+const validateB = exampleSchema.validate([true, "false"])
 
 console.log(validateA) // true
 console.log(validateB) // false
@@ -109,18 +109,18 @@ console.log(validateB) // false
 Validates if the elements inside the array are objects matching a specific schema:
 
 ```ts
-const schema = schema().array().object({
+const exampleSchema = schema().array().object({
   id: schema().string().UUID(),
   fullName: schema().string().minWord(2)
 })
 
-const validateA = schema.validate([
+const validateA = exampleSchema.validate([
   {
     id: "3ef7c105-c4ea-444d-bf47-e2e1a49ea613",
     fullName: "Full Name"
   }
 ])
-const validateB = schema.validate([
+const validateB = exampleSchema.validate([
   {
     id: "3ef7c105-c4ea-444d-bf47-e2e1a49ea613"
   }
@@ -135,10 +135,10 @@ console.log(validateB) // false
 Validates if the array can accept `null` values:
 
 ```ts
-const schema = schema().array().string().nullable()
+const exampleSchema = schema().array().string().nullable()
 
-const validateA = schema.validate([null])
-const validateB = schema.validate([undefined])
+const validateA = exampleSchema.validate([null])
+const validateB = exampleSchema.validate([undefined])
 
 console.log(validateA) // true
 console.log(validateB) // true
@@ -149,10 +149,10 @@ console.log(validateB) // true
 Validates if the array elements are not required:
 
 ```ts
-const schema = schema().array().string().notRequired()
+const exampleSchema = schema().array().string().notRequired()
 
-const validateA = schema.validate(undefined) // Allowed because it's not required
-const validateB = schema.validate(["value"]) // Valid array
+const validateA = exampleSchema.validate(undefined) // Allowed because it's not required
+const validateB = exampleSchema.validate(["value"]) // Valid array
 
 console.log(validateA) // true
 console.log(validateB) // true
@@ -163,11 +163,11 @@ console.log(validateB) // true
 Validates if the array elements match one of the specified values or schemas:
 
 ```ts
-const schema = schema().array().oneOf([schema().string(), true])
+const exampleSchema = schema().array().oneOf([schema().string(), true])
 
-const validateA = schema.validate([true]) // Matches schema().boolean()
-const validateB = schema.validate(["hello"]) // Matches schema().string()
-const validateC = schema.validate([1]) // No match
+const validateA = exampleSchema.validate([true]) // Matches schema().boolean()
+const validateB = exampleSchema.validate(["hello"]) // Matches schema().string()
+const validateC = exampleSchema.validate([1]) // No match
 
 console.log(validateA) // true
 console.log(validateB) // true
@@ -179,11 +179,11 @@ console.log(validateC) // false
 Validates if the array elements do not match any of the specified values or schemas:
 
 ```ts
-const schema = schema().array().notOneOf([schema().string(), true])
+const exampleSchema = schema().array().notOneOf([schema().string(), true])
 
-const validateA = schema.validate([1]) // No match
-const validateB = schema.validate([true]) // Match schema().boolean()
-const validateC = schema.validate(["hello"]) // Match schema().string()
+const validateA = exampleSchema.validate([1]) // No match
+const validateB = exampleSchema.validate([true]) // Match schema().boolean()
+const validateC = exampleSchema.validate(["hello"]) // Match schema().string()
 
 console.log(validateA) // true
 console.log(validateB) // false
@@ -195,10 +195,10 @@ console.log(validateC) // false
 Validates if the elements inside the array are buffers:
 
 ```ts
-const schema = schema().array().buffer()
+const exampleSchema = schema().array().buffer()
 
-const validateA = schema.validate([Buffer.from("test"), Buffer.from("test")])
-const validateB = schema.validate([true, "test"])
+const validateA = exampleSchema.validate([Buffer.from("test"), Buffer.from("test")])
+const validateB = exampleSchema.validate([true, "test"])
 
 console.log(validateA) // true
 console.log(validateB) // false
@@ -209,10 +209,10 @@ console.log(validateB) // false
 Validates if the elements inside the array are functions:
 
 ```ts
-const schema = schema().array().function()
+const exampleSchema = schema().array().function()
 
-const validateA = schema.validate([() => {}, () => {}])
-const validateB = schema.validate([() => {}, "test"])
+const validateA = exampleSchema.validate([() => {}, () => {}])
+const validateB = exampleSchema.validate([() => {}, "test"])
 
 console.log(validateA) // true
 console.log(validateB) // false

@@ -18,10 +18,10 @@ Below is an example of how to use `.min` to validate whether a date is greater t
 ```ts
 import { schema } from "vkrun"
 
-const schema = schema().date().min(new Date(2020, 4, 5)) // May 5, 2020
+const exampleSchema = schema().date().min(new Date(2020, 4, 5)) // May 5, 2020
 
-const validateA = schema.validate(new Date(2020, 4, 5))  // true
-const validateB = schema.validate(new Date(2020, 4, 4))  // false
+const validateA = exampleSchema.validate(new Date(2020, 4, 5))  // true
+const validateB = exampleSchema.validate(new Date(2020, 4, 4))  // false
 
 console.log(validateA) // true
 console.log(validateB) // false

@@ -18,19 +18,19 @@ Below is an example of how to use `.notEqual` to validate whether a value does n
 ```ts
 import { schema } from "vkrun"
 
-const schema = schema().notEqual({
+const exampleSchema = schema().notEqual({
   keyA: "any value",
   keyB: false,
   keyC: [1, 2, 3]
 })
 
-const validateA = schema.validate({
+const validateA = exampleSchema.validate({
   keyA: "any value",
   keyB: false,
   keyC: [1, 2, 4] // different array
 })
 
-const validateB = schema.validate({
+const validateB = exampleSchema.validate({
   keyA: "any value",
   keyB: false,
   keyC: [1, 2, 3]

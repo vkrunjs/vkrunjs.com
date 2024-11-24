@@ -20,11 +20,11 @@ Below is an example of how to use `.bigInt` to validate whether a value is a val
 ```ts
 import { schema } from "vkrun"
 
-const schema = schema().bigInt()
+const exampleSchema = schema().bigInt()
 
-const validateA = schema.validate(123n)   // Valid BigInt
-const validateB = schema.validate("123")  // Invalid, not a BigInt
-const validateC = schema.validate(123)    // Invalid, number is not BigInt
+const validateA = exampleSchema.validate(123n)   // Valid BigInt
+const validateB = exampleSchema.validate("123")  // Invalid, not a BigInt
+const validateC = exampleSchema.validate(123)    // Invalid, number is not BigInt
 
 console.log(validateA) // true
 console.log(validateB) // false
