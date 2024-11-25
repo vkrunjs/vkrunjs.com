@@ -2,6 +2,8 @@
   "index": "INTRODUCTION",
   "overview": "OVERVIEW",
   "router": "ROUTER",
+  "parse-data": "PARSE DATA",
   "schema": "SCHEMA",
+  "jwt": "JWT",
   "community": "COMMUNITY"
 }
