@@ -32,16 +32,16 @@ response.status(200)
 Adds a cookie to the response header.
 
 ```ts
-const cookieValue = 'cookie-value'
-response.setCookie('cookie-name', cookieValue, {
+const cookieValue = "cookie-value"
+response.setCookie("cookie-name", cookieValue, {
   httpOnly: true,
   secure: true,
-  expires: 'Wed, 09 Jun 2024 10:18:14 GMT',
+  expires: "Wed, 09 Jun 2024 10:18:14 GMT",
   maxAge: 3600,
-  path: '/',
-  sameSite: 'Strict',
-  domain: '.example.com',
-  priority: 'Low'
+  path: "/",
+  sameSite: "Strict",
+  domain: ".example.com",
+  priority: "Low"
 })
 ```
 
@@ -54,9 +54,9 @@ interface CookieOptions {
   expires?: string
   maxAge?: number
   path?: string
-  sameSite?: 'Strict' | 'Lax' | 'None'
+  sameSite?: "Strict" | "Lax" | "None"
   domain?: string
-  priority?: 'Low' | 'Medium' | 'High'
+  priority?: "Low" | "Medium" | "High"
 }
 ```
 
@@ -67,7 +67,7 @@ The `setCookie()` method supports several options for configuring cookies, inclu
 Sends a JSON response to the client and sets the `Content-Type` header to `application/json`.
 
 ```ts
-response.json({ message: 'Hello, world!' })
+response.json({ message: "Hello, world!" })
 ```
 
 This method also automatically serializes the object to JSON and stores the response body internally in the `_body` property.
@@ -77,15 +77,15 @@ This method also automatically serializes the object to JSON and stores the resp
 Sends a response with any type of data. If the `Content-Type` header is already set, it sends the data according to the specified type. If not, it defaults to `text/plain`.
 
 ```ts
-response.send('Hello, world!')
-// Sends the response with 'text/plain' content-type by default.
+response.send("Hello, world!")
+// Sends the response with "text/plain" content-type by default.
 ```
 
 If the `Content-Type` is set manually (e.g., to `application/json`), it will send the data accordingly:
 
 ```ts
-response.setHeader('Content-Type', 'application/json')
-response.send({ message: 'Hello, world!' })
+response.setHeader("Content-Type", "application/json")
+response.send({ message: "Hello, world!" })
 // Sends the response as JSON
 ```
 
@@ -94,5 +94,5 @@ response.send({ message: 'Hello, world!' })
 Removes a cookie by setting its expiration to a past date.
 
 ```ts
-response.clearCookie('cookie-name')
+response.clearCookie("cookie-name")
 ```

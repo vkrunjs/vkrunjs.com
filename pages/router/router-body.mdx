@@ -22,12 +22,12 @@ In this example, `parseData` is used to parse a JSON body, but it will only work
 Client Request (JSON):
 
 ```ts
-const data = { firstName: 'Mario', lastName: 'Elvio' }
+const data = { firstName: "Mario", lastName: "Elvio" }
 
-await fetch('http://domain/', {
-  method: 'POST',
+await fetch("http://domain/", {
+  method: "POST",
   headers: {
-    'Content-Type': 'application/json'
+    "Content-Type": "application/json"
   },
   body: JSON.stringify(data)
 })
@@ -36,12 +36,12 @@ await fetch('http://domain/', {
 Router Example (JSON):
 
 ```ts
-import v from 'vkrun'
+import v from "vkrun"
 
 const vkrun = v.App()
 vkrun.parseData()
 
-vkrun.post('/', (req: v.Request, res: v.Response) => {
+vkrun.post("/", (req: v.Request, res: v.Response) => {
   const firstName = req.body.firstName
   const lastName = req.body.lastName
   res.status(200).end(`Hello, ${firstName} ${lastName}`)
@@ -55,24 +55,24 @@ In this example, `parseData` is used to parse URL-encoded form data, which is pr
 Client Request (URL-encoded):
 
 ```ts
-await fetch('http://domain/form', {
-  method: 'POST',
+await fetch("http://domain/form", {
+  method: "POST",
   headers: {
-    'Content-Type': 'application/x-www-form-urlencoded'
+    "Content-Type": "application/x-www-form-urlencoded"
   },
-  body: 'firstName=Mario&lastName=Elvio'
+  body: "firstName=Mario&lastName=Elvio"
 })
 ```
 
 Router Example (URL-encoded):
 
 ```ts
-import v from 'vkrun'
+import v from "vkrun"
 
 const vkrun = v.App()
 vkrun.parseData()
 
-vkrun.post('/form', (req: v.Request, res: v.Response) => {
+vkrun.post("/form", (req: v.Request, res: v.Response) => {
   const firstName = req.body.firstName
   const lastName = req.body.lastName
   res.status(200).end(`Hello, ${firstName} ${lastName}`)
@@ -87,11 +87,11 @@ Client Request (Multipart Form Data):
 
 ```ts
 const formData = new FormData()
-formData.append('username', 'john_doe')
-formData.append('file', fileInput.files[0])  // fileInput is a file input element
+formData.append("username", "john_doe")
+formData.append("file", fileInput.files[0])  // fileInput is a file input element
 
-await fetch('http://domain/upload', {
-  method: 'POST',
+await fetch("http://domain/upload", {
+  method: "POST",
   body: formData
 })
 ```
@@ -99,17 +99,17 @@ await fetch('http://domain/upload', {
 Router Example (Multipart Form Data):
 
 ```ts
-import v from 'vkrun'
+import v from "vkrun"
 
 const vkrun = v.App()
 vkrun.parseData()
 
-vkrun.post('/upload', (req: v.Request, res: v.Response) => {
+vkrun.post("/upload", (req: v.Request, res: v.Response) => {
   const username = req.body.username
   const file = req.files[0] // Assuming a single file upload
   console.log(`Uploaded by ${username}: ${file.filename} (${file.mimetype})`)
   
-  res.status(200).end('File uploaded successfully')
+  res.status(200).end("File uploaded successfully")
 })
 ```
 

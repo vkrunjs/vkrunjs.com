@@ -17,13 +17,13 @@ Below is an example of how to use `.oneOf` to validate whether a value matches a
 import { schema } from "vkrun"
 
 // Comparison items can include static values and schemas
-const comparisonItems = ['hello', 'world', schema().boolean()]
+const comparisonItems = ["hello", "world", schema().boolean()]
 const exampleSchema = schema().oneOf(comparisonItems)
 
 // Validate against the schema
-const validateA = exampleSchema.validate('hello') // Matches 'hello'
+const validateA = exampleSchema.validate("hello") // Matches "hello"
 const validateB = exampleSchema.validate(false)   // Matches schema().boolean()
-const validateC = exampleSchema.validate('hi')    // No match
+const validateC = exampleSchema.validate("hi")    // No match
 
 console.log(validateA) // true
 console.log(validateB) // true

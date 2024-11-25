@@ -20,82 +20,82 @@ A Router method corresponds to an HTTP method and is attached to an instance of 
 Example:
 
 ```ts
-import v from 'vkrun'
+import v from "vkrun"
 
 const vkrun = v.App()
 const router = v.Router()
 
-router.get('/', (req: v.Request, res: v.Response) => {
-  res.status(200).send('GET method route')
+router.get("/", (req: v.Request, res: v.Response) => {
+  res.status(200).send("GET method route")
 })
 
-router.post('/', (req: v.Request, res: v.Response) => {
-  res.status(200).send('POST method route')
+router.post("/", (req: v.Request, res: v.Response) => {
+  res.status(200).send("POST method route")
 })
 
-router.put('/', (req: v.Request, res: v.Response) => {
-  res.status(200).send('PUT method route')
+router.put("/", (req: v.Request, res: v.Response) => {
+  res.status(200).send("PUT method route")
 })
 
-router.patch('/', (req: v.Request, res: v.Response) => {
-  res.status(200).send('PATCH method route')
+router.patch("/", (req: v.Request, res: v.Response) => {
+  res.status(200).send("PATCH method route")
 })
 
-router.delete('/', (req: v.Request, res: v.Response) => {
-  res.status(200).send('DELETE method route')
+router.delete("/", (req: v.Request, res: v.Response) => {
+  res.status(200).send("DELETE method route")
 })
 
-router.options('/', (req: v.Request, res: v.Response) => {
-  res.status(200).end('OPTIONS method route')
+router.options("/", (req: v.Request, res: v.Response) => {
+  res.status(200).end("OPTIONS method route")
 })
 
-router.head('/', (req: v.Request, res: v.Response) => {
+router.head("/", (req: v.Request, res: v.Response) => {
   res.status(200).end() // The HEAD method does not send data in the response body
 })
 
 vkrun.use(router) // Inject all created routes
 
 vkrun.server().listen(3000, () => {
-  console.log('VkrunJS started on port 3000')
+  console.log("VkrunJS started on port 3000")
 })
 ```
 
 Equivalent:
 
 ```ts
-import v from 'vkrun'
+import v from "vkrun"
 
 const vkrun = v.App()
 
-vkrun.get('/', (req: v.Request, res: v.Response) => {
-  res.status(200).send('GET method route')
+vkrun.get("/", (req: v.Request, res: v.Response) => {
+  res.status(200).send("GET method route")
 })
 
-vkrun.post('/', (req: v.Request, res: v.Response) => {
-  res.status(200).send('POST method route')
+vkrun.post("/", (req: v.Request, res: v.Response) => {
+  res.status(200).send("POST method route")
 })
 
-vkrun.put('/', (req: v.Request, res: v.Response) => {
-  res.status(200).send('PUT method route')
+vkrun.put("/", (req: v.Request, res: v.Response) => {
+  res.status(200).send("PUT method route")
 })
 
-vkrun.patch('/', (req: v.Request, res: v.Response) => {
-  res.status(200).send('PATCH method route')
+vkrun.patch("/", (req: v.Request, res: v.Response) => {
+  res.status(200).send("PATCH method route")
 })
 
-vkrun.delete('/', (req: v.Request, res: v.Response) => {
-  res.status(200).send('DELETE method route')
+vkrun.delete("/", (req: v.Request, res: v.Response) => {
+  res.status(200).send("DELETE method route")
 })
 
-vkrun.options('/', (req: v.Request, res: v.Response) => {
-  res.status(200).end('OPTIONS method route')
+vkrun.options("/", (req: v.Request, res: v.Response) => {
+  res.status(200).end("OPTIONS method route")
 })
 
-vkrun.head('/', (req: v.Request, res: v.Response) => {
+vkrun.head("/", (req: v.Request, res: v.Response) => {
   res.status(200).end() // The HEAD method does not send data in the response body
 })
 
 vkrun.server().listen(3000, () => {
-  console.log('VkrunJS started on port 3000')
+  console.log("VkrunJS started on port 3000")
 })
 ```

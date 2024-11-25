@@ -12,17 +12,17 @@ A controller is a callback function that handles the request and generates the r
 In this example, the controller `controller` processes the incoming request and sends a response:
 
 ```ts
-import v from 'vkrun'
+import v from "vkrun"
 
 const vkrun = v.App()
 
 // Controller function
 const controller = (req: v.Request, res: v.Response) => {
-  res.send('Hello from the controller!')
+  res.send("Hello from the controller!")
 }
 
 // Using the controller in a route
-vkrun.get('/example', controller)
+vkrun.get("/example", controller)
 ```
 
 In the above example:

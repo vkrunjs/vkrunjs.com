@@ -17,13 +17,13 @@ Below is an example of how to use `.notOneOf` to validate whether a value does n
 import { schema } from "vkrun"
 
 // Comparison items can include static values and schemas
-const comparisonItems = ['hello', 'world', schema().boolean()]
+const comparisonItems = ["hello", "world", schema().boolean()]
 const exampleSchema = schema().notOneOf(comparisonItems)
 
 // Validate against the schema
-const validateA = exampleSchema.validate('hi')    // No match
+const validateA = exampleSchema.validate("hi")    // No match
 const validateB = exampleSchema.validate(42)      // No match
-const validateC = exampleSchema.validate('hello') // Match (invalid)
+const validateC = exampleSchema.validate("hello") // Match (invalid)
 const validateD = exampleSchema.validate(true)    // Match (invalid)
 
 console.log(validateA) // true

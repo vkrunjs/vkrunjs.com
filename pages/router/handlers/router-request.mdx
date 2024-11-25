@@ -24,15 +24,15 @@ Some examples of native properties provided by `http.IncomingMessage`:
 ### Example: Basic Request Object
 
 ```ts
-import v from 'vkrun'
+import v from "vkrun"
 
 const vkrun = v.App()
 
-vkrun.get('/example', (req: v.Request, res: v.Response) => {
+vkrun.get("/example", (req: v.Request, res: v.Response) => {
   console.log(req.method)  // Outputs: GET
   console.log(req.url)      // Outputs: /example?name=John
-  console.log(req.headers)  // Outputs: { host: 'localhost:3000', ... }
-  res.status(200).end('Request received')
+  console.log(req.headers)  // Outputs: { host: "localhost:3000", ... }
+  res.status(200).end("Request received")
 })
 ```
 

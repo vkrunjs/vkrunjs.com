@@ -31,10 +31,10 @@ Below is an example of how to use `.date` to validate whether a value is a valid
 import { schema } from "vkrun"
 
 // Validate DD-MM-YYYY format
-const schemaDDMMYYYY = schema().date('DD-MM-YYYY')
+const schemaDDMMYYYY = schema().date("DD-MM-YYYY")
 
-const validateA = schemaDDMMYYYY.validate('30-12-2000') // true
-const validateB = schemaDDMMYYYY.validate('12-30-2000') // false
+const validateA = schemaDDMMYYYY.validate("30-12-2000") // true
+const validateB = schemaDDMMYYYY.validate("12-30-2000") // false
 
 console.log(validateA) // true
 console.log(validateB) // false
@@ -45,10 +45,10 @@ console.log(validateB) // false
 The `.date` method also supports ISO 8601 dates for strict validation.
 
 ```ts
-const schemaISO = schema().date('ISO8601')
+const schemaISO = schema().date("ISO8601")
 
 const validateC = schemaISO.validate(new Date().toISOString()) // true
-const validateD = schemaISO.validate('30-12-2000') // false
+const validateD = schemaISO.validate("30-12-2000") // false
 
 console.log(validateC) // true
 console.log(validateD) // false
@@ -61,11 +61,11 @@ The `.date` method works seamlessly with async validations for scenarios where t
 ```ts
 const value = async (): Promise<string> => {
   return new Promise((resolve) => {
-    setTimeout(() => resolve('30-12-2000'), 100)
+    setTimeout(() => resolve("30-12-2000"), 100)
   })
 }
 
-const schemaAsync = schema().date('DD-MM-YYYY')
+const schemaAsync = schema().date("DD-MM-YYYY")
 
 schemaAsync.validateAsync(value()).then(console.log) // true
 ```

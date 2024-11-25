@@ -24,7 +24,7 @@ Schemas are created by chaining validation methods, making it intuitive to defin
 The following example demonstrates a simple schema for validating a user object:
 
 ```ts
-import { schema } from 'vkrun'
+import { schema } from "vkrun"
 
 const userSchema = schema().object({
   id: schema().string().UUID(),
@@ -34,9 +34,9 @@ const userSchema = schema().object({
 
 // Validates the data against the schema
 const isValid = userSchema.validate({
-  id: '3ef7c105-c4ea-444d-bf47-e2e1a49ea613',
-  fullName: 'John Doe',
-  email: 'john.doe@example.com'
+  id: "3ef7c105-c4ea-444d-bf47-e2e1a49ea613",
+  fullName: "John Doe",
+  email: "john.doe@example.com"
 })
 
 console.log(isValid) // true

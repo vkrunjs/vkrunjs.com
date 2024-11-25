@@ -14,38 +14,38 @@ Routing methods specify a callback function that is called when the application 
 Example:
 
 ```ts
-import v from 'vkrun'
+import v from "vkrun"
 
 const vkrun = v.App()
 const router = Router()
 
 // When calling the route below it responds with the text hello world
-router.get('/', (req: v.Request, res: v.Response) => {
-  res.setHeader('Content-Type', 'text/plain')
-  res.status(200).end('Hello World!')
+router.get("/", (req: v.Request, res: v.Response) => {
+  res.setHeader("Content-Type", "text/plain")
+  res.status(200).end("Hello World!")
 })
 
 vkrun.use(router)
 
 vkrun.server().listen(3000, () => {
-  console.log('VkrunJS started on port 3000')
+  console.log("VkrunJS started on port 3000")
 })
 ```
 
 Equivalent:
 
 ```ts
-import v from 'vkrun'
+import v from "vkrun"
 
 const vkrun = v.App()
 
 // When calling the route below it responds with the text hello world
-vkrun.get('/', (req: v.Request, res: v.Response) => {
-  res.setHeader('Content-Type', 'text/plain')
-  res.status(200).end('Hello World!')
+vkrun.get("/", (req: v.Request, res: v.Response) => {
+  res.setHeader("Content-Type", "text/plain")
+  res.status(200).end("Hello World!")
 })
 
 vkrun.server().listen(3000, () => {
-  console.log('VkrunJS started on port 3000')
+  console.log("VkrunJS started on port 3000")
 })
 ```

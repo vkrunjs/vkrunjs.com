@@ -16,11 +16,11 @@ Add the error-handling middleware using `app.error()`. This middleware takes fou
 ### Example: Error Handling Middleware
 
 ```ts
-import v from 'vkrun'
+import v from "vkrun"
 
 // Define the error-handling middleware
 const errorHandler = (error: any, req: v.Request, res: v.Response) => {
-  res.status(500).send('Internal Server Error')
+  res.status(500).send("Internal Server Error")
 }
 
 const vkrun = v.App()
@@ -29,24 +29,24 @@ const vkrun = v.App()
 vkrun.error(errorHandler)
 
 // Route without internal error handling (synchronous)
-vkrun.get('/example-a', (req: v.Request, res: v.Response) => {
-  throw new Error('Any Error') // Caught by the middleware
+vkrun.get("/example-a", (req: v.Request, res: v.Response) => {
+  throw new Error("Any Error") // Caught by the middleware
 
-  res.status(200).send('GET method route')
+  res.status(200).send("GET method route")
 })
 
 // Route with internal error handling (asynchronous)
-vkrun.get('/example-b', async (req: v.Request, res: v.Response) => {
+vkrun.get("/example-b", async (req: v.Request, res: v.Response) => {
   try {
     await someAsyncOperation()
-    res.status(200).send('Async GET method route')
+    res.status(200).send("Async GET method route")
   } catch (error) {
-    res.status(503).send('503 - Service Unavailable') // Necessary in asynchronous handlers
+    res.status(503).send("503 - Service Unavailable") // Necessary in asynchronous handlers
   }
 })
 
 vkrun.server().listen(3000, () => {
-  console.log('Vkrun started on port 3000')
+  console.log("Vkrun started on port 3000")
 })
 ```
 
