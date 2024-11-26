@@ -1,0 +1,51 @@
+---
+title: "Introduction to Parse Data"
+description: "An overview and quick start guide for using the Parse Data middleware."
+---
+
+### Introduction to Parse Data
+
+The Parse Data middleware is a powerful tool designed to simplify handling request data in your application. It automatically parses and converts incoming data such as:
+
+- **Query parameters**
+- **URL parameters**
+- **JSON body**
+- **URL-encoded form data**
+- **Multipart form data** (including file uploads)
+
+### Key Features
+
+- Automatic conversion of strings to JavaScript types (numbers, booleans, dates).
+- Simplifies handling of uploaded files via in-memory storage.
+- Flexible options to customize parsing behavior.
+- Optional SQL injection prevention through `escapeSQL`.
+
+By standardizing the handling of request data, Parse Data reduces boilerplate code and streamlines data processing in your application.
+
+---
+
+### Quick Start
+
+Here’s how to set up and use the Parse Data middleware in your application.
+
+```ts
+import v from "vkrun"
+
+// Initialize the application
+const vkrun = v.App()
+
+// Apply the Parse Data middleware
+vkrun.parseData()
+
+// Define a route
+vkrun.get("/example", (request: v.Request, response: v.Response) => {
+  response.status(200).json({ message: "Parse Data enabled!" })
+})
+
+// Start the server
+vkrun.server().listen(3000, () => {
+  console.log("Server started on port 3000 with Parse Data enabled")
+})
+```
+
+This setup enables Parse Data globally, allowing your application to handle different request formats effortlessly.

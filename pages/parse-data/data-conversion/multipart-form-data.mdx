@@ -1,0 +1,76 @@
+---
+title: "Parsing Multipart Form Data"
+description: "How Parse Data handles multipart form data with file uploads."
+---
+
+## Parsing Multipart Form Data
+
+The Parse Data middleware supports parsing multipart form data, including handling file uploads. Non-file fields are converted into their appropriate types, while files are processed as in-memory objects.
+
+### File Object Typing
+
+Files processed by the middleware are stored in `request.files` as an array of objects with the following structure:
+
+```ts
+interface RouterMemoryFile {
+  fieldName: string  // Name of the form field, e.g., "file"
+  filename: string   // Original file name, e.g., "photo.jpg"
+  extension: string  // File extension, e.g., "jpg"
+  mimetype: string   // MIME type, e.g., "image/jpeg"
+  buffer: Buffer     // File data as a buffer in memory
+  size: number       // File size in bytes
+}
+```
+
+---
+
+### Example
+
+#### Request:
+
+```ts
+const formData = new FormData()
+formData.append("username", "john_doe")
+formData.append("file", imageInput.files) // Assuming imageInput is a file input element
+
+fetch("/upload", {
+  method: "POST",
+  body: formData
+})
+```
+
+#### Server-side:
+
+```ts
+import v from "vkrun"
+
+const vkrun = v.App()
+
+vkrun.post("/upload", (request: v.Request, response: v.Response) => {
+  console.log(request.body)
+  // Output: { username: "john_doe" }
+  // Non-file fields remain in `body`.
+
+  console.log(request.files)
+  // Output: [
+  //  {
+  //    "fieldName": "file",
+  //    "filename": "example.txt",
+  //    "extension": "txt",
+  //    "mimetype": "text/plain",
+  //    "buffer": "<Buffer 54 68 69 73 20 69 73 20 61 6e 20 65 78 ...>",
+  //    "size": 12345
+  //  },
+  //  {
+  //    "fieldName": "file",
+  //    "filename": "photo.jpg",
+  //    "extension": "jpg",
+  //    "mimetype": "image/jpeg",
+  //    "buffer": "<Buffer ff d8 ff e0 00 10 4a 46 49 46 00 01 02 ...>",
+  //    "size": 54321
+  //  }
+  // ]
+
+  response.status(200).end()
+})
+```

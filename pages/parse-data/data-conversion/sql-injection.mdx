@@ -1,0 +1,91 @@
+---
+title: "SQL Injection Prevention"
+description: "How Parse Data prevents SQL injection attacks by sanitizing input."
+---
+
+## SQL Injection Prevention with Parse Data
+
+The Parse Data middleware includes an optional feature to prevent SQL injection attacks by sanitizing all parsed strings. When enabled, the `escapeSQL` option neutralizes potentially harmful characters in user input by escaping them.
+
+---
+
+### How It Works
+
+When `escapeSQL` is set to `true`, the middleware scans for common SQL keywords (e.g., `SELECT`, `INSERT`, `UPDATE`, `DELETE`, `WHERE`, `FROM`) and escapes special characters that could be used maliciously in SQL injection attacks. Escaped characters include:
+
+- Null (`\0` → `\\0`)
+- Backspace (`\b` → `\\b`)
+- Tab (`\t` → `\\t`)
+- Newline (`\n` → `\\n`)
+- Carriage return (`\r` → `\\r`)
+- Substitution character (`\x1a` → `\\Z`)
+- Double quotes (`"` → `\\"`)
+- Single quotes (`'` → `\\'`)
+- Backslashes (`\` → `\\\\`)
+
+Additionally, the entire input string is wrapped in single quotes to ensure proper sanitization.
+
+---
+
+### Request Example
+
+#### Client-side:
+
+```ts
+fetch("/data", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ userInput: "SELECT * FROM users WHERE name = 'John'" })
+})
+```
+
+#### Server-side:
+
+```ts
+import v from "vkrun"
+
+const vkrun = v.App()
+
+vkrun.parseData({
+  escapeSQL: true // Enable SQL escaping
+})
+
+vkrun.post("/data", (request: v.Request, response: v.Response) => {
+  console.log(request.body)
+  // Output: { userInput: "'SELECT * FROM users WHERE name = \'John\''" } // Escaped input
+  response.status(200).json({ sanitizedInput: request.body.userInput })
+})
+```
+
+In this example:
+- The input `SELECT * FROM users WHERE name = 'John'` is sanitized as:
+  ```sql
+  "'SELECT * FROM users WHERE name = \'John\''"
+  ```
+- This prevents the input from being misused in an SQL query.
+
+---
+
+### Escaping Special Characters
+
+Here’s a breakdown of how special characters are escaped when SQL keywords are detected in the input:
+
+| Original Character | Escaped Form  | Example Input                           | Example Output                        |
+|---------------------|---------------|-----------------------------------------|---------------------------------------|
+| `\0` (Null)         | `\\0`         | `SELECT \0`                             | `"'SELECT \\0'"`                     |
+| `\b` (Backspace)    | `\\b`         | `SELECT \b`                             | `"'SELECT \\b'"`                     |
+| `\t` (Tab)          | `\\t`         | `SELECT \t`                             | `"'SELECT \\t'"`                     |
+| `\n` (Newline)      | `\\n`         | `SELECT \n`                             | `"'SELECT \\n'"`                     |
+| `\r` (Carriage return)| `\\r`       | `SELECT \r`                             | `"'SELECT \\r'"`                     |
+| `\x1a` (Substitute) | `\\Z`         | `SELECT \x1a`                           | `"'SELECT \\Z'"`                     |
+| `"` (Double quote)  | `\\"`         | `SELECT "`                              | `"'SELECT \\"'"`                     |
+| `'` (Single quote)  | `\\'`         | `SELECT '`                              | `"'SELECT \\''"`                    |
+| `\` (Backslash)     | `\\\\`        | `SELECT \\`                             | `"'SELECT \\\\'"`                   |
+
+---
+
+### Why Use `escapeSQL`
+
+- **Enhanced Security**: Prevents SQL injection attacks by sanitizing user input before it is processed in SQL queries.
+- **Seamless Integration**: The `escapeSQL` option works seamlessly with Parse Data and requires minimal setup.
+- **Automated Protection**: Automatically detects and neutralizes harmful input without impacting legitimate use cases.

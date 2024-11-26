@@ -1,0 +1,86 @@
+---
+title: "Parse Data Configuration"
+description: "Learn how to configure the Parse Data middleware for your application."
+---
+
+## Parse Data Configuration
+
+The Parse Data middleware provides a range of configuration options to customize its behavior. These options allow you to control which types of data are parsed and enable additional features like SQL injection prevention.
+
+---
+
+### Default Configuration
+
+By default, the Parse Data middleware is configured as follows:
+
+```ts
+{
+  urlencoded: true,  // Enables parsing of URL-encoded form data
+  params: true,      // Enables parsing of URL parameters
+  query: true,       // Enables parsing of query parameters
+  json: true,        // Enables parsing of JSON body data
+  formData: true,    // Enables parsing of multipart/form-data (including file uploads)
+  escapeSQL: false   // Disables SQL escaping by default
+}
+```
+
+This default setup ensures compatibility with most use cases while maintaining performance and security.
+
+---
+
+### Configuration Options
+
+Here are the available options for configuring Parse Data:
+
+1. **`urlencoded`** (boolean):
+   - Enables or disables parsing of URL-encoded form data.
+   - Default: `true`.
+
+2. **`params`** (boolean):
+   - Enables or disables parsing of URL parameters.
+   - Default: `true`.
+
+3. **`query`** (boolean):
+   - Enables or disables parsing of query string parameters.
+   - Default: `true`.
+
+4. **`json`** (boolean):
+   - Enables or disables parsing of JSON data in the request body.
+   - Default: `true`.
+
+5. **`formData`** (boolean):
+   - Enables or disables parsing of multipart form data (including file uploads).
+   - Default: `true`.
+
+6. **`escapeSQL`** (boolean):
+   - If enabled, all parsed strings are sanitized to prevent SQL injection attacks.
+   - Default: `false`.
+
+---
+
+### Custom Configuration Example
+
+To apply custom configurations, pass an options object to the `parseData` middleware:
+
+```ts
+import v from "vkrun"
+
+const app = v.App()
+
+app.parseData({
+  urlencoded: true, // Enable URL-encoded form data parsing
+  params: false,    // Disable URL parameters parsing
+  query: true,      // Enable query string parsing
+  json: false,      // Disable JSON body parsing
+  formData: true,   // Enable multipart form data parsing
+  escapeSQL: true   // Enable SQL injection prevention
+})
+
+app.get("/example", (request: v.Request, response: v.Response) => {
+  response.status(200).json({ message: "Custom Parse Data configuration applied!" })
+})
+
+app.server().listen(3000, () => {
+  console.log("Server started with custom Parse Data configuration")
+})
+```

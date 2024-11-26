@@ -23,15 +23,15 @@ yarn add vkrun
 ## Quick Start
 
 ```ts
-import v from 'vkrun'
+import v from "vkrun"
 
 const vkrun = v.App()
 
-vkrun.get('/', (req: v.Request, res: v.Response) => {
-  res.status(200).send('Hello World!')
+vkrun.get("/", (req: v.Request, res: v.Response) => {
+  res.status(200).send("Hello World!")
 })
 
 vkrun.server().listen(3000, () => {
-  console.log('VkrunJS started on port 3000')
+  console.log("VkrunJS started on port 3000")
 })
 ```

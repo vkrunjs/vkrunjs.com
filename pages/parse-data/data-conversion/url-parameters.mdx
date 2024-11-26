@@ -1,0 +1,34 @@
+---
+title: "Parsing URL Parameters"
+description: "How Parse Data processes and converts URL parameters."
+---
+
+## Parsing URL Parameters
+
+URL parameters embedded in the route path are parsed and converted automatically.
+
+### Example
+
+Request:
+
+```ts
+fetch("/params/42/example")
+```
+
+Server-side:
+
+```ts
+import v from "vkrun"
+
+const vkrun = v.App()
+
+vkrun.get("/params/:id/:name", (request: v.Request, response: v.Response) => {
+  console.log(request.params)
+  // Output: { id: 42, name: "example" }
+  response.status(200).end()
+})
+```
+
+In this example:
+- `"42"` is converted to a number.
+- `"example"` remains a string.
