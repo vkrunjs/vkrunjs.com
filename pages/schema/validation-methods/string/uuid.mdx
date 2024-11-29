@@ -11,7 +11,16 @@ This method is particularly useful for scenarios where UUIDs are used as unique 
 
 ---
 
-### Example
+### Content
+
+- [Quick Start](#quick-start)
+- [Error Messages](#error-messages)
+  - [Default Error Message](#default-error-message)
+  - [Custom Error Messages](#custom-error-messages)
+
+---
+
+### Quick Start
 
 Below is an example of how to use `.UUID` to validate whether a string is a valid UUID:
 
@@ -25,4 +34,127 @@ const validateB = exampleSchema.validate("123")
 
 console.log(validateA) // true
 console.log(validateB) // false
+```
+
+---
+
+### Error Messages
+
+The `.UUID` method provides robust error messages to help identify issues during validation. These messages can be used as is or customized for specific use cases.
+
+#### Default Error Message
+
+If no custom error message is provided, the `.UUID` method generates the following default message:
+
+```
+"value_name must be a UUID type!"
+```
+
+This message dynamically replaces `[valueName]` with the name of the variable being validated, providing clarity about the source of the error.
+
+### Example
+
+```ts
+import { schema } from "vkrun"
+
+const value = "invalid-uuid"
+
+const exampleSchema = schema().string().UUID()
+
+const defaultResult = exampleSchema.test(value, "value_name")
+```
+
+**defaultResult output:**
+
+```json
+{
+  "passedAll": false,
+  "passed": 2,
+  "failed": 1,
+  "totalTests": 3,
+  "successes": [
+    {
+      "method": "required",
+      "name": "value_name",
+      "expect": "value other than undefined",
+      "received": "invalid-uuid"
+    },
+    {
+      "method": "string",
+      "name": "value_name",
+      "expect": "string type",
+      "received": "invalid-uuid"
+    }
+  ],
+  "errors": [
+    {
+      "method": "UUID",
+      "type": "invalid value",
+      "name": "value_name",
+      "expect": "format UUID",
+      "received": "invalid-uuid",
+      "message": "value_name must be a UUID type!"
+    }
+  ],
+  "time": "0s 2ms"
+}
+```
+
+#### Custom Error Messages
+
+To make error messages more descriptive or tailored to specific use cases, you can define custom messages using keywords like `[value]` and `[valueName]`. These keywords are replaced dynamically with the actual value and the name of the variable being validated.
+
+#### Supported Keywords
+
+- **`[value]`**: The actual value being validated.
+- **`[valueName]`**: The name of the value being validated.
+
+### Example
+
+```ts
+import { schema } from "vkrun"
+
+const value = "invalid-uuid"
+
+const exampleSchema = schema().string().UUID("v4", {
+  errorMessage: "[valueName] [value] must be a valid UUID!"
+})
+
+const customResult = exampleSchema.test(value, "value_name")
+```
+
+**customResult output:**
+
+```json
+{
+  "passedAll": false,
+  "passed": 2,
+  "failed": 1,
+  "totalTests": 3,
+  "successes": [
+    {
+      "method": "required",
+      "name": "value_name",
+      "expect": "value other than undefined",
+      "received": "invalid-uuid"
+    },
+    {
+      "method": "string",
+      "name": "value_name",
+      "expect": "string type",
+      "received": "invalid-uuid"
+    }
+  ],
+  "errors": [
+    {
+      "method": "UUID",
+      "type": "invalid value",
+      "name": "value_name",
+      "expect": "format UUID",
+      "received": "invalid-uuid",
+      "message": "value_name invalid-uuid must be a UUID type!"
+    }
+  ],
+  "time": "0s 2ms"
+}
 ```
