@@ -1,0 +1,25 @@
+---
+title: "JWT Decryption with Vkrun"
+description: "Learn how to use Vkrun's JWT module for secure token decryption."
+---
+
+## Decrypt with JWT
+
+The `decrypt` method in Vkrun's JWT module allows you to decode tokens and retrieve the original data. It is commonly used to validate and process incoming requests.
+
+### Parameters
+
+- **token**: The JWT token to be decrypted.
+- **secretKey**: The key or keys used during the encryption process.
+
+### Example
+
+```ts
+import v from "vkrun"
+
+const token = "your-encrypted-token"
+const secretKeys = "secure-key-SHA256"
+
+const decryptedData = v.jwt().decrypt(token, secretKeys)
+console.log(decryptedData) // Initial value at token creation
+```

@@ -1,0 +1,34 @@
+---
+title: "Introduction to Vkrun - JWT"
+description: "Overview of Vkrun's JWT module, including a quick start guide for encryption and decryption."
+---
+
+## Introduction to Vkrun - JWT
+
+The JWT provides a robust solution for token-based authentication and authorization. It facilitates the encryption and decryption of sensitive data, ensuring secure communication between applications.
+
+By leveraging this module, developers can protect user data and validate requests efficiently, making it ideal for modern web applications and APIs.
+
+### Quick Start
+
+Here's how to get started with JWT encryption and decryption:
+
+```ts
+import v from "vkrun"
+
+const vkrun = v.App()
+
+// Encrypting a token
+const data = { id: 123, name: "John" }
+const config = {
+  secretKey: "your-secret-key-SHA256",
+  expiresIn: "15m"
+}
+
+// Creating token
+const token = v.jwt().encrypt(data, config) // hash token
+
+// Decrypting a token
+const decryptedData = v.jwt().decrypt(token, config.secretKey)
+console.log(decryptedData) // { id: 123, name: "John" }
+```

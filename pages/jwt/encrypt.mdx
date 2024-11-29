@@ -1,0 +1,32 @@
+---
+title: "JWT Encryption with Vkrun"
+description: "Learn how to use Vkrun's JWT module for secure token encryption."
+---
+
+## Encrypt with JWT
+
+To encrypt and generate a JWT token, use the `encrypt` method. This method requires two parameters:
+
+- **data**: The data to be encrypted (which can be any data type such as string, number, boolean, object, array, null, or undefined).
+- **config**: Configuration for encryption.
+  - **secretKey**: Key or set of keys to encrypt and decrypt tokens. Use the key in string format or an array of **SHA256** strings.
+  - **expiresIn**: Token expiration time. This determines how long the token will remain valid. Once the expiration time has passed, any attempt to decrypt the token will return `null`. The `expiresIn` parameter accepts various formats for specifying the duration:
+    - **seconds**: To format `expiresIn` in seconds, use only numbers. For example, `10` equals 10 seconds.
+    - **minute**: To format `expiresIn` in minutes, use the letter "m" at the end. For example, `"10m"` equals 10 minutes.
+    - **hour**: To format `expiresIn` in hours, use the letter "h" at the end. For example, `"10h"` equals 10 hours.
+    - **day**: To format `expiresIn` in days, use the letter "d" at the end. For example, `"10d"` equals 10 days.
+
+### Example
+
+```ts
+import v from "vkrun"
+
+const data = { id: 123, role: "admin" }
+const config = {
+  secretKey: "secure-key-SHA256",
+  expiresIn: "1h"
+}
+
+const token = v.jwt().encrypt(data, config)
+console.log("Encrypted Token:", token)
+```
