@@ -1,0 +1,45 @@
+---
+title: "Introduction to loadEnv"
+description: "Overview of the loadEnv utility for managing environment variables in Node.js."
+---
+
+## Introduction to loadEnv
+
+The `loadEnv` utility offers a streamlined approach for managing environment variables in Node.js applications. With support for environment-specific files, schema validation, and advanced options like overriding variables, `loadEnv` ensures your app's configuration is reliable and secure.
+
+## Key Features
+
+- **Automatic Environment Selection**: Automatically loads `.env` files based on the `NODE_ENV` variable (e.g., `.env.test`, `.env.production`).
+- **Schema Validation**: Validates environment variables against a schema, ensuring type safety and required fields.
+- **Flexible Override Behavior**: Allows control over whether existing environment variables are overridden.
+- **Multiple File Support**: Supports loading multiple `.env` files, merging their variables.
+- **Automatic Parsing**: Automatically parses JSON-like strings, arrays, booleans, and numbers.
+- **Debugging Options**: Enables verbose logging for debugging during development.
+- **Comment and Invalid Line Handling**: Gracefully ignores comments and invalid lines in `.env` files.
+- **Encoding Customization**: Supports custom file encoding (default is `utf8`).
+- **Variable Interpolation**: Expands variables with values from other variables (e.g., `PATH=$HOME/bin`).
+- **Backward Compatibility**: Works seamlessly with existing `process.env` variables.
+- **Default Fallback**: Falls back to the default `.env` file when `NODE_ENV` is not set or the corresponding file is missing.
+- **Non-blocking Errors**: Does not throw errors when `.env` files are missing, unless explicitly instructed.
+- **Priority Control**: Gives precedence to `NODE_ENV`-specific files over the default `.env`.
+
+### Quick Start
+
+To begin, create a `.env` file in the root of your project directory:
+
+```bash
+API_KEY="your-api-key"
+```
+
+Using the `loadEnv`:
+
+```ts
+import { loadEnv } from "vkrun"
+
+loadEnv()
+console.log(process.env.API_KEY) // "your-api-key"
+```
+
+> Note: VkrunJS does not restrict you from using external modules, such as dotenv, if needed.
+
+Explore advanced configurations and additional options in the following sections.
