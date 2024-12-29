@@ -48,7 +48,11 @@ const config: DocsThemeConfig = {
       }}>
       <span>Copyright © 2024 - {new Date().getFullYear()} MIT by{" "}<a href="https://www.linkedin.com/in/marioelvio" target="_blank">Mario Elvio</a></span>
     </div>
-  }
+  },
+  sidebar: {
+    toggleButton: true,
+    defaultMenuCollapseLevel: 1,
+  },
 }
 
 export default config
