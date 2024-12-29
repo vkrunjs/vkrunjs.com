@@ -1,0 +1,18 @@
+---
+title: "Getting Started with Vkrun MIME Types"
+description: "Overview of Vkrun's Mime module, including a quick start guide for resolving MIME types based on file extensions."
+---
+
+## Introduction
+
+The Mime provides a simple way to resolve the correct MIME type based on a file extension. This utility is essential when handling file uploads or downloads in web applications, ensuring the correct Content-Type headers are set.
+
+### Quick Start
+
+```ts
+import v from "vkrun"
+
+const mimeType = v.mime.type("pdf")
+
+console.log(mimeType) // "application/pdf"
+```

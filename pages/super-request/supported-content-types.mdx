@@ -14,16 +14,16 @@ Used to send data in JSON format. Ideal for RESTful APIs.
 ```ts
 const app = v.App()
 
-app.post('/json', (req: v.Request, res: v.Response) => {
+app.post("/json", (req: v.Request, res: v.Response) => {
   res.status(200).send(req.body)
 })
 
-describe('application/json', () => {
-  it('Should send data in JSON format', async () => {
-    const data = { name: 'John Doe', age: 30 }
+describe("application/json", () => {
+  it("Should send data in JSON format", async () => {
+    const data = { name: "John Doe", age: 30 }
 
-    const response = await v.superRequest(app).post('/json', data, {
-      headers: { 'Content-Type': 'application/json' }
+    const response = await v.superRequest(app).post("/json", data, {
+      headers: { "Content-Type": "application/json" }
     })
 
     expect(response.statusCode).toEqual(200)
@@ -41,20 +41,20 @@ Used to send form data in a URL-encoded string.
 ```ts
 const app = v.App()
 
-app.post('/form-url-encoded', (req: v.Request, res: v.Response) => {
+app.post("/form-url-encoded", (req: v.Request, res: v.Response) => {
   res.status(200).send(req.body)
 })
 
-describe('application/x-www-form-urlencoded', () => {
-  it('Should send data in URL encoded format', async () => {
-    const data = 'name=John+Doe&age=30'
+describe("application/x-www-form-urlencoded", () => {
+  it("Should send data in URL encoded format", async () => {
+    const data = "name=John+Doe&age=30"
 
-    const response = await v.superRequest(app).post('/form-url-encoded', data, {
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+    const response = await v.superRequest(app).post("/form-url-encoded", data, {
+      headers: { "Content-Type": "application/x-www-form-urlencoded" }
     })
 
     expect(response.statusCode).toEqual(200)
-    expect(response.data).toEqual({ name: 'John Doe', age: 30 })
+    expect(response.data).toEqual({ name: "John Doe", age: 30 })
 
     app.close() // closes all app processes
   })
@@ -66,29 +66,29 @@ describe('application/x-www-form-urlencoded', () => {
 Suitable for sending files and binary data.
 
 ```ts
-import FormData from 'form-data'
-import fs from 'fs'
+import FormData from "form-data"
+import fs from "fs"
 
 const app = v.App()
 
-app.post('/multipart', (req: v.Request, res: v.Response) => {
+app.post("/multipart", (req: v.Request, res: v.Response) => {
   res.status(200).send(req.files)
 })
 
-describe('multipart/form-data', () => {
-  it('Should send files in multipart/form-data format', async () => {
+describe("multipart/form-data", () => {
+  it("Should send files in multipart/form-data format", async () => {
     const data = new FormData()
-    const filePath = 'path/to/file.txt'
+    const filePath = "path/to/file.txt"
     const fileContent = fs.readFileSync(filePath)
 
-    data.append('file', fileContent, 'file.txt')
+    data.append("file", fileContent, "file.txt")
 
-    const response = await v.superRequest(app).post('/multipart', data, {
+    const response = await v.superRequest(app).post("/multipart", data, {
       headers: data.getHeaders()
     })
 
     expect(response.statusCode).toEqual(200)
-    expect(response.data[0].filename).toEqual('file.txt')
+    expect(response.data[0].filename).toEqual("file.txt")
 
     app.close() // closes all app processes
   })
