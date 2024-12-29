@@ -46,7 +46,7 @@ const config: DocsThemeConfig = {
         alignItems: "center",
         height: "64px"
       }}>
-      <span>Copyright © {new Date().getFullYear()} MIT by{" "}<a href="https://www.linkedin.com/in/marioelvio" target="_blank">Mario Elvio</a></span>
+      <span>Copyright © 2024 - {new Date().getFullYear()} MIT by{" "}<a href="https://www.linkedin.com/in/marioelvio" target="_blank">Mario Elvio</a></span>
     </div>
   }
 }
