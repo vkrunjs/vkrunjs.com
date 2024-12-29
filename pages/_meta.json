@@ -3,11 +3,12 @@
   "overview": "OVERVIEW",
   "router": "ROUTER",
   "parse-data": "PARSE DATA",
+  "super-request": "SUPER REQUEST",
+  "rate-limit": "RATE LIMIT",
   "schema": "SCHEMA",
   "jwt": "JWT",
   "logger": "LOGGER",
   "env-variables": "ENV VARIABLES",
   "mime": "MIME TYPE",
-  "super-request": "SUPER REQUEST",
   "community": "COMMUNITY"
 }

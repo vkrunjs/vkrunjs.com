@@ -1,0 +1,25 @@
+---
+title: "Rate Limit Middleware in Vkrun"
+description: "Learn how to implement and configure the Rate Limit middleware in Vkrun to manage client request rates effectively and secure your API against overuse."
+---
+
+## Introduction
+
+The Rate Limit middleware is designed to control the request rate from clients by limiting the number of requests that can be made within a specified time window. It is useful for protecting APIs against overuse or abuse by rate-limiting requests based on configurable parameters such as time window and request limit.
+
+### Quick Start
+
+```ts
+import v from "vkrun"
+
+const app = v.App()
+app.rateLimit({ windowMs: 15 * 60 * 1000, limit: 100 }) // 100 requests per 15 minutes
+
+app.get("/rate-limit", (request: v.Request, response: v.Response) => {
+  response.status(200).send("Rate limit applied!")
+})
+
+app.server().listen(3000, () => {
+  console.log("Server started on port 3000 with Rate Limit enabled")
+})
+```

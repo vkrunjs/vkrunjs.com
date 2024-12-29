@@ -1,0 +1,122 @@
+---
+title: "Configuring Rate Limit Middleware in Vkrun"
+description: "Explore detailed configuration options for Vkrun's Rate Limit middleware to effectively manage request limits, enhance API security, and customize rate limit behavior."
+---
+
+## Rate Limit Configuration
+
+The Rate Limit middleware offers flexible configuration options to control request limits. By setting these options, you can define the duration of the time window, the maximum number of allowed requests, and additional headers to track rate limit usage.
+
+### Rate Limit Options
+
+| **Configuration**            | **description**                                          |
+|-----------------------|---------------------------------------------------|
+| windowMs | The duration of the time window in milliseconds.
+| limit | The maximum number of requests allowed per IP address within the time window.
+| standardHeaders | Whether to include the standardized rate limit headers (X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset).
+| legacyHeaders | Whether to include legacy headers (e.g., X-RateLimit-Limit-Legacy).
+| minToNotification | Minimum number of requests before sending a notification when the limit is reached.
+| notification | Callback function triggered when the rate limit is reached, providing access data.
+
+#### Default Settings
+
+```ts
+{
+  windowMs: 15 * 60 * 1000,
+  limit: 100,
+  standardHeaders: true,
+  legacyHeaders: false,
+  minToNotification: 0,ns
+  notification: null
+}
+```
+
+### Rate Limit Middleware Usage
+
+The Rate Limit middleware can be applied globally to all routes or to specific routes and controllers. Below are examples of how to use the Rate Limit middleware with various configurations.
+
+#### Standard Headers
+
+```ts
+const app = v.App()
+app.rateLimit({ windowMs: 10 * 60 * 1000, limit: 50 }) // 50 requests per 10 minutes
+
+app.get('/example', (request: v.Request, response: v.Response) => {
+  response.status(200).send('Standard rate limit headers applied!')
+})
+```
+
+In this example, the middleware will automatically apply the standard headers:
+
+- X-RateLimit-Limit: Maximum requests allowed
+- X-RateLimit-Remaining: Remaining requests for the current window
+- X-RateLimit-Reset: Time when the current window reset
+
+#### Legacy Headers
+
+To enable legacy headers alongside standard headers:
+
+```ts
+const app = v.App()
+app.rateLimit({ windowMs: 10 * 60 * 1000, limit: 50, legacyHeaders: true })
+
+app.get('/legacy', (request: v.Request, response: v.Response) => {
+  response.status(200).send('Legacy and standard rate limit headers applied!')
+})
+```
+
+The legacy headers follow the same naming pattern with -Legacy appended:
+
+- X-RateLimit-Limit-Legacy
+- X-RateLimit-Remaining-Legacy
+- X-RateLimit-Reset-Legacy
+
+#### Triggering Notifications
+
+If you want to receive notifications when a rate limit is reached, define a notification callback:
+
+```ts
+const app = v.App()
+
+const notifyOnLimitReached = (accessData) => {
+  console.log('Rate limit reached:', accessData)
+}
+
+app.rateLimit({ windowMs: 60000, limit: 5, notification: notifyOnLimitReached })
+
+app.get('/notify', (request: v.Request, response: v.Response) => {
+  response.status(200).send('Notifications enabled on rate limit reach')
+})
+```
+
+In this setup, when the rate limit is hit, the notifyOnLimitReached function is called with details about the request that triggered the limit, enabling custom handling such as logging or alerting.
+
+#### Handling Exceeded Limits
+
+When a client exceeds the request limit, they receive a 429 Too Many Requests response:
+
+```ts
+fetch('/rate-limit')
+  .then(response => response.text())
+  .then(data => console.log(data))
+  .catch(error => console.error('Error:', error))
+```
+
+On the server-side, configure the rate limit response:
+
+```ts
+const app = v.App()
+app.rateLimit({ windowMs: 5 * 60 * 1000, limit: 2 }) // 2 requests per 5 minutes
+
+app.get('/limit', (request: v.Request, response: v.Response) => {
+  response.status(200).send('Access allowed')
+})
+
+app.server().listen(3000, () => {
+  console.log('Server with rate limit on route /limit')
+})
+```
+
+After two requests, subsequent requests within the window will receive a 429 status with Too Many Requests in the response body, protecting your application from abuse and overuse.
+
+By leveraging the Rate Limit middleware, you can effectively manage traffic to your server, enhance security, and prevent abuse, ensuring that your application remains performant under high request loads.
