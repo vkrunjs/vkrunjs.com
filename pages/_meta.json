@@ -5,6 +5,7 @@
   "parse-data": "PARSE DATA",
   "schema": "SCHEMA",
   "jwt": "JWT",
+  "logger": "LOGGER",
   "env-variables": "ENV VARIABLES",
   "community": "COMMUNITY"
 }

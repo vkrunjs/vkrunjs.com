@@ -1,0 +1,22 @@
+---
+title: "Getting Started with Vkrun Logger"
+description: "Overview of Vkrun's Logger module, including a quick start guide for logging configuration and usage."
+---
+
+## Introduction
+
+The Logger was developed with the aim of providing a logging solution that is easy to use and configure. 
+It is highly adaptable to the specific needs of your project, allowing you to customize the log format, 
+log levels, and storage destinations.
+
+### Quick Start
+
+Below is a quick example of how to use the Logger in your project.
+
+```ts
+import v from "vkrun"
+
+const logger = v.Logger({ level: "error" })
+
+logger.error("An unexpected error has occurred.")
+```

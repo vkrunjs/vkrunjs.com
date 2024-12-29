@@ -1,0 +1,30 @@
+---
+title: "Vkrun Logger - Log Levels"
+description: "Comprehensive guide on log levels used in the Vkrun Logger module, including severity and importance of each level."
+---
+
+## Log Levels
+
+Log levels categorize log messages by their severity, helping you manage the output of logs. Each log level in the Vkrun Logger represents a different degree of urgency or importance of the event being logged.
+
+### Available Log Levels
+
+| **Log Level** | **Severity**  | **Description** |
+|---------------|---------------|-----------------|
+| `error (0)`   | Critical      | Represents critical errors that require immediate attention, often indicating severe failures that may lead to application malfunction or downtime. |
+| `warn (1)`    | Warning       | Indicates potentially harmful situations that need to be noted. These messages are less severe than errors but still warrant attention. |
+| `info (2)`    | Informational | Provides general information about important events or milestones in the application's lifecycle. Used to track execution flow or significant updates. |
+| `http (3)`    | Informational | Specifically for logging HTTP requests and responses. |
+| `verbose (4)` | Detailed      | Offers detailed and contextual information useful for debugging and tracing application behavior. |
+| `debug (5)`   | Debugging     | Logs detailed diagnostic information used primarily for debugging. |
+| `silly (6)`   | Verbose       | Captures all log messages, including the least critical ones, offering the most detailed output. |
+
+### Log Level Filtering
+
+When configuring the logger, the `level` option determines which log messages will be generated. 
+
+For example:
+- If you set the logger's level to `error`, only `error` level logs will be recorded.
+- If you set the level to `debug`, it will capture all logs from `debug` level and higher severity (i.e., `debug`, `verbose`, `http`, `info`, `warn`, and `error`).
+  
+This filtering mechanism allows you to control the verbosity of the logs based on your needs, ensuring that only the relevant information is logged according to the selected level.

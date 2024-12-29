@@ -1,0 +1,99 @@
+---
+title: "Vkrun Logger Configuration"
+description: "Detailed guide on configuring the Vkrun Logger module, including options for log levels, formatting, and storage."
+---
+
+## Configuration Options
+
+The logger configuration allows customizing the logger's behavior according to your needs. 
+All parameters are optional, and the logger has a default configuration when no parameters are provided.
+
+### Example Configuration
+
+```ts
+import v from "vkrun"
+
+const logger = v.Logger({
+  level: "error", // Sets the minimum log level to record
+  format: "indented", // Defines the format of the logs (either "default" or "indented")
+  dateType: "MM-DD-YYYY", // Specifies the date format for log entries
+  print: { 
+    enabled: true, // Enables or disables console printing of logs
+    format: "indented", // Format for console logs ("default" or "indented")
+    colors: { 
+      key: "blue", // Color for object keys when printing logs to the console
+      string: "yellow", // olor for strings when printing logs to the console
+      number: "green", // Color for numbers when printing logs to the console
+      boolean: "purple", // Color for booleans when printing logs to the console
+    },
+  },
+  size: 5, // Maximum size per log file in MB
+  daysToStoreLogs: 15, // Number of days to retain log files
+  extension: "json", // File extension for log files
+  path: "logs", // Directory where log files will be stored
+  syslog: {
+    enabled: true, // Enables or disables syslog logging
+    appName: 'my-app', // Application name for syslog
+    host: '192.168.1.1', // Syslog host address
+    port: 514, // Syslog port number
+    protocol: 'udp', // Protocol used for syslog (udp or tcp)
+    facility: 3  // Syslog facility type (3 means daemon)
+  }
+})
+```
+
+Below is a table explaining each configuration option:
+
+| **Option**            | **Type**                                          |
+|-----------------------|---------------------------------------------------|
+| `level`               | error, warn, info, http, verbose, debug or silly  |
+| `format`              | default or indented                               |
+| `dateType`            | DD-MM-YYYY or MM-DD-YYYY                          |
+| `print.enabled`       | true or false                                     |
+| `print.format`        | default or indented                               |
+| `print.colors.key`    | red, white, blue, yellow, green or purple         |
+| `print.colors.string` | red, white, blue, yellow, green or purple         |
+| `print.colors.number` | red, white, blue, yellow, green or purple         |
+| `print.colors.boolean`| red, white, blue, yellow, green or purple         |
+| `size`                | number                                            |
+| `daysToStoreLogs`     | number                                            |
+| `extension`           | log, txt, json                                    |
+| `path`                | string                                            |
+| `syslog.enabled`      | true or false                                     |
+| `syslog.appName`      | string                                            |
+| `syslog.host`         | string                                            |
+| `syslog.host`         | number                                            |
+| `syslog.protocol`     | udp or tcp                                        |
+| `syslog.facility`     | number                                            |
+
+### Default Configuration
+
+```ts
+{
+  level: "silly",
+  format: "default",
+  dateType: "MM-DD-YYYY",
+  print: {
+    enabled: true,
+    format: "default",
+    colors: {
+      key: "green",
+      string: "yellow",
+      number: "blue",
+      boolean: "purple",
+    },
+  },
+  size: 20,
+  daysToStoreLogs: 7,
+  extension: "log",
+  path: "logs",
+  syslog: {
+    enabled: false,
+    appName: "",
+    host: "",
+    port: 0,
+    protocol: "udp",
+    facility: 1
+  }
+}
+```
