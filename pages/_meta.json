@@ -7,5 +7,6 @@
   "jwt": "JWT",
   "logger": "LOGGER",
   "env-variables": "ENV VARIABLES",
+  "super-request": "SUPER REQUEST",
   "community": "COMMUNITY"
 }
