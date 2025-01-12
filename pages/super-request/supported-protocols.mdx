@@ -12,20 +12,20 @@ SuperRequest supports the main HTTP methods, allowing you to test all types of r
 Simulates a GET request to retrieve data.
 
 ```ts
-const app = v.App()
+const vkrun = v.App()
 
-app.get("/data", (req: v.Request, res: v.Response) => {
+vkrun.get("/data", (req: v.Request, res: v.Response) => {
   res.status(200).send({ message: "Hello, GET!" })
 })
 
 describe("Get protocol", () => {
   it("Should return data with GET", async () => {
-    const response = await v.superRequest(app).get("/data")
+    const response = await v.superRequest(vkrun).get("/data")
 
     expect(response.statusCode).toEqual(200)
     expect(response.data).toEqual({ message: "Hello, GET!" })
 
-    app.close() // closes all app processes
+    vkrun.close() // closes all vkrun processes
   })
 })
 ```
@@ -35,9 +35,9 @@ describe("Get protocol", () => {
 Used to send data to the server.
 
 ```ts
-const app = v.App()
+const vkrun = v.App()
 
-app.post("/submit", (req: v.Request, res: v.Response) => {
+vkrun.post("/submit", (req: v.Request, res: v.Response) => {
   res.status(201).send(req.body)
 })
 
@@ -45,12 +45,12 @@ describe("Post protocol", () => {
   it("Should send data with POST", async () => {
     const data = { title: "New Post" }
 
-    const response = await v.superRequest(app).post("/submit", data)
+    const response = await v.superRequest(vkrun).post("/submit", data)
 
     expect(response.statusCode).toEqual(201)
     expect(response.data).toEqual(data)
 
-    app.close() // closes all app processes
+    vkrun.close() // closes all vkrun processes
   })
 })
 ```
@@ -60,9 +60,9 @@ describe("Post protocol", () => {
 Used for data update.
 
 ```ts
-const app = v.App()
+const vkrun = v.App()
 
-app.put("/update", (req: v.Request, res: v.Response) => {
+vkrun.put("/update", (req: v.Request, res: v.Response) => {
   res.status(200).send(req.body)
 })
 
@@ -70,12 +70,12 @@ describe("Put protocol", () => {
   it("Should update data with PUT", async () => {
     const data = { id: 1, name: "Updated Name" }
 
-    const response = await v.superRequest(app).put("/update", data)
+    const response = await v.superRequest(vkrun).put("/update", data)
 
     expect(response.statusCode).toEqual(200)
     expect(response.data).toEqual(data)
 
-    app.close() // closes all app processes
+    vkrun.close() // closes all vkrun processes
   })
 })
 ```
@@ -85,9 +85,9 @@ describe("Put protocol", () => {
 Used for partial data updates.
 
 ```ts
-const app = v.App()
+const vkrun = v.App()
 
-app.patch("/modify", (req: v.Request, res: v.Response) => {
+vkrun.patch("/modify", (req: v.Request, res: v.Response) => {
   res.status(200).send(req.body)
 })
 
@@ -95,12 +95,12 @@ describe("Patch protocol", () => {
   it("Should partially update with PATCH", async () => {
     const data = { name: "Partially Updated" }
 
-    const response = await v.superRequest(app).patch("/modify", data)
+    const response = await v.superRequest(vkrun).patch("/modify", data)
 
     expect(response.statusCode).toEqual(200)
     expect(response.data).toEqual(data)
 
-    app.close() // closes all app processes
+    vkrun.close() // closes all vkrun processes
   })
 })
 ```
@@ -110,20 +110,20 @@ describe("Patch protocol", () => {
 Simulates a DELETE request to remove a resource.
 
 ```ts
-const app = v.App()
+const vkrun = v.App()
 
-app.delete("/delete/:id", (req: v.Request, res: v.Response) => {
+vkrun.delete("/delete/:id", (req: v.Request, res: v.Response) => {
   res.status(200).send({ deletedId: req.params.id })
 })
 
 describe("Delete protocol", () => {
   it("Should delete resource with DELETE", async () => {
-    const response = await v.superRequest(app).delete("/delete/1")
+    const response = await v.superRequest(vkrun).delete("/delete/1")
 
     expect(response.statusCode).toEqual(200)
     expect(response.data).toEqual({ deletedId: "1" })
 
-    app.close() // closes all app processes
+    vkrun.close() // closes all vkrun processes
   })
 })
 ```
@@ -133,20 +133,20 @@ describe("Delete protocol", () => {
 Used to retrieve only the headers of a response, without the body.
 
 ```ts
-const app = v.App()
+const vkrun = v.App()
 
-app.head("/info", (req: v.Request, res: v.Response) => {
+vkrun.head("/info", (req: v.Request, res: v.Response) => {
   res.status(200).setHeader("X-Custom-Header", "CustomValue").end()
 })
 
 describe("Head protocol", () => {
   it("Should return headers with HEAD", async () => {
-    const response = await v.superRequest(app).head("/info")
+    const response = await v.superRequest(vkrun).head("/info")
 
     expect(response.statusCode).toEqual(200)
     expect(response.headers["x-custom-header"]).toEqual("CustomValue")
 
-    app.close() // closes all app processes
+    vkrun.close() // closes all vkrun processes
   })
 })
 ```
@@ -156,20 +156,20 @@ describe("Head protocol", () => {
 Allows checking the supported methods for a route.
 
 ```ts
-const app = v.App()
+const vkrun = v.App()
 
-app.options("/options", (req: v.Request, res: v.Response) => {
+vkrun.options("/options", (req: v.Request, res: v.Response) => {
   res.setHeader("Allow", "GET,POST,OPTIONS").status(204).end()
 })
 
 describe("Options protocol", () => {
   it("Should return supported methods with OPTIONS", async () => {
-    const response = await v.superRequest(app).options("/options")
+    const response = await v.superRequest(vkrun).options("/options")
 
     expect(response.statusCode).toEqual(204)
     expect(response.headers.allow).toEqual("GET,POST,OPTIONS")
 
-    app.close() // closes all app processes
+    vkrun.close() // closes all vkrun processes
   })
 })
 ```

@@ -1,0 +1,28 @@
+---
+title: "CORS Middleware for Vkrun"
+description: "Learn how to configure and use the CORS middleware module in Vkrun for cross-origin resource sharing."
+---
+
+### Introduction
+
+The CORS middleware provides an easy and configurable way to enable Cross-Origin Resource Sharing for your backend applications. You can configure allowed origins, methods, headers, and other CORS options to control how requests from different origins interact with your server.
+
+### Quick Start
+
+Below is a quick example of how to enable CORS in your Vkrun project.
+
+```ts
+import v from "vkrun"
+
+const vkrun = v.App()
+
+vkrun.cors() // Apply default CORS settings
+
+vkrun.get("/", (_request: v.Request, response: v.Response) => {
+  response.status(200).send("Hello, CORS enabled!")
+})
+
+vkrun.server().listen(3000, () => {
+  console.log("Server started on port 3000 with CORS globally enabled")
+})
+```

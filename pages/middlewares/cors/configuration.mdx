@@ -1,0 +1,121 @@
+---
+title: "CORS Configuration in Vkrun"
+description: "Detailed guide on customizing the CORS middleware in Vkrun, including default settings, origin options, and practical usage examples."
+---
+
+### CORS Configuration
+
+The CORS middleware is customizable through various options that allow you to define specific origins, methods, and headers that should be allowed. By setting these options, you can control the behavior of CORS in your application.
+
+#### Default Setting
+
+```ts
+{
+  origin: "*", // Permits all origins
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE, OPTIONS", // Permits all common methods
+  allowedHeaders: "Content-Type, Authorization", // These headers are permitted by default
+  exposedHeaders: "", // No headers are exposed by default
+  credentials: false, // Credentials are not shared by default
+  maxAge: 0, // No preflight cache duration
+  preflightNext: false, // Does not pass control to the next handler on OPTIONS requests
+  successStatus: 204 // Status code for successful preflight requests
+}
+```
+
+### Origin Options
+
+The origin option determines which origins are allowed to access your resources. It can be set to:
+
+- "*": Allows all origins (default).
+- String: Specifies a single origin.
+- Array of Strings: Specifies multiple origins.
+
+```ts
+const vkrun = v.App()
+
+const corsOptions = {
+  origin: ["http://localhost:3000", "http://example.com"],
+  methods: "GET,POST",
+  allowedHeaders: "Content-Type, Authorization",
+  credentials: true
+}
+
+vkrun.cors(corsOptions)
+```
+
+This example allows requests from http://localhost:3000 and http://example.com, and allows only GET and POST methods.
+
+### CORS Middleware Usage
+
+The CORS middleware can be applied globally to all routes in your application or specifically to individual routers. Below are a few examples of how to configure and use the CORS middleware.
+
+#### Usage with Default Settings
+
+```ts
+import v from "vkrun"
+
+const vkrun = v.App()
+
+vkrun.cors() // Apply global CORS with default settings
+
+vkrun.get("/", (_request: v.Request, response: v.Response) => {
+  response.status(200).json({ message: "CORS enabled by default" })
+})
+
+vkrun.server().listen(3000, () => {
+  console.log("Server with default CORS settings running on port 3000")
+})
+```
+
+#### Usage with Custom Settings
+
+```ts
+import v from "vkrun"
+
+const vkrun = v.App()
+
+const customCorsOptions = {
+  origin: "http://my-allowed-origin.com",
+  methods: "GET,POST",
+  allowedHeaders: "Content-Type, Authorization",
+  exposedHeaders: "X-Custom-Header",
+  credentials: true,
+  maxAge: 3600
+}
+
+vkrun.cors(customCorsOptions)
+
+vkrun.get("/", (_request: v.Request, response: v.Response) => {
+  response.status(200).send("CORS configured with custom options")
+})
+
+vkrun.server().listen(3000, () => {
+  console.log("Server with custom CORS settings running on port 3000")
+})
+```
+
+#### Options Request with Preflight Next
+
+The CORS middleware also handles preflight requests, which are OPTIONS requests that browsers send to check if an actual request is allowed. When `preflightNext` is set to `true`, the OPTIONS request handling is passed to the next middleware, instead of being directly managed by the CORS middleware.
+
+In this example, an OPTIONS request to `/route` will pass to the next middleware instead of being handled by the CORS middleware, because `preflightNext` is set to `true`.
+
+```ts
+const vkrun = v.App()
+
+const options = {
+  origin: "*",
+  methods: "GET,HEAD,POST,DELETE",
+  preflightNext: true
+}
+
+vkrun.cors(options)
+
+vkrun.options("/route", (_request: v.Request, response: v.Response) => {
+  response.status(200).send("Handled by custom OPTIONS route")
+})
+
+vkrun.server().listen(3000, () => {
+  console.log("Server with preflightNext enabled running on port 3000")
+})
+```

@@ -3,6 +3,5 @@
   "middleware": "Middleware",
   "error-handling": "Error Handling",
   "router-request": "Request",
-  "router-response": "Response",
-  "validate-request-data": "Validate Request Data"
+  "router-response": "Response"
 }

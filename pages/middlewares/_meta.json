@@ -1,0 +1,6 @@
+{
+  "cors": "CORS",
+  "rate-limit": "Rate Limit",
+  "serve-static-file": "Serve Static File",
+  "validate-request-data": "Validate Request Data"
+}

@@ -1,0 +1,46 @@
+---
+title: "Serve Static File Middleware in Vkrun"
+description: "Learn how to use the Serve Static File middleware in Vkrun to serve static files efficiently."
+---
+
+## Introduction
+
+The Serve Static File middleware is a utility in Vkrun for serving static files from a specified directory. It is commonly used to deliver files such as images, CSS, JavaScript, or other assets in web applications. This middleware determines the appropriate MIME type and handles errors gracefully, such as missing files or malformed URLs.
+
+### Features
+
+- **Dynamic File Serving**: Serves files dynamically from a specified base directory.
+- **MIME Type Handling**: Automatically determines the correct MIME type for each file based on its extension.
+- **Error Handling**: Returns appropriate 404 responses for missing files or parsing errors.
+
+### Quick Start
+
+```ts
+import v from "vkrun"
+
+const vkrun = v.App()
+
+const basePath = "public" // Directory containing static files
+
+// Serve static files from the "public" directory
+vkrun.get("/static/*", serveStaticFile(basePath))
+
+vkrun.server().listen(3000, () => {
+  console.log("Server is running on port 3000")
+})
+```
+
+In this example:
+
+- Files in the `public` directory are served for requests matching `/static/*`.
+- If a requested file is not found, a `404 - File Not Found` response is returned.
+
+### MIME Types
+
+The middleware serveStaticFile determines the MIME type based on file extensions, such as:
+
+- `text/html` for `.html` files
+- `image/png` for `.png` images
+- `application/pdf` for `.pdf` files
+
+**All Supported MIME Types**: [View supported MIME types](/mime/supported-mime-types)

@@ -33,10 +33,10 @@ const logger = v.Logger({
   path: "logs", // Directory where log files will be stored
   syslog: {
     enabled: true, // Enables or disables syslog logging
-    appName: 'my-app', // Application name for syslog
-    host: '192.168.1.1', // Syslog host address
+    appName: "my-app", // Application name for syslog
+    host: "192.168.1.1", // Syslog host address
     port: 514, // Syslog port number
-    protocol: 'udp', // Protocol used for syslog (udp or tcp)
+    protocol: "udp", // Protocol used for syslog (udp or tcp)
     facility: 3  // Syslog facility type (3 means daemon)
   }
 })

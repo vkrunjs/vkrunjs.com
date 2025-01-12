@@ -16,39 +16,39 @@ import v from "vkrun"
 
 describe("Basic example with superRequest", () => {
   it("Should respond with "Hello, World!" on GET /hello route", async () => {
-    const app = v.App()
+    const vkrun = v.App()
 
     // Define the GET /hello route
-    app.get("/hello", (req: v.Request, res: v.Response) => {
+    vkrun.get("/hello", (req: v.Request, res: v.Response) => {
       res.status(200).send("Hello, World!")
     })
 
     // Perform a GET request using superRequest
-    await v.superRequest(app).get("/hello").then((response) => {
+    await v.superRequest(vkrun).get("/hello").then((response) => {
       // Validate the response
       expect(response.statusCode).toEqual(200)
       expect(response.data).toEqual("Hello, World!")
     })
 
-    app.close() // closes all app processes
+    vkrun.close() // closes all vkrun processes
   })
 
   it("Should return 404 for a non-existent route", async () => {
-    const app = v.App()
+    const vkrun = v.App()
 
     // Define the GET /hello route
-    app.get("/hello", (req: v.Request, res: v.Response) => {
+    vkrun.get("/hello", (req: v.Request, res: v.Response) => {
       res.status(200).send("Hello, World!")
     })
 
     // Attempt to access a non-existent route: GET /not-found
-    await v.superRequest(app).get("/not-found").catch((error) => {
+    await v.superRequest(vkrun).get("/not-found").catch((error) => {
       // Validate the error
       expect(error.response.statusCode).toEqual(404)
       expect(error.response.statusMessage).toEqual("Not Found")
     })
 
-    app.close() // closes all app processes
+    vkrun.close() // closes all vkrun processes
   })
 })
 ```
