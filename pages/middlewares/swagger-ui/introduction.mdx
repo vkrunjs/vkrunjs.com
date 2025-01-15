@@ -1,0 +1,92 @@
+---
+title: "Swagger UI Middleware in Vkrun"
+description: "Learn how to implement and use the Swagger UI middleware in Vkrun for API documentation."
+---
+
+### Introduction
+
+The Swagger UI middleware in Vkrun provides an easy way to integrate interactive API documentation into your application. With support for OpenAPI 3.1.0, you can create detailed documentation with typings quickly, easily, and intuitively.
+
+#### Quick Start
+
+First, ensure you have installed `swagger-ui-dist`:
+
+###### NPM
+
+```bash
+npm install swagger-ui-dist
+```
+
+###### YARN
+
+```bash
+yarn add swagger-ui-dist
+```
+
+Example using Swagger UI middleware:
+
+```ts
+import v from "vkrun"
+import swaggerUiDist from "swagger-ui-dist"
+
+const vkrun = v.App()
+
+// Initialize Swagger UI with default configuration
+const swagger = vkrun.swaggerUi({
+  openapi: "3.1.0",
+  info: {
+    title: "API Documentation",
+    version: "1.0.0",
+    description: "Interactive API documentation with Swagger UI.",
+  },
+  servers: [{ url: "http://localhost:3000", description: "Development Server" }],
+})
+
+// Document the `/example` route in Swagger UI
+swagger.route("/example").get({
+  summary: "Example Route",
+  description: "This is an example route that returns a simple message.",
+  responses: {
+    200: {
+      description: "Success",
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              message: { type: "string", example: "Hello from the /example route!" },
+            },
+          },
+        },
+      },
+    },
+  },
+})
+
+// Define the `/example` route in the Vkrun app
+vkrun.get("/example", (_req: v.Request, res: v.Response) => {
+  res.status(200).json({ message: "Hello from the /example route!" })
+})
+
+// Serve the Swagger UI
+vkrun.get("/api-docs/*", swagger.serve(swaggerUiDist.absolutePath()))
+
+// Start the server
+vkrun.server().listen(3000, () => {
+  console.log("Server running on port 3000 with Swagger UI available at /api-docs/")
+})
+```
+
+### Explanation
+
+- **Swagger UI Setup**: The Swagger UI is initialized with a basic OpenAPI 3.1.0 configuration.
+- **Documenting a Route**: The `swagger.route("/example")` method is used to define the documentation for the `/example` endpoint, including its summary, description, and response schema.
+- **Creating a Route**: The `/example` route is implemented in the Vkrun app to return a JSON response.
+- **Serving Swagger UI**: The Swagger UI is served at `/api-docs/*` using the `swagger.serve()` method.
+
+### Accessing the Swagger UI
+
+- Visit [http://localhost:3000/api-docs/index.html](http://localhost:3000/api-docs/index.html) to access the Swagger UI and view the interactive API documentation.
+- Use the `/example` endpoint at [http://localhost:3000/example](http://localhost:3000/example) to see the JSON response.
+
+This update clarifies the exact URL where the Swagger UI can be accessed. Let me know if you need more adjustments!

@@ -17,20 +17,13 @@ import v from "vkrun"
 const validateRequestData = (schema: v.SchemaReturn): any => {
   return (request: v.Request, response: v.Response, next: v.NextFunction) => {
     const test = schema.test(request, "routeData")
-    if (test.passedAll) {
-      next() // Validation passed, proceed to the next handler
-    } else {
-      // Custom error response headers and message
-      response.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, private")
-      response.setHeader("Pragma", "no-cache")
-      response.setHeader("Expires", "0")
-      response.setHeader("X-Content-Type-Options", "nosniff")
-      response.setHeader("X-Frame-Options", "DENY")
-      response.setHeader("Content-Security-Policy", "default-src \"self\'")
-      response.setHeader("X-XSS-Protection", "1; mode=block")
+    
+    if (!test.passedAll) {
       // Send the first error message
       response.status(400).send(test.errors[0].message)
     }
+
+    next() // Validation passed, proceed to the next handler
   }
 }
 ```

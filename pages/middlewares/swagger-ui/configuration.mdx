@@ -1,0 +1,99 @@
+---
+title: "Swagger UI Configuration in Vkrun"
+description: "Learn how to configure the Swagger UI middleware in Vkrun, including advanced options and customization."
+---
+
+### Configuration
+
+The Swagger UI middleware in Vkrun is highly configurable, allowing you to define OpenAPI specifications, security schemes, and route-specific details.
+
+#### Default Configuration
+
+The default configuration provides a basic setup for Swagger UI, including a simple OpenAPI 3.1.0 specification:
+
+```ts
+const swagger = vkrun.swaggerUi({
+  openapi: "3.1.0",
+  info: {
+    title: "API Documentation",
+    version: "1.0.0",
+    description: "Basic API documentation with default settings.",
+  },
+  servers: [{ url: "http://localhost:3000", description: "Development Server" }],
+})
+```
+
+#### Security Schemes
+
+You can define security schemes to secure private routes. For example, a Bearer Token security scheme:
+
+```ts
+const swagger = vkrun.swaggerUi({
+  openapi: "3.0.0",
+  components: {
+    securitySchemes: {
+      BearerAuth: {
+        type: "http",
+        scheme: "bearer",
+        bearerFormat: "JWT",
+        description: "Enter your Bearer token to access the private API",
+      },
+    },
+  },
+})
+```
+
+#### Adding Routes
+
+Swagger UI allows you to add route-specific documentation. Below is an example of defining public and private routes:
+
+```ts
+swagger.route("/public").get({
+  summary: "Public Route",
+  description: "This route is accessible without authentication.",
+  responses: {
+    200: {
+      description: "Success",
+      content: {
+        "application/json": {
+          schema: { type: "object", properties: { message: { type: "string", example: "This is a public route." } } },
+        },
+      },
+    },
+  },
+})
+
+swagger.route("/private").get({
+  summary: "Private Route",
+  description: "This route requires Bearer Token authentication.",
+  security: [{ BearerAuth: [] }],
+  responses: {
+    200: {
+      description: "Success",
+      content: {
+        "application/json": {
+          schema: { type: "object", properties: { message: { type: "string", example: "This is a private route." } } },
+        },
+      },
+    },
+    401: {
+      description: "Unauthorized",
+      content: {
+        "application/json": {
+          schema: { type: "object", properties: { message: { type: "string", example: "Authentication required with Bearer Token." } } },
+        },
+      },
+    },
+  },
+})
+```
+
+#### Serving Static Files
+
+To serve Swagger UI, you need to provide the absolute path to Swagger UI's distribution files:
+
+```ts
+vkrun.get("/api-docs/*", swagger.serve(swaggerUiDist.absolutePath()))
+```
+
+This ensures that the Swagger UI is available at `/api-docs/`.
