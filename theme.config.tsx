@@ -1,5 +1,6 @@
 import React from 'react'
 import { DocsThemeConfig } from 'nextra-theme-docs'
+import { Analytics } from '@vercel/analytics/react';
 
 const config: DocsThemeConfig = {
   head: (
@@ -47,6 +48,7 @@ const config: DocsThemeConfig = {
         height: "64px"
       }}>
       <span>Copyright © 2024 - {new Date().getFullYear()} MIT by{" "}<a href="https://www.linkedin.com/in/marioelvio" target="_blank">Mario Elvio</a></span>
+      <Analytics />
     </div>
   },
   sidebar: {
