@@ -1,0 +1,41 @@
+---
+title: "Upload Middleware in Vkrun"
+description: "Learn how to use the Upload middleware in Vkrun for handling file uploads with customizable storage and validation options."
+---
+
+### Introduction
+
+The Upload middleware in Vkrun provides a powerful solution for handling file uploads in your application. It supports both disk and memory storage and includes built-in validation for file size, type, and other constraints. This middleware is designed to work seamlessly with the `parseData` middleware for handling `multipart/form-data` requests.
+
+#### Features:
+- Supports single and multiple file uploads.
+- Disk and memory storage options.
+- Customizable file validation for size, extensions, and required fields.
+- Custom error handling for upload constraints.
+
+### Quick Start
+
+```ts
+import v from "vkrun"
+
+const app = v.App()
+app.use(v.parseData())
+
+const upload = v.upload.diskStorage({
+  destination: "./uploads",
+  filename: (file) => `custom-${file.fieldName}-${Date.now()}.${file.extension}`
+}).singleFile({
+  fieldName: "file",
+  required: { enable: true },
+  size: { value: 5000000 }, // 5MB
+  extensions: { value: ["png", "jpg"] }
+})
+
+app.post("/upload", upload, (req, res) => {
+  res.status(200).json({ message: "File uploaded successfully!", file: req.files })
+})
+
+app.server().listen(3000, () => {
+  console.log("Server is running on port 3000")
+})
+```

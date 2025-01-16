@@ -1,0 +1,130 @@
+---
+title: "Upload Middleware Configuration in Vkrun"
+description: "Discover the configuration options for the Upload middleware in Vkrun, including settings for disk and memory storage, file validation, and handling multiple uploads with customizable constraints."
+---
+
+### Configuration
+
+The Upload middleware provides multiple configuration options for both disk and memory storage.
+
+#### Disk Storage
+
+Use `diskStorage` to save files to the local filesystem.
+
+##### Configuration Options
+- `destination`: The directory where files will be stored.
+- `filename`: A function to customize the stored file name.
+
+##### Example: Disk Storage with Custom Validation
+
+```ts
+const upload = v.upload.diskStorage({
+  destination: "./uploads",
+  filename: (file) => `${file.fieldName}-${Date.now()}.${file.extension}`
+}).singleFile({
+  fieldName: "avatar",
+  size: {
+    value: 1000000,
+    onError: (res) => res.status(413).json({ error: "File too large!" })
+  },
+  extensions: {
+    value: ["jpg", "png"],
+    onError: (res) => res.status(415).json({ error: "Invalid file type!" })
+  }
+})
+```
+
+#### Memory Storage
+
+Use `memoryStorage` to temporarily store files in memory.
+
+##### Configuration Options
+- `filename`: A function to customize the in-memory file name.
+
+##### Example: Memory Storage for Single File
+
+```ts
+const upload = v.upload.memoryStorage().singleFile({
+  fieldName: "profile",
+  required: {
+    enable: true,
+    onError: (res) => res.status(400).json({ error: "File is required!" })
+  }
+})
+
+app.post("/upload-memory", upload, (req, res) => {
+  res.status(200).json({ message: "File uploaded to memory!", file: req.files })
+})
+```
+
+#### Multiple Files
+
+Handle multiple files by specifying an array of field configurations.
+
+##### Example: Multiple Files with Validation
+
+```ts
+const upload = v.upload.diskStorage({ destination: "./uploads" }).multipleFiles([
+  {
+    fieldName: "images",
+    min: {
+      value: 2,
+      onError: (res) => res.status(400).json({ error: "At least 2 images required!" })
+    },
+    max: { value: 5 },
+    extensions: {
+      value: ["png", "jpg"],
+      onError: (res) => res.status(415).json({ error: "Invalid image format!" })
+    }
+  },
+  {
+    fieldName: "documents",
+    max: { value: 3 },
+    extensions: {
+      value: ["pdf"],
+      onError: (res) => res.status(415).json({ error: "Invalid document format!" })
+    }
+  }
+])
+```
+
+### Accessing File Data
+
+Uploaded files are available in `req.files`. Each file object contains:
+- `fieldName`: The name of the form field.
+- `filename`: The stored file name.
+- `originalName`: The original file name.
+- `size`: File size in bytes.
+- `mimetype`: The MIME type of the file.
+- `path`: The full path to the file (for disk storage).
+
+##### Example: File Data Structure
+
+```ts
+app.post("/upload", upload, (req, res) => {
+  console.log(req.files)
+  res.status(200).json({ files: req.files })
+})
+```
+
+### Error Handling
+
+Custom error handling can be implemented for validation constraints such as required files, size limits, or invalid extensions. Use the `onError` callback to define your response.
+
+##### Example: Custom Error Messages
+
+```ts
+const upload = v.upload.diskStorage({ destination: "./uploads" }).singleFile({
+  fieldName: "file",
+  size: {
+    value: 2000000,
+    onError: (res) => res.status(413).json({ error: "File exceeds maximum size of 2MB" })
+  },
+  extensions: {
+    value: ["png", "jpg"],
+    onError: (res) => res.status(415).json({ error: "Only PNG and JPG files are allowed" })
+  }
+})
+```
+
+This ensures a consistent and user-friendly error response for file upload validations.
