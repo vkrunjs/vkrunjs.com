@@ -41,9 +41,21 @@ import v from "vkrun"
 const vkrun = v.App()
 vkrun.parseData()
 
-vkrun.post("/", (req: v.Request, res: v.Response) => {
+vkrun.post("/form", (
+  req: v.Request<{
+    body: {
+      firstName: string
+      lastName: string
+    }
+  }>,
+  res: v.Response
+) => {
   const firstName = req.body.firstName
+  // firstName equal "Mario"
+
   const lastName = req.body.lastName
+  // lastName equal "Elvio"
+
   res.status(200).end(`Hello, ${firstName} ${lastName}`)
 })
 ```
@@ -72,9 +84,21 @@ import v from "vkrun"
 const vkrun = v.App()
 vkrun.parseData()
 
-vkrun.post("/form", (req: v.Request, res: v.Response) => {
+vkrun.post("/form", (
+  req: v.Request<{
+    body: {
+      firstName: string
+      lastName: string
+    }
+  }>,
+  res: v.Response
+) => {
   const firstName = req.body.firstName
+  // firstName equal "Mario"
+
   const lastName = req.body.lastName
+  // lastName equal "Elvio"
+  
   res.status(200).end(`Hello, ${firstName} ${lastName}`)
 })
 ```
@@ -87,7 +111,7 @@ Client Request (Multipart Form Data):
 
 ```ts
 const formData = new FormData()
-formData.append("username", "john_doe")
+formData.append("username", "mario-junior")
 formData.append("file", fileInput.files[0])  // fileInput is a file input element
 
 await fetch("http://domain/upload", {
@@ -104,8 +128,18 @@ import v from "vkrun"
 const vkrun = v.App()
 vkrun.parseData()
 
-vkrun.post("/upload", (req: v.Request, res: v.Response) => {
+vkrun.post("/upload", (
+  req: v.Request<{
+    body: {
+      username: string
+    }
+    files: v.RouterMemoryFile[]
+  }>,
+  res: v.Response
+) => {
   const username = req.body.username
+  // username equal "mario-junior"
+
   const file = req.files[0] // Assuming a single file upload
   console.log(`Uploaded by ${username}: ${file.filename} (${file.mimetype})`)
   
@@ -113,7 +147,7 @@ vkrun.post("/upload", (req: v.Request, res: v.Response) => {
 })
 ```
 
-- Note: `req.files` is an array of files, each containing properties such as `filename`, `mimetype`, `size`, and a `buffer` holding the file data.
+- Note: `req.files` is an array of files, each containing properties such as `fieldName`, `filename`, `extension`, `mimetype`, `buffer` and `size` holding the file data.
 
 ### Key Point
 

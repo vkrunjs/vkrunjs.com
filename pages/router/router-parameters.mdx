@@ -21,7 +21,15 @@ import v from "vkrun"
 const vkrun = v.App()
 vkrun.parseData()
 
-vkrun.get("/:firstName/:lastName", (req: v.Request, res: v.Response) => {
+vkrun.get("/:firstName/:lastName", (
+  req: v.Request<{
+    params: {
+      firstName: string
+      lastName: string
+    }
+  }>,
+  res: v.Response
+) => {
   const firstName = req.params.firstName
   // firstName equal "Mario"
 

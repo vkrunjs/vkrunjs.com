@@ -46,7 +46,13 @@ import v from "vkrun"
 
 const vkrun = v.App()
 
-vkrun.post("/upload", (request: v.Request, response: v.Response) => {
+vkrun.post("/upload", (
+  request: v.Request<{
+    body: { username: string }
+    files: v.RouterMemoryFile[]
+  }>,
+  response: v.Response
+) => {
   console.log(request.body)
   // Output: { username: "john_doe" }
   // Non-file fields remain in `body`.

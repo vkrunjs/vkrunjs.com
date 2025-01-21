@@ -26,7 +26,15 @@ import v from "vkrun"
 
 const vkrun = v.App()
 
-vkrun.post("/form", (request: v.Request, response: v.Response) => {
+vkrun.post("/form", (
+  request: v.Request<{
+    body: {
+      string: string
+      number: number
+    }
+  }>,
+  response: v.Response
+) => {
   console.log(request.body)
   // Output: { string: "example", number: 42 }
   response.status(200).end()

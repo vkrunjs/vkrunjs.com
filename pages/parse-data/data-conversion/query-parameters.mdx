@@ -22,7 +22,16 @@ import v from "vkrun"
 
 const vkrun = v.App()
 
-vkrun.get("/query", (request: v.Request, response: v.Response) => {
+vkrun.get("/query", (
+  request: v.Request<{
+    query: {
+      string: string
+      integer: number
+      boolean: boolean
+    }
+  }>,
+  response: v.Response
+) => {
   console.log(request.query)
   // Output: { string: "value", integer: 123, boolean: true }
   response.status(200).end()

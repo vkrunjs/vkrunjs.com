@@ -11,20 +11,28 @@ VkrunJS extends the standard Node.js `http.ServerResponse` with additional metho
 
 ## Response Methods Provided by Vkrun
 
-| Method                | Description                                                    |
-|-----------------------|----------------------------------------------------------------|
-| `response.status()`    | Set the HTTP status code for the response.                     |
-| `response.setCookie()` | Add a cookie to the response header.                           |
-| `response.json()`      | Send a JSON-formatted response.                                |
-| `response.send()`      | Send a response with any type of data.                         |
-| `response.clearCookie()` | Remove a cookie from the response by setting its expiration.  |
+| Method                   | Description                                                                |
+|--------------------------|----------------------------------------------------------------------------|
+| `response.status()`      | Set the HTTP status code for the response.                                 |
+| `response.setCookie()`   | Add a cookie to the response header.                                       |
+| `response.json()`        | Send a JSON-formatted response.                                            |
+| `response.send()`        | Send a response with any type of data.                                     |
+| `response.clearCookie()` | Remove a cookie from the response by setting its expiration.               |
+| `response.html()`        | Send an HTML response to the client with the correct Content-Type.         |
+| `response.redirect()`    | Redirect to an external or local URL using the appropriate HTTP protocol.  |
 
 ### Example: `response.status()`
 
 Sets the HTTP status code for the response.
 
 ```ts
-response.status(200)
+import v from "vkrun"
+ 
+const vkrun = v.App()
+ 
+vkrun.get("/example", (request: v.Request, response: v.Response) => {
+  response.status(200).end()
+})
 ```
 
 ### Example: `response.setCookie()`
@@ -32,16 +40,23 @@ response.status(200)
 Adds a cookie to the response header.
 
 ```ts
-const cookieValue = "cookie-value"
-response.setCookie("cookie-name", cookieValue, {
-  httpOnly: true,
-  secure: true,
-  expires: "Wed, 09 Jun 2024 10:18:14 GMT",
-  maxAge: 3600,
-  path: "/",
-  sameSite: "Strict",
-  domain: ".example.com",
-  priority: "Low"
+import v from "vkrun"
+ 
+const vkrun = v.App()
+ 
+vkrun.get("/example", (request: v.Request, response: v.Response) => {
+  const cookieValue = "cookie-value"
+  response.setCookie("cookie-name", cookieValue, {
+    httpOnly: true,
+    secure: true,
+    expires: "Wed, 09 Jun 2024 10:18:14 GMT",
+    maxAge: 3600,
+    path: "/",
+    sameSite: "Strict",
+    domain: ".example.com",
+    priority: "Low"
+  })
+  response.status(200).end()
 })
 ```
 
@@ -67,26 +82,135 @@ The `setCookie()` method supports several options for configuring cookies, inclu
 Sends a JSON response to the client and sets the `Content-Type` header to `application/json`.
 
 ```ts
-response.json({ message: "Hello, world!" })
+import v from "vkrun"
+ 
+const vkrun = v.App()
+ 
+vkrun.get("/example", (request: v.Request, response: v.Response) => {
+  response.json({ message: "Hello, world!" })
+})
 ```
 
 This method also automatically serializes the object to JSON and stores the response body internally in the `_body` property.
+
+### Example: `response.html()`
+
+Sends a HTML response to the client and sets the `Content-Type` header to `text/html`.
+
+```ts
+import v from "vkrun"
+ 
+const vkrun = v.App()
+
+vkrun.get("/example", (request: v.Request, response: v.Response) => {
+  response.html`
+    <html>
+      <head><title>Response HTML</title></head>
+      <body>
+        <h1>Hello World</h1>
+      </body>
+    </html>
+  `
+})
+```
+
+**Expected Behavior**:
+
+- Sends the HTML content with the correct Content-Type header.
+- Useful for rendering simple static pages.
+
+Pro Tip for Developers:
+
+To enhance your development experience when using response.html(), you can install the [Inline HTML](https://marketplace.visualstudio.com/items?itemName=pushqrdx.inline-html) extension for Visual Studio Code. This extension provides syntax highlighting and auto-completion for HTML strings within your code. The highlighted HTML improves readability and ensures better productivity while working with embedded HTML templates.
+
+![](/example-html.png)
+
+### Example: `response.redirect()`
+
+The `response.redirect()` method simplifies HTTP redirection to external or local URLs, supporting both `GET`, `POST`, `PUT`, `PATCH`, `DELETE`, `HEAD` and , `OPTIONS` protocols.
+
+#### Redirecting to an External URL (GET)
+
+```ts
+import v from "vkrun";
+
+const vkrun = v.App();
+
+vkrun.get("/redirect", (request: v.Request, response: v.Response) => {
+  response.redirect("https://jsonplaceholder.typicode.com/posts/1");
+});
+
+vkrun.server().listen(3000);
+```
+
+- **Expected Behavior**:
+  - Redirects the client to the external URL.
+  - Automatically retrieves the response from the redirected location if used with `superRequest`.
+
+#### Redirecting to an External URL (POST)
+
+```ts
+router.post("/redirect", (request: v.Request, response: v.Response) => {
+  response.redirect("https://jsonplaceholder.typicode.com/posts");
+});
+```
+
+- **Expected Behavior**:
+  - Redirects the client to an external URL using the `POST` protocol.
+  - Preserves the request body and headers for the redirected request.
+
+#### Redirecting to a Local URL
+
+```ts
+import v from "vkrun"
+ 
+// App A: Local server
+const appA = v.App();
+appA.post("/redirect", (request: v.Request, response: v.Response) => {
+  response.status(200).json({ message: "Hello World!" });
+});
+appA.server().listen(3100);
+
+// App B: Redirect to App A
+const appB = v.App();
+appB.post("/redirect", (request: v.Request, response: v.Response) => {
+  response.redirect("http://localhost:3100/redirect");
+});
+
+appB.server().listen(3200);
+```
+
+**Expected Behavior**:
+
+  - App B redirects to App A, and the response from App A is sent to the client.
 
 ### Example: `response.send()`
 
 Sends a response with any type of data. If the `Content-Type` header is already set, it sends the data according to the specified type. If not, it defaults to `text/plain`.
 
 ```ts
-response.send("Hello, world!")
-// Sends the response with "text/plain" content-type by default.
+import v from "vkrun"
+ 
+const vkrun = v.App()
+ 
+vkrun.get("/example", (request: v.Request, response: v.Response) => {
+  // Sends the response with "text/plain" content-type by default.
+  response.send("Hello, world!")
+})
 ```
 
 If the `Content-Type` is set manually (e.g., to `application/json`), it will send the data accordingly:
 
 ```ts
-response.setHeader("Content-Type", "application/json")
-response.send({ message: "Hello, world!" })
-// Sends the response as JSON
+import v from "vkrun"
+ 
+const vkrun = v.App()
+ 
+vkrun.get("/example", (request: v.Request, response: v.Response) => {
+  response.setHeader("Content-Type", "application/json")
+  // Sends the response as JSON
+  response.send({ message: "Hello, world!" })
+})
 ```
 
 ### Example: `response.clearCookie()`
@@ -94,5 +218,12 @@ response.send({ message: "Hello, world!" })
 Removes a cookie by setting its expiration to a past date.
 
 ```ts
-response.clearCookie("cookie-name")
+import v from "vkrun"
+ 
+const vkrun = v.App()
+ 
+vkrun.get("/example", (request: v.Request, response: v.Response) => {
+  response.clearCookie("cookie-name")
+  response.end()
+})
 ```

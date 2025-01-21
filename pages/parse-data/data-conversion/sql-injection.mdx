@@ -50,7 +50,14 @@ vkrun.parseData({
   escapeSQL: true // Enable SQL escaping
 })
 
-vkrun.post("/data", (request: v.Request, response: v.Response) => {
+vkrun.post("/data", (
+  request: v.Request<{
+    body: {
+      userInput: string
+    }
+  }>,
+  response: v.Response
+) => {
   console.log(request.body)
   // Output: { userInput: "'SELECT * FROM users WHERE name = \'John\''" } // Escaped input
   response.status(200).json({ sanitizedInput: request.body.userInput })

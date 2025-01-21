@@ -22,7 +22,15 @@ import v from "vkrun"
 
 const vkrun = v.App()
 
-vkrun.get("/params/:id/:name", (request: v.Request, response: v.Response) => {
+vkrun.get("/params/:id/:name", (
+  request: v.Request<{
+    params: {
+      id: number
+      name: string
+    }
+  }>,
+  response: v.Response
+) => {
   console.log(request.params)
   // Output: { id: 42, name: "example" }
   response.status(200).end()
