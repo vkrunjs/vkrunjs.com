@@ -1,0 +1,34 @@
+---
+title: "Type Inference"
+description: "Learn how loadEnv infers types and how to use both manual typing and InferOut<typeof schema> for strict typing."
+---
+
+## Manual Typing
+
+You can **manually specify types** without using a schema:
+
+```ts
+import { loadEnv } from "vkrun";
+
+type EnvTypes = { API_KEY: string; DEBUG: boolean; PORT: number };
+
+const envs = loadEnv<EnvTypes>();
+```
+
+## Using `InferOut<typeof schema>`
+
+`InferOut<typeof schema>` allows `loadEnv()` to **automatically infer types** from a schema:
+
+```ts
+import { schema, loadEnv, InferOut } from "vkrun";
+
+const envSchema = schema().object({
+  API_KEY: schema().string(),
+  DEBUG: schema().boolean(),
+  PORT: schema().number().integer(),
+});
+
+type EnvTypes = InferOut<typeof envSchema>;
+
+const envs = loadEnv<EnvTypes>({ schema: envSchema });
+```

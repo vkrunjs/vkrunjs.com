@@ -1,0 +1,71 @@
+---
+title: "Router Error Handling"
+description: 'The "Router Error Handling" page explains how to manage errors in VkrunJS routes using middleware. Learn to handle both synchronous and asynchronous errors globally using `vkrun.error()`, and understand when to use `try-catch` for custom error handling at the route level.'
+---
+
+## Router - Error Handling
+
+VkrunJS provides a **global error-handling middleware** through `vkrun.error()`, ensuring that both **synchronous and asynchronous errors** are caught and handled consistently.
+
+### Implementing Error Handling Middleware
+
+Add the global error-handling middleware using `app.error()`. This middleware takes three parameters: `error`, `req`, and `res`. VkrunJS automatically forwards captured errors from both **synchronous and asynchronous** handlers to this middleware, allowing you to define a custom response.
+
+> **Note**: If you need **custom error handling per route**, use `try-catch` inside your controllers instead of relying on `vkrun.error()`.
+
+### Example: Global Error Handling Middleware
+
+```ts
+import v from "vkrun";
+
+// Define an asynchronous error-handling middleware
+const errorHandler = async (error: any, req: v.Request, res: v.Response) => {
+  console.error("Error caught:", error.message);
+  res.status(500).send("Internal Server Error");
+};
+
+const vkrun = v.App();
+
+// Add the global error middleware
+vkrun.error(errorHandler);
+
+// Synchronous route - error is automatically caught
+vkrun.get("/example-a", (req: v.Request, res: v.Response) => {
+  throw new Error("Any Error"); // Caught by the middleware
+
+  res.status(200).send("GET method route");
+});
+
+// Asynchronous route - error is automatically caught by vkrun.error()
+vkrun.get("/example-b", async (req: v.Request, res: v.Response) => {
+  await someAsyncOperation(); // If this throws an error, it's caught by `vkrun.error()`
+  res.status(200).send("Async GET method route");
+});
+
+// Custom error handling for a specific route using try-catch
+vkrun.get("/example-c", async (req: v.Request, res: v.Response) => {
+  try {
+    await someAsyncOperation();
+    res.status(200).send("Async GET method route");
+  } catch (error) {
+    res.status(400).send("Custom error message for this route"); // Custom error response
+  }
+});
+
+vkrun.server().listen(3000, () => {
+  console.log("Vkrun started on port 3000");
+});
+```
+
+### Key Points
+
+- **Global Error Handling**: `vkrun.error()` captures errors in **both synchronous and asynchronous** routes, ensuring uniform error handling across the application.
+- **Custom Error Handling per Route**: If a specific route requires custom error responses, **use `try-catch` inside the controller**.
+- **Centralized Error Handling**: The global error middleware ensures a consistent error response and prevents the application from crashing due to unhandled exceptions.
+
+### Best Practice
+
+- Use **`vkrun.error()` for global error handling**, catching all unhandled exceptions in one place.
+- Use **`try-catch` inside controllers for fine-grained, per-route error handling**, especially when you need **custom HTTP status codes or responses**.
+
+For more details on middleware, see the [VkrunJS Middleware Documentation](/handlers/error-handling).

@@ -1,0 +1,9 @@
+{
+  "parse-data": "Parse Data",
+  "validate-request-data": "Validate Request Data",
+  "cors": "CORS",
+  "rate-limit": "Rate Limit",
+  "swagger-ui": "Swagger UI",
+  "serve-static-file": "Serve Static File",
+  "upload": "Upload"
+}

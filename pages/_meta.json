@@ -1,14 +1,26 @@
 {
-  "index": "INTRODUCTION",
-  "overview": "OVERVIEW",
-  "router": "ROUTER",
-  "middlewares": "MIDDLEWARES",
-  "parse-data": "PARSE DATA",
-  "super-request": "SUPER REQUEST",
-  "schema": "SCHEMA",
-  "jwt": "JWT",
-  "logger": "LOGGER",
-  "env-variables": "ENV VARIABLES",
-  "mime": "MIME TYPE",
-  "community": "COMMUNITY"
+  "index": {
+    "type": "page",
+    "theme": {
+      "timestamp": false,
+      "toc": false,
+      "layout": "full"
+    }
+  },
+  "documentation": {
+    "title": "DOCUMENTATION",
+    "type": "page",
+    "children": {
+      "overview": "OVERVIEW",
+      "router": "ROUTER",
+      "middlewares": "MIDDLEWARES",
+      "super-request": "SUPER REQUEST",
+      "schema": "SCHEMA",
+      "jwt": "JWT",
+      "logger": "LOGGER",
+      "env-variables": "ENV VARIABLES",
+      "mime": "MIME TYPE",
+      "community": "COMMUNITY"
+    }
+  }
 }

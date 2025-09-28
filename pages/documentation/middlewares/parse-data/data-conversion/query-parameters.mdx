@@ -1,0 +1,48 @@
+---
+title: "Parsing Query Parameters"
+description: "How Parse Data handles query parameters in requests."
+---
+
+## Parsing Query Parameters
+
+Query parameters in URLs are automatically parsed and converted by the Parse Data middleware.
+
+### Example
+
+Request:
+
+```ts
+fetch("/query?string=value&integer=123&boolean=true");
+```
+
+Server-side:
+
+```ts
+import v from "vkrun";
+
+const vkrun = v.App();
+
+vkrun.get(
+  "/query",
+  (
+    request: v.Request<{
+      query: {
+        string: string;
+        integer: string;
+        boolean: boolean;
+      };
+    }>,
+    response: v.Response
+  ) => {
+    console.log(request.query);
+    // Output: { string: "value", integer: "123", boolean: true }
+    response.status(200).end();
+  }
+);
+```
+
+In this example:
+
+- `"value"` remains a string.
+- `"123"` remains a string.
+- `"true"` is converted to a boolean.

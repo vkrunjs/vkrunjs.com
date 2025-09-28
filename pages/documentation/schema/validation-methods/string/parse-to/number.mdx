@@ -1,0 +1,24 @@
+---
+title: "Schema ParseTo Number"
+description: "The .parseTo().number() method transforms a string into a number, enabling numeric validations on converted input."
+---
+
+## Schema - parseTo().number()
+
+The `.parseTo().number()` method is used to convert a `string` value into a `number` before performing any validations. This is particularly useful when you expect numeric input in string format, such as form inputs or data from APIs.
+
+Once converted, you can chain numeric validation rules as if the value were originally a number.
+
+---
+
+### Quick Start
+
+```ts
+import { schema } from "vkrun";
+
+const numberSchema = schema().string().parseTo().number();
+
+const result = numberSchema.parse("123");
+
+console.log(result); // 123
+```

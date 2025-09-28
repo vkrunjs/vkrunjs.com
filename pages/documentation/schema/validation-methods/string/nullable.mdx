@@ -1,0 +1,35 @@
+---
+title: "Schema Nullable"
+description: "Learn how to use the .nullable method in Schema to validate if a value can be null or any other type, except undefined."
+---
+
+## Schema - Nullable
+
+The `.nullable()` method is used to validate whether a value can be `null`. The difference between the `nullable` and `notRequired` methods is:
+
+- **nullable**: It can be `null` or any other type, **except `undefined`**.
+- **notRequired**: It can be `undefined` or any other type.
+
+This method is useful when you want to allow `null` as a valid value but prevent `undefined`.
+
+---
+
+### Example
+
+Below is an example of how to use `.nullable()` to validate whether a value can be `null` or any other type, except `undefined`:
+
+```ts
+import { schema } from "vkrun";
+
+const exampleSchema = schema().string().nullable();
+
+const validateA = exampleSchema.validate(null);
+const validateB = exampleSchema.validate("hi");
+const validateC = exampleSchema.validate(undefined);
+const validateD = exampleSchema.validate(123);
+
+console.log(validateA); // true
+console.log(validateB); // true
+console.log(validateC); // false
+console.log(validateD); // false
+```

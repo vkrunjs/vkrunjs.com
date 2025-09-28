@@ -1,0 +1,30 @@
+---
+title: "Schema OneOf"
+description: "Learn how to use the .oneOf method in Schema to validate if a value matches one of several specified  schemas."
+---
+
+## Schema - OneOf
+
+The `.oneOf` method is used to validate whether a given value matches one of several specified schemas. It ensures that the input value must match at least one of the provided values or schemas in the array. This method is essential when you need to validate data that can be one of several possibilities, such as matching any of a few predefined values or structures.
+
+---
+
+### Example: Basic Validation with `.oneOf`
+
+Below is an example of how to use `.oneOf` to validate whether a value matches any of the comparison schemas:
+
+```ts
+import { schema } from "vkrun";
+
+// Comparison items can include static values and schemas
+const comparisonItems = [schema().string(), schema().number()];
+
+const exampleSchema = schema().oneOf(comparisonItems);
+
+// Validate against the schema
+const validateA = exampleSchema.validate("hello");
+const validateB = exampleSchema.validate(true);
+
+console.log(validateA); // true
+console.log(validateB); // false
+```

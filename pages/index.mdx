@@ -1,37 +1,7 @@
 ---
-title: "Introduction"
+title: "HOME"
 ---
 
-##### VkrunJS is a Node.js framework for building server-side applications.
+import HomePage from "../components/HomePage";
 
-> Simplyfing the development of applications with support for JavaScript and TypeScript. VkrunJS also provides a robust, opinion-free, and scalable solution for your needs.
-
-## Installation
-
-###### NPM
-
-```bash
-npm install vkrun
-```
-
-###### YARN
-
-```bash
-yarn add vkrun
-```
-
-## Quick Start
-
-```ts
-import v from "vkrun"
-
-const vkrun = v.App()
-
-vkrun.get("/", (req: v.Request, res: v.Response) => {
-  res.status(200).send("Hello World!")
-})
-
-vkrun.server().listen(3000, () => {
-  console.log("VkrunJS started on port 3000")
-})
-```
+<HomePage />

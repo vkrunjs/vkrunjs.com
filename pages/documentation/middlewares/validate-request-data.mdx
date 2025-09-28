@@ -1,0 +1,164 @@
+---
+title: "Router - Validate Request Data"
+description: "Learn how to apply validation middleware in VkrunJS for request data. This guide demonstrates how to validate incoming request data using schemas and how to handle validation errors efficiently."
+---
+
+## Router - Validate Request Data
+
+In this guide, we will focus on **validating request data** before it reaches the controller, ensuring that incoming data (such as parameters, query strings, headers, and body data) is correct and meets your expectations.
+
+### Understanding `parseData()` and Why Some Values Are Strings
+
+The `parseData()` function in VkrunJS automatically converts certain data types from **query parameters** and **route parameters (`params`)**, but **not all types are converted**. Here’s how it works:
+
+- **`parseData()` automatically converts:**
+
+  - Strings in **ISO 8601 format** (e.g., `"2024-06-30T12:00:00.000Z"`) → **Converted to Date**.
+  - Strings `"true"` and `"false"` → **Converted to Boolean**.
+
+- **Why Are Numbers in `query` and `params` Always Strings?**
+  - JSON numbers **do not have leading zeros**, but numbers in `params` and `query` **can contain leading zeros** (e.g., `"007"`).
+  - If `parseData()` automatically converted **all numbers**, leading zeros would be lost.
+  - **Solution:** Numbers in `params` and `query` are **always treated as strings**. If numeric conversion is needed, you must use `.parseTo().number()` or `.parseTo().bigInt()`.
+
+---
+
+## Schema Definition
+
+The schema defines the structure and validation rules for different parts of the request:
+
+```ts
+import { schema } from "vkrun";
+
+// Define the validation schema for headers, parameters, query, and body
+const schemaData = schema().object({
+  headers: schema().object({
+    authorization: schema().string().notRequired(),
+  }),
+  params: schema().object({
+    string: schema().string().email(),
+    integer: schema().string().parseTo().number().integer(), // Convert to number manually
+  }),
+  query: schema().object({
+    float: schema().string().parseTo().number().float(), // Convert to number manually
+    boolean: schema().boolean(),
+    date: schema().date(),
+  }),
+  body: schema().object({
+    string: schema().string().email(),
+    integer: schema().number().integer(),
+    float: schema().number().float(),
+    boolean: schema().boolean(),
+    date: schema().date(),
+  }),
+});
+```
+
+---
+
+## Example Usage
+
+```ts
+import { App, Request, Response, validateRouteData } from "vkrun";
+
+const vkrun = App();
+vkrun.parseData(); // Parsing incoming request data
+
+const controller = (request: Request, response: Response) => {
+  response.status(200).json({
+    headers: request.headers,
+    query: request.query,
+    params: request.params,
+    body: request.body,
+  });
+};
+
+// Configuring the route with the validation middleware
+vkrun.post(
+  "/params/:string/:integer/query",
+  validateRouteData(schemaData), // Apply validation to this route
+  controller
+);
+
+vkrun.server().listen(3000, () => {
+  console.log("Server started on port 3000 with Validation enabled");
+});
+```
+
+---
+
+## Handling Validation Errors
+
+If the request contains **invalid data**, the middleware automatically returns a `400 Bad Request` response with the validation error message.
+
+```ts
+await superRequest(vkrun)
+  .post(
+    "/params/invalid-email/123/query?float=1.5&boolean=true&date=2024-06-30T12:00:00.000Z",
+    {
+      string: "invalid-email",
+      integer: 123,
+      float: 1.5,
+      boolean: true,
+      date: "2024-06-30T12:00:00.000Z",
+    }
+  )
+  .catch((error) => {
+    console.log(error.response.statusCode); // 400
+    console.log(error.response.data); // "email invalid-email is invalid!"
+  });
+```
+
+---
+
+## Custom Error Handling
+
+You can provide a **custom error handler** for validation errors by passing a function as the second argument to `validateRouteData()`.
+
+```ts
+const customErrorHandler = async (error: string, response: Response) => {
+  response.status(400).json({ message: `Custom Error: ${error}` });
+};
+
+vkrun.post(
+  "/params/:string/:integer/query",
+  validateRouteData(schemaData, customErrorHandler),
+  (request: Request, response: Response) => {
+    response.status(200).json(request.body);
+  }
+);
+
+// Example of a failed request triggering the custom error handler
+await superRequest(vkrun)
+  .post(
+    "/params/invalid-email/123/query?float=1.5&boolean=true&date=2024-06-30T12:00:00.000Z",
+    {
+      string: "invalid-email",
+      integer: 123,
+      float: 1.5,
+      boolean: true,
+      date: "2024-06-30T12:00:00.000Z",
+    }
+  )
+  .catch((error) => {
+    console.log(error.response.statusCode); // 400
+    console.log(error.response.data); // { message: "Custom Error: email invalid-email is invalid!" }
+  });
+```
+
+---
+
+## Key Takeaways:
+
+- The `schemaData` defines validation rules for:
+  - **Headers** (`headers`)
+  - **Route parameters** (`params`)
+  - **Query strings** (`query`)
+  - **Request body** (`body`)
+  - **Request files** (`files`)
+- `parseData()` **automatically converts ISO 8601 dates and booleans**, but **treats numbers as strings in `params` and `query`**.
+- Use `.parseTo().number()` for numbers inside **params or query** if conversion is required.
+- The `validateRouteData(schemaData)` middleware ensures that **only valid data reaches the controller**.
+- You can provide a **custom error handler** to modify the validation response.
+
+Now you can efficiently validate request data in **VkrunJS**! 🚀

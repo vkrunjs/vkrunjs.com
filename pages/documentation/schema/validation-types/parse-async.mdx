@@ -1,0 +1,58 @@
+---
+title: "Schema ParseAsync"
+description: "The `.parseAsync` method asynchronously validates a value against a predefined schema and returns the processed result. It supports Promises as inputs, making it ideal for scenarios where data is loaded dynamically or comes from asynchronous sources like APIs."
+---
+
+## Schema - PatseAsync
+
+The `.parseAsync` method is used to validate a value against a defined schema asynchronously and return the transformed result. It works with both direct values and Promises, making it suitable for use cases where data is fetched or resolved at runtime.
+
+---
+
+### Syntax
+
+```ts
+.parseAsync(value: any, valueName?: string): Promise<any>
+```
+
+- **value**: The value or a Promise of the value to be validated.
+- **valueName**: A string used to reference the value in the validation output.
+
+---
+
+### Example
+
+The following example demonstrates how to use `.parseAsync` to validate a value asynchronously:
+
+```ts
+import { schema } from "vkrun";
+
+const schema = schema().number().float();
+
+const valueA = async (): Promise<number> => {
+  return await new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(123.5);
+    }, 100);
+  });
+};
+
+const valueA = async (): Promise<number> => {
+  return await new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(123);
+    }, 100);
+  });
+};
+
+const resultA = await schema.parseAsync(valueA(), "value_name");
+
+console.log(resultA); // 123.5
+
+const resultB = await schema
+  .parseTo()
+  .string()
+  .parseAsync(valueB(), "value_name");
+
+console.log(resultB); // "123"
+```

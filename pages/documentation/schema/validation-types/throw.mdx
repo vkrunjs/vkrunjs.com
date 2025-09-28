@@ -1,0 +1,38 @@
+---
+title: "Schema Throw"
+description: "The .throw method validates a value synchronously against a predefined schema and throws an error if the validation fails. This method is particularly useful in scenarios where validation errors need to interrupt execution flow immediately, ensuring strict data integrity. It also supports custom error classes for tailored error handling."
+---
+
+## Schema - Throw
+
+The `.throw` method validates a value synchronously and throws an error if the value fails validation. It is particularly useful when validation failure should halt further execution.
+
+---
+
+### Syntax
+
+```ts
+.throw(value: any, valueName?: string, ClassError?: ErrorTypes): void
+```
+
+- **value**: The value to be validated.
+- **valueName**: A string used to reference the value in the error message.
+- **ClassError** (optional): A custom error class to be used when throwing the error.
+
+---
+
+### Example
+
+The following example demonstrates how to use `.throw` to validate a value and throw an error if the validation fails:
+
+```ts
+import { schema } from "vkrun";
+
+const schema = schema().number();
+
+try {
+  schema.throw("123", "value_name");
+} catch (error) {
+  console.error(error.message); // "value_name must be a number type!"
+}
+```

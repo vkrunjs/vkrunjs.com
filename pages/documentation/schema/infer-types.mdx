@@ -1,0 +1,56 @@
+---
+title: "Schema Inference"
+description: "A simplified example showing how `InferIn` and `InferOut` work when using `.parseTo` and `.custom` to transform schema values."
+---
+
+## Schema Type Inference with Transformations
+
+When using `.parseTo()` or `.custom()` methods, your schema may transform input data into a different type. This is where `InferIn` and `InferOut` are especially useful.
+
+---
+
+### Example – Mixed Schema with Transformations
+
+```ts
+import { schema, InferIn, InferOut } from "vkrun";
+
+const userSchema = schema().object({
+  id: schema().number(),
+  name: schema().string(),
+  active: schema().boolean().parseTo().string(), // will transform to string
+  joinedAt: schema()
+    .date()
+    .custom<string>((ctx) => {
+      ctx.success(ctx.value.toISOString()); // transform to ISO string
+    }),
+});
+
+type UserInput = InferIn<typeof userSchema>;
+type UserOutput = InferOut<typeof userSchema>;
+```
+
+---
+
+### Inferred Types
+
+```ts
+// Input type
+type UserInput = {
+  id: number;
+  name: string;
+  active: boolean;
+  joinedAt: Date;
+};
+
+// Output type
+type UserOutput = {
+  id: number;
+  name: string;
+  active: string;
+  joinedAt: string;
+};
+```
+
+---
+
+This shows how `InferOut` captures the final transformed shape of the data, while `InferIn` reflects the original expected input.

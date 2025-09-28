@@ -1,0 +1,58 @@
+---
+title: "Advanced Configurations"
+description: "Learn about advanced configurations of loadEnv, including multiple file support, override behavior, and variable interpolation."
+---
+
+# Advanced Configurations
+
+## Handling Multiple `.env` Files
+
+You can load multiple `.env` files and merge their values:
+
+```ts
+loadEnv({ path: [".env", ".env.local"] });
+```
+
+> Variables in `.env.local` **override** those in `.env` if duplicate keys exist.
+
+---
+
+## Configurable Override Behavior
+
+By default, `loadEnv()` overrides existing environment variables in `process.env`. You can disable this behavior:
+
+```ts
+loadEnv({ override: false });
+```
+
+---
+
+## Variable Interpolation
+
+`.env` file:
+
+```env
+BASE_URL="http://example.com"
+API_URL="$BASE_URL/api"
+```
+
+Usage:
+
+```ts
+loadEnv();
+console.log(process.env.API_URL); // "http://example.com/api"
+```
+
+---
+
+## Debugging Mode
+
+To enable debug logs:
+
+```ts
+loadEnv({ debug: true });
+```
+
+> Logs all loaded environment variables and warnings.
+
+---

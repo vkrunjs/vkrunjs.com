@@ -1,0 +1,39 @@
+---
+title: "Schema Parse"
+description: "The `.parse` method synchronously validates a value against a predefined schema and returns the processed result. It's ideal when immediate feedback is needed from validation and value transformation."
+---
+
+## Schema - Parse
+
+The `.parse` method is used to validate a value against a defined schema and return the transformed result. Unlike methods that throw errors on failure, `.parse` returns the outcome directly, making it suitable for cases where a straightforward validation or conversion result is expected.
+
+---
+
+### Syntax
+
+```ts
+.parse(value: any, valueName?: string): any
+```
+
+- **value**: The value to be validated.
+- **valueName**: A string used to reference the value in the validation output.
+
+---
+
+### Example
+
+The example below demonstrates how to use .parse to validate a float number:
+
+```ts
+import { schema } from "vkrun";
+
+const schema = schema().number().float();
+
+const resultA = schema.parse(123.5, "value_name");
+
+console.log(resultA); // 123.5
+
+const resultB = schema.parseTo().string().parse(123.5, "value_name");
+
+console.log(resultB); // "123.5"
+```

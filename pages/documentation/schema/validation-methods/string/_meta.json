@@ -1,0 +1,18 @@
+{
+  "string": "Introduction",
+  "email": ".email",
+  "min-length": ".minLength",
+  "max-length": ".maxLength",
+  "uuid": ".UUID",
+  "min-word": ".minWord",
+  "time": ".time",
+  "regex": ".regex",
+  "alias": ".alias",
+  "not-required": ".notRequired",
+  "nullable": ".nullable",
+  "equal": ".equal",
+  "not-equal": ".notEqual",
+  "one-of": ".oneOf",
+  "parse-to": ".parseTo",
+  "custom": ".custom"
+}
