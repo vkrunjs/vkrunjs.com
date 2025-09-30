@@ -1,6 +1,6 @@
 ---
-title: "Schema Number"
-description: "Learn how to use the .number method in Schema to validate numeric inputs for flexible and robust data validation."
+title: 'Schema Number'
+description: 'Learn how to use the .number method in Schema to validate numeric inputs for flexible and robust data validation.'
 ---
 
 ## Schema - Number
@@ -11,18 +11,90 @@ This method is the foundation for validating numerical data in your application,
 
 ---
 
-### Example
+### Content
+
+- [Quick Start](#quick-start)
+- [Error Messages](#error-messages)
+  - [Default Error Message](#default-error-message)
+  - [Custom Error Messages](#custom-error-messages)
+
+---
+
+### Quick Start
 
 Below is an example of how to use `.number` to validate whether a value is a valid number:
 
 ```ts
-import { schema } from "vkrun"
+import { schema } from 'vkrun'
 
 const exampleSchema = schema().number()
 
 const validateA = exampleSchema.validate(123) // Valid number
-const validateB = exampleSchema.validate("123") // Invalid number (string)
+const validateB = exampleSchema.validate('123') // Invalid number (string)
 
 console.log(validateA) // true
 console.log(validateB) // false
+```
+
+---
+
+### Error Messages
+
+The `.number` method provides robust error messages to help identify issues during validation. These messages can be used as is or customized for specific use cases.
+
+#### Default Error Message
+
+If no custom error message is provided, the `.number` method generates the following default message:
+
+```
+"[valueName] must be a number type!"
+```
+
+This message dynamically replaces `[valueName]` with the name of the variable being validated, providing clarity about the source of the error.
+
+### Example
+
+```ts
+import { schema } from 'vkrun'
+
+const value = 'one'
+
+const numberSchema = schema().number()
+
+const defaultValue = numberSchema.parse(value, 'value_name')
+```
+
+**Throw:**
+
+```
+value_name must be a number type!
+```
+
+#### Custom Error Messages
+
+To make error messages more descriptive or tailored to specific use cases, you can define custom messages using keywords like `[value]` and `[valueName]`. These keywords are replaced dynamically with the actual value and the name of the variable being validated.
+
+#### Supported Keywords
+
+- **`[value]`**: The actual value being validated.
+- **`[valueName]`**: The name of the value being validated.
+
+### Example
+
+```ts
+import { schema } from 'vkrun'
+
+const value = 'one'
+
+const exampleSchema = schema().number({
+	message: '[valueName] must be of type number, but received [value]!',
+})
+
+const customResult = exampleSchema.parse(value, 'value_name')
+```
+
+**Throw:**
+
+```
+value_name must be of type number, but received one!
 ```
