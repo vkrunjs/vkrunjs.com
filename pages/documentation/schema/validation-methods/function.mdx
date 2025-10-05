@@ -1,6 +1,6 @@
 ---
-title: "Schema Function"
-description: "Learn how to use the `.function` method in Schema to validate function values precisely and efficiently."
+title: 'Schema Function'
+description: 'Learn how to use the .function method in Schema to validate function values precisely and efficiently.'
 ---
 
 ## Schema - Function
@@ -11,20 +11,90 @@ This method is crucial when you need strict type validation, ensuring that only 
 
 ---
 
-### Examples
+### Content
 
-#### .validate()
+- [Quick Start](#quick-start)
+- [Error Messages](#error-messages)
+  - [Default Error Message](#default-error-message)
+  - [Custom Error Messages](#custom-error-messages)
 
-Validates if the value is a function:
+---
+
+### Quick Start
+
+Below is an example of how to use `.function` to validate whether a value is a valid function:
 
 ```ts
-import { schema } from "vkrun"
+import { schema } from 'vkrun'
 
 const schemaValidation = schema().function()
 
 const validateA = schemaValidation.validate(() => {}) // Valid function
-const validateB = schemaValidation.validate("test")   // Invalid, string is not a function
+const validateB = schemaValidation.validate('test') // Invalid, string is not a function
 
 console.log(validateA) // true
 console.log(validateB) // false
+```
+
+---
+
+### Error Messages
+
+The `.function` method provides robust error messages to help identify issues during validation. These messages can be used as is or customized for specific use cases.
+
+#### Default Error Message
+
+If no custom error message is provided, the `.function` method generates the following default message:
+
+```
+"[valueName] must be a function type!"
+```
+
+This message dynamically replaces `[valueName]` with the name of the variable being validated, providing clarity about the source of the error.
+
+### Example
+
+```ts
+import { schema } from 'vkrun'
+
+const value = 'test'
+
+const schemaValidation = schema().function()
+
+const defaultResult = schemaValidation.parse(value, 'function_value')
+```
+
+**Throw:**
+
+```
+function_value must be a function type!
+```
+
+#### Custom Error Messages
+
+To make error messages more descriptive or tailored to specific use cases, you can define custom messages using keywords like `[value]` and `[valueName]`. These keywords are replaced dynamically with the actual value and the name of the variable being validated.
+
+#### Supported Keywords
+
+- **`[value]`**: The actual value being validated.
+- **`[valueName]`**: The name of the value being validated.
+
+### Example
+
+```ts
+import { schema } from 'vkrun'
+
+const value = 'test'
+
+const schemaValidation = schema().function({
+	message: '[valueName] must be of type function, but received [value]!',
+})
+
+const customResult = schemaValidation.parse(value, 'function_value')
+```
+
+**Throw:**
+
+```
+function_value must be of type function, but received test!
 ```
