@@ -1,6 +1,6 @@
 ---
-title: "Schema NotEqual"
-description: "Learn how to use the .notEqual method in Schema to validate if a value does not match a specified reference value."
+title: 'Schema NotEqual'
+description: 'Learn how to use the .notEqual method in Schema to validate if a value does not match a specified reference value.'
 ---
 
 ## Schema - NotEqual
@@ -16,12 +16,12 @@ This method is essential when you need to enforce that the input value must not 
 Below is an example of how to use `.notEqual` to validate whether a value does not match a reference value:
 
 ```ts
-import { schema } from "vkrun"
+import { schema } from 'vkrun'
 
-const exampleSchema = schema().string().notEqual(["hello", "world])
+const exampleSchema = schema().string().notEqual('hello')
 
-const validateA = exampleSchema.validate("hi")
-const validateB = exampleSchema.validate("hello")
+const validateA = exampleSchema.validate('hi')
+const validateB = exampleSchema.validate('hello')
 
 console.log(validateA) // true
 console.log(validateB) // false
