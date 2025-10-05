@@ -1,6 +1,6 @@
 ---
-title: "Schema Buffer"
-description: "Learn how to use the .buffer method in Schema to validate Buffer values with precision and reliability."
+title: 'Schema Buffer'
+description: 'Learn how to use the .buffer method in Schema to validate Buffer values with precision and reliability.'
 ---
 
 ## Schema - Buffer
@@ -11,18 +11,90 @@ This method is essential for enforcing strict type validation where only `Buffer
 
 ---
 
-### Example
+### Content
+
+- [Quick Start](#quick-start)
+- [Error Messages](#error-messages)
+  - [Default Error Message](#default-error-message)
+  - [Custom Error Messages](#custom-error-messages)
+
+---
+
+### Quick Start
 
 Below is an example of how to use `.buffer` to validate whether a value is a valid `Buffer`:
 
 ```ts
-import { schema } from "vkrun"
+import { schema } from 'vkrun'
 
 const schemaValidation = schema().buffer()
 
-const validateA = schemaValidation.validate(Buffer.from("test"))  // Valid Buffer
-const validateB = schemaValidation.validate("test")               // Invalid, string is not a Buffer
+const validateA = schemaValidation.validate(Buffer.from('test')) // Valid Buffer
+const validateB = schemaValidation.validate('test') // Invalid, string is not a Buffer
 
 console.log(validateA) // true
 console.log(validateB) // false
+```
+
+---
+
+### Error Messages
+
+The `.buffer` method provides robust error messages to help identify issues during validation. These messages can be used as is or customized for specific use cases.
+
+#### Default Error Message
+
+If no custom error message is provided, the `.buffer` method generates the following default message:
+
+```
+"[valueName] must be a Buffer type!"
+```
+
+This message dynamically replaces `[valueName]` with the name of the variable being validated, providing clarity about the source of the error.
+
+### Example
+
+```ts
+import { schema } from 'vkrun'
+
+const value = 'test'
+
+const schemaValidation = schema().buffer()
+
+const defaultResult = schemaValidation.parse(value, 'buffer_value')
+```
+
+**Throw:**
+
+```
+buffer_value must be a buffer type!
+```
+
+#### Custom Error Messages
+
+To make error messages more descriptive or tailored to specific use cases, you can define custom messages using keywords like `[value]` and `[valueName]`. These keywords are replaced dynamically with the actual value and the name of the variable being validated.
+
+#### Supported Keywords
+
+- **`[value]`**: The actual value being validated.
+- **`[valueName]`**: The name of the value being validated.
+
+### Example
+
+```ts
+import { schema } from 'vkrun'
+
+const value = 'test'
+
+const schemaValidation = schema().buffer({
+	message: '[valueName] must be of type Buffer, but received [value]!',
+})
+
+const customResult = schemaValidation.parse(value, 'buffer_value')
+```
+
+**Throw:**
+
+```
+buffer_value must be of type Buffer, but received test!
 ```
