@@ -1,6 +1,6 @@
 ---
-title: "Schema Min (Number)"
-description: "Learn how to use the .min method in Schema to validate numeric inputs with a minimum value constraint."
+title: 'Schema Min (Number)'
+description: 'Learn how to use the .min method in Schema to validate numeric inputs with a minimum value constraint.'
 ---
 
 ## Schema - Min (Number)
@@ -16,9 +16,9 @@ This method is particularly useful for validating data like minimum prices, ages
 Below is an example of how to use `.min` to validate whether a value meets the minimum required value:
 
 ```ts
-import { schema } from "vkrun"
+import { schema } from 'vkrun'
 
-const exampleSchema = schema().number().min(1)
+const exampleSchema = schema().number().min({ min: 1 })
 
 const validateA = exampleSchema.validate(1)
 const validateB = exampleSchema.validate(0)
