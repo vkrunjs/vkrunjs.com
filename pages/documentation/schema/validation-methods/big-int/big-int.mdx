@@ -1,6 +1,6 @@
 ---
-title: "Schema BigInt"
-description: "Learn how to use the .bigInt method in Schema to validate BigInt inputs for robust data validation of large integers."
+title: 'Schema BigInt'
+description: 'Learn how to use the .bigInt method in Schema to validate BigInt inputs for robust data validation of large integers.'
 ---
 
 ## Schema - BigInt
@@ -13,20 +13,92 @@ This method is particularly useful for scenarios like cryptographic calculations
 
 ---
 
-### Example
+### Content
+
+- [Quick Start](#quick-start)
+- [Error Messages](#error-messages)
+  - [Default Error Message](#default-error-message)
+  - [Custom Error Messages](#custom-error-messages)
+
+---
+
+### Quick Start
 
 Below is an example of how to use `.bigInt` to validate whether a value is a valid `BigInt`:
 
 ```ts
-import { schema } from "vkrun"
+import { schema } from 'vkrun'
 
 const exampleSchema = schema().bigInt()
 
-const validateA = exampleSchema.validate(123n)   // Valid BigInt
-const validateB = exampleSchema.validate("123")  // Invalid, not a BigInt
-const validateC = exampleSchema.validate(123)    // Invalid, number is not BigInt
+const validateA = exampleSchema.validate(123n) // Valid BigInt
+const validateB = exampleSchema.validate('123') // Invalid, not a BigInt
+const validateC = exampleSchema.validate(123) // Invalid, number is not BigInt
 
 console.log(validateA) // true
 console.log(validateB) // false
 console.log(validateC) // false
+```
+
+---
+
+### Error Messages
+
+The `.bigInt` method provides robust error messages to help identify issues during validation. These messages can be used as is or customized for specific use cases.
+
+#### Default Error Message
+
+If no custom error message is provided, the `.bigInt` method generates the following default message:
+
+```
+"[valueName] must be a BigInt type!"
+```
+
+This message dynamically replaces `[valueName]` with the name of the variable being validated, providing clarity about the source of the error.
+
+### Example
+
+```ts
+import { schema } from 'vkrun'
+
+const value = 123
+
+const exampleSchema = schema().bigInt()
+
+const customResult = exampleSchema.parse(value, 'value_name')
+```
+
+**Throw:**
+
+```
+value_name must be a BigInt type!
+```
+
+#### Custom Error Messages
+
+To make error messages more descriptive or tailored to specific use cases, you can define custom messages using keywords like `[value]` and `[valueName]`. These keywords are replaced dynamically with the actual value and the name of the variable being validated.
+
+#### Supported Keywords
+
+- **`[value]`**: The actual value being validated.
+- **`[valueName]`**: The name of the value being validated.
+
+### Example
+
+```ts
+import { schema } from 'vkrun'
+
+const value = 123
+
+const exampleSchema = schema().bigInt({
+	message: '[valueName] must be of type BigInt, but received [value]!',
+})
+
+const customResult = exampleSchema.parse(value, 'value_name')
+```
+
+**Throw:**
+
+```
+value_name must be of type BigInt, but received 123!
 ```
