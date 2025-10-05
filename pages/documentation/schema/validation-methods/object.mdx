@@ -1,6 +1,6 @@
 ---
-title: "Schema Object"
-description: "Learn how to use the .object method in Schema to validate if a value is an object with the specified properties and their respective validations."
+title: 'Schema Object'
+description: 'Learn how to use the .object method in Schema to validate if a value is an object with the specified properties and their respective validations.'
 ---
 
 ## Schema - Object
@@ -9,29 +9,110 @@ The `.object` method is used to validate whether a given value is an object and 
 
 ---
 
-### Example: Basic Validation with `.object`
+### Content
+
+- [Quick Start](#quick-start)
+- [Error Messages](#error-messages)
+  - [Default Error Message](#default-error-message)
+  - [Custom Error Messages](#custom-error-messages)
+
+---
+
+### Quick Start
 
 Below is an example of how to use `.object` to validate whether an object matches the defined schema for its properties:
 
 ```ts
-import { schema } from "vkrun"
+import { schema } from 'vkrun'
 
 const exampleSchema = schema().object({
-  id: schema().string().UUID(),
-  fullName: schema().string().minWord(2),
-  description: schema().string().notRequired()
+	id: schema().string().UUID(),
+	fullName: schema().string().minWord({ min: 2 }),
+	description: schema().string().notRequired(),
 })
 
 const validateA = exampleSchema.validate({
-  id: "3ef7c105-c4ea-444d-bf47-e2e1a49ea613",
-  fullName: "Full Name"
+	id: '3ef7c105-c4ea-444d-bf47-e2e1a49ea613',
+	fullName: 'Full Name',
 })
 
 const validateB = exampleSchema.validate({
-  id: "3ef7c105-c4ea-444d-bf47-e2e1a49ea613",
-  description: "Description"
+	id: '3ef7c105-c4ea-444d-bf47-e2e1a49ea613',
+	description: 'Description',
 })
 
 console.log(validateA) // true
 console.log(validateB) // false
+```
+
+---
+
+### Error Messages
+
+The `.object` method provides robust error messages to help identify issues during validation. These messages can be used as is or customized for specific use cases.
+
+#### Default Error Message
+
+If no custom error message is provided, the `.object` method generates the following default message when the input is not an object:
+
+```
+"[valueName] must be an object!"
+```
+
+This message dynamically replaces `[valueName]` with the name of the variable being validated, providing clarity about the source of the error. For specific property validation errors, the error messages from the respective property schemas are used.
+
+### Example
+
+```ts
+import { schema } from 'vkrun'
+
+const value = 'not an object'
+
+const exampleSchema = schema().object({
+	id: schema().string().UUID(),
+	fullName: schema().string().minWord({ min: 2 }),
+})
+
+const defaultResult = exampleSchema.parse(value, 'value_name')
+```
+
+**Throw:**
+
+```
+value_name must be an object!
+```
+
+#### Custom Error Messages
+
+To make error messages more descriptive or tailored to specific use cases, you can define custom messages for the `.object` method using keywords like `[value]` and `[valueName]`. These keywords are replaced dynamically with the actual value and the name of the variable being validated. Additionally, property-specific validation errors will use the error messages defined in their respective schemas.
+
+#### Supported Keywords
+
+- **`[value]`**: The actual value being validated.
+- **`[valueName]`**: The name of the value being validated.
+
+### Example
+
+```ts
+import { schema } from 'vkrun'
+
+const value = 'not an object'
+
+const exampleSchema = schema().object(
+	{
+		id: schema().string().UUID(),
+		fullName: schema().string().minWord({ min: 2 }),
+	},
+	{
+		message: '[valueName] must be an object, but received [value]!',
+	}
+)
+
+const customResult = exampleSchema.parse(value, 'value_name')
+```
+
+**Throw:**
+
+```
+value_name must be an object, but received not an object!
 ```
