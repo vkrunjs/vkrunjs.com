@@ -1,30 +1,105 @@
 ---
-title: "Schema OneOf"
-description: "Learn how to use the .oneOf method in Schema to validate if a value matches one of several specified  schemas."
+title: 'Schema OneOf'
+description: 'Learn how to use the .oneOf method in Schema to validate if a value matches one of several specified schemas.'
 ---
 
 ## Schema - OneOf
 
-The `.oneOf` method is used to validate whether a given value matches one of several specified schemas. It ensures that the input value must match at least one of the provided values or schemas in the array. This method is essential when you need to validate data that can be one of several possibilities, such as matching any of a few predefined values or structures.
+The `.oneOf` method is used to validate whether a given value matches one of several specified schemas. It ensures that the input value must match at least one of the provided schemas or values in the array. This method is essential when you need to validate data that can be one of several possibilities, such as matching any of a few predefined values or structures.
 
 ---
 
-### Example: Basic Validation with `.oneOf`
+### Content
 
-Below is an example of how to use `.oneOf` to validate whether a value matches any of the comparison schemas:
+- [Quick Start](#quick-start)
+- [Error Messages](#error-messages)
+  - [Default Error Message](#default-error-message)
+  - [Custom Error Messages](#custom-error-messages)
+
+---
+
+### Quick Start
+
+Below is an example of how to use `.oneOf` to validate whether a value matches any of the specified schemas:
 
 ```ts
-import { schema } from "vkrun";
+import { schema } from 'vkrun'
 
 // Comparison items can include static values and schemas
-const comparisonItems = [schema().string(), schema().number()];
+const comparisonItems = [schema().string(), schema().number()]
 
-const exampleSchema = schema().oneOf(comparisonItems);
+const exampleSchema = schema().oneOf(comparisonItems)
 
-// Validate against the schema
-const validateA = exampleSchema.validate("hello");
-const validateB = exampleSchema.validate(true);
+const validateA = exampleSchema.validate('hello') // Valid, matches string schema
+const validateB = exampleSchema.validate(42) // Valid, matches number schema
+const validateC = exampleSchema.validate(true) // Invalid, does not match any schema
 
-console.log(validateA); // true
-console.log(validateB); // false
+console.log(validateA) // true
+console.log(validateB) // true
+console.log(validateC) // false
+```
+
+---
+
+### Error Messages
+
+The `.oneOf` method provides robust error messages to help identify issues during validation. These messages can be used as is or customized for specific use cases.
+
+#### Default Error Message
+
+If no custom error message is provided, the `.oneOf` method generates the following default message when the input does not match any of the specified schemas:
+
+```
+"[valueName] must match one of the specified schemas!"
+```
+
+This message dynamically replaces `[valueName]` with the name of the variable being validated, providing clarity about the source of the error.
+
+### Example
+
+```ts
+import { schema } from 'vkrun'
+
+const value = true
+
+const comparisonItems = [schema().string(), schema().number()]
+const exampleSchema = schema().oneOf(comparisonItems)
+
+const defaultResult = exampleSchema.parse(value, 'value_name')
+```
+
+**Throw:**
+
+```
+value_namevalue does not have a match!
+```
+
+#### Custom Error Messages
+
+To make error messages more descriptive or tailored to specific use cases, you can define custom messages for the `.oneOf` method using keywords like `[value]` and `[valueName]`. These keywords are replaced dynamically with the actual value and the name of the variable being validated.
+
+#### Supported Keywords
+
+- **`[value]`**: The actual value being validated.
+- **`[valueName]`**: The name of the value being validated.
+
+### Example
+
+```ts
+import { schema } from 'vkrun'
+
+const value = true
+
+const comparisonItems = [schema().string(), schema().number()]
+const exampleSchema = schema().oneOf(comparisonItems, {
+	message: '[valueName] must be one of the allowed types, but received [value]!',
+})
+
+const customResult = exampleSchema.parse(value, 'value_name')
+```
+
+**Throw:**
+
+```
+value_name must be one of the allowed types, but received true!
 ```
