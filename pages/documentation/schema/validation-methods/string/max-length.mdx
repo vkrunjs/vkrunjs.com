@@ -1,5 +1,5 @@
 ---
-title: "Schema MaxLength (String)"
+title: 'Schema MaxLength (String)'
 description: "The .maxLength method validates that a given string does not exceed a specified maximum length. It ensures the string's character count stays within defined limits, making it ideal for enforcing constraints in user inputs, database storage, or API specifications."
 ---
 
@@ -16,12 +16,12 @@ This method is particularly useful in scenarios where overly long strings might 
 Below is an example of how to use `.maxLength` to validate whether a string respects the maximum length:
 
 ```ts
-import { schema } from "vkrun"
+import { schema } from 'vkrun'
 
-const schexampleSchemaema = schema().string().maxLength(5)
+const schexampleSchemaema = schema().string().maxLength({ max: 5 })
 
-const validateA = exampleSchema.validate("12345")
-const validateB = exampleSchema.validate("123456")
+const validateA = exampleSchema.validate('12345')
+const validateB = exampleSchema.validate('123456')
 
 console.log(validateA) // true
 console.log(validateB) // false
