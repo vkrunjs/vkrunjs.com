@@ -1,6 +1,6 @@
 ---
-title: "Schema Max (Date)"
-description: "Learn how to use the .max method in Schema to validate date inputs with a maximum date constraint."
+title: 'Schema Max (Date)'
+description: 'Learn how to use the .max method in Schema to validate date inputs with a maximum date constraint.'
 ---
 
 ## Schema - Max (Date)
@@ -16,12 +16,12 @@ This method is particularly useful for validating dates where you need to enforc
 Below is an example of how to use `.max` to validate whether a date is less than or equal to a reference date:
 
 ```ts
-import { schema } from "vkrun"
+import { schema } from 'vkrun'
 
-const exampleSchema = schema().date().max(new Date(2020, 4, 5)) // May 5, 2020
+const exampleSchema = schema().date().max({ max: new Date(2020, 4, 5) }) // May 5, 2020
 
-const validateA = exampleSchema.validate(new Date(2020, 4, 5))  // true
-const validateB = exampleSchema.validate(new Date(2020, 4, 6))  // false
+const validateA = exampleSchema.validate(new Date(2020, 4, 5)) // true
+const validateB = exampleSchema.validate(new Date(2020, 4, 6)) // false
 
 console.log(validateA) // true
 console.log(validateB) // false
