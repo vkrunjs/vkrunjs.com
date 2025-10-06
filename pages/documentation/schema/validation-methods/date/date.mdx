@@ -1,0 +1,123 @@
+---
+title: 'Schema Date'
+description: 'Learn how to use the .date method in Schema to validate Date values with precision and reliability.'
+---
+
+## Schema - Date
+
+The `.date` method is used to validate whether a given value is a valid `Date` object. It ensures that the input is an instance of JavaScript's `Date` class and is a valid date. This method is particularly useful for ensuring date consistency in your application, such as validating user input dates, API responses, or database records.
+
+> **Note:** The `.date` method specifically validates `Date` objects. Other formats, such as strings (e.g., `"2025-03-19"`) or numbers, will fail validation unless converted to a `Date` object first.
+
+---
+
+### Content
+
+- [Quick Start](#quick-start)
+- [Error Messages](#error-messages)
+  - [Default Error Message](#default-error-message)
+  - [Custom Error Messages](#custom-error-messages)
+- [Async Example](#async-example)
+
+---
+
+### Quick Start
+
+Below is an example of how to use `.date` to validate whether a value is a valid `Date` object:
+
+```ts
+import { schema } from 'vkrun'
+
+const dateSchema = schema().date()
+
+const validateA = dateSchema.validate(new Date()) // true
+const validateB = dateSchema.validate('2025-03-19') // false
+const validateC = dateSchema.validate(new Date('invalid')) // false
+
+console.log(validateA) // true
+console.log(validateB) // false
+console.log(validateC) // false
+```
+
+---
+
+### Error Messages
+
+The `.date` method provides robust error messages to help identify issues during validation. These messages can be used as is or customized for specific use cases.
+
+#### Default Error Message
+
+If no custom error message is provided, the `.date` method generates the following default message:
+
+```
+"[valueName] must be a Date!"
+```
+
+This message dynamically replaces `[valueName]` with the name of the variable being validated, providing clarity about the source of the error.
+
+### Example
+
+```ts
+import { schema } from 'vkrun'
+
+const value = '2025-03-19'
+
+const dateSchema = schema().date()
+
+const defaultResult = dateSchema.parse(value, 'date_field')
+```
+
+**Throw:**
+
+```
+date_field must be a Date type!
+```
+
+#### Custom Error Messages
+
+To make error messages more descriptive or tailored to specific use cases, you can define custom messages using keywords like `[value]` and `[valueName]`. These keywords are replaced dynamically with the actual value and the name of the variable being validated.
+
+#### Supported Keywords
+
+- **`[value]`**: The actual value being validated.
+- **`[valueName]`**: The name of the value being validated.
+
+### Example
+
+```ts
+import { schema } from 'vkrun'
+
+const value = '2025-03-19'
+
+const customSchema = schema().date({
+	message: '[valueName] [value] is not a valid Date',
+})
+
+const customResult = customSchema.test(value, 'date_field')
+```
+
+**Throw:**
+
+```
+date_field 2025-03-19 is not a valid Date
+```
+
+---
+
+### Async Example
+
+The `.date` method works seamlessly with async validations for scenarios where the date is returned from an API or database.
+
+```ts
+import { schema } from 'vkrun'
+
+const value = async (): Promise<Date> => {
+	return new Promise((resolve) => {
+		setTimeout(() => resolve(new Date('30-12-2000')), 100)
+	})
+}
+
+const dateSchema = schema().date()
+
+dateSchema.validateAsync(value()).then(console.log) // true
+```

@@ -1,0 +1,100 @@
+---
+title: 'Schema Boolean'
+description: 'Learn how to use the .boolean method in Schema to validate Boolean values with precision and reliability.'
+---
+
+## Schema - Boolean
+
+The `.boolean` method is used to validate whether a given value is of type `boolean`. It ensures that the input is either `true` or `false`, making it useful for validating data like toggle states, flags, or any binary value.
+
+This method is essential for enforcing strict type validation where only Boolean values are acceptable.
+
+---
+
+### Content
+
+- [Quick Start](#quick-start)
+- [Error Messages](#error-messages)
+  - [Default Error Message](#default-error-message)
+  - [Custom Error Messages](#custom-error-messages)
+
+---
+
+### Quick Start
+
+Below is an example of how to use `.boolean` to validate whether a value is a valid Boolean:
+
+```ts
+import { schema } from 'vkrun'
+
+const exampleSchema = schema().boolean()
+
+const validateA = exampleSchema.validate(false) // Valid Boolean
+const validateB = exampleSchema.validate('false') // Invalid, string is not a Boolean
+
+console.log(validateA) // true
+console.log(validateB) // false
+```
+
+---
+
+### Error Messages
+
+The `.boolean` method provides robust error messages to help identify issues during validation. These messages can be used as is or customized for specific use cases.
+
+#### Default Error Message
+
+If no custom error message is provided, the `.boolean` method generates the following default message:
+
+```
+"[valueName] must be a boolean type!"
+```
+
+This message dynamically replaces `[valueName]` with the name of the variable being validated, providing clarity about the source of the error.
+
+### Example
+
+```ts
+import { schema } from 'vkrun'
+
+const value = 'false'
+
+const exampleSchema = schema().boolean()
+
+const defaultResult = exampleSchema.parse(value, 'value_name')
+```
+
+**Throw:**
+
+```
+value_name must be a boolean type!
+```
+
+#### Custom Error Messages
+
+To make error messages more descriptive or tailored to specific use cases, you can define custom messages using keywords like `[value]` and `[valueName]`. These keywords are replaced dynamically with the actual value and the name of the variable being validated.
+
+#### Supported Keywords
+
+- **`[value]`**: The actual value being validated.
+- **`[valueName]`**: The name of the value being validated.
+
+### Example
+
+```ts
+import { schema } from 'vkrun'
+
+const value = 'false'
+
+const exampleSchema = schema().boolean({
+	message: '[valueName] must be of type boolean, but received [value]!',
+})
+
+const customResult = exampleSchema.parse(value, 'value_name')
+```
+
+**Throw:**
+
+```
+value_name must be of type boolean, but received false!
+```

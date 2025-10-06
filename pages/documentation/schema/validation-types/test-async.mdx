@@ -1,0 +1,119 @@
+---
+title: "Schema TestAsync"
+description: "The .testAsync method validates values asynchronously, supporting Promises as inputs. It provides detailed test results, including passed and failed validations, and is particularly useful for scenarios where data to be validated is resolved asynchronously, such as API responses or dynamically loaded content."
+---
+
+## Schema - TestAsync
+
+The `.testAsync` method performs the same functionality as `.test`, but works asynchronously, allowing for validation of values returned by Promises.
+
+---
+
+### Syntax
+
+```ts
+.testAsync(value: any, valueName?: string): Promise<Tests>
+```
+
+- **value**: The value or a Promise of the value to be validated.
+- **valueName**: A string used to reference the value in the validation output.
+
+---
+
+### Example
+
+The following example demonstrates how to use `.testAsync` to validate a value asynchronously:
+
+```ts
+import { schema } from "vkrun";
+
+const schema = schema().number().float();
+
+const valueA = async (): Promise<number> => {
+  return await new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(123.5);
+    }, 100);
+  });
+};
+
+const valueA = async (): Promise<number> => {
+  return await new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(123);
+    }, 100);
+  });
+};
+
+const testA = await schema.testAsync(valueA(), "value_name");
+const testB = await schema.testAsync(valueB(), "value_name");
+```
+
+Output testA:
+
+```ts
+{
+  passedAll: true,
+  passed: 3,
+  failed: 0,
+  totalTests: 3,
+  successes: [
+    {
+      method: "required",
+      name: "value_name",
+      expect: "value other than undefined",
+      received: 123.5
+    },
+    {
+      method: "number",
+      name: "value_name",
+      expect: "number type",
+      received: 123.5
+    },
+    {
+      method: "float",
+      name: "value_name",
+      expect: "float type",
+      received: 123.5
+    }
+  ],
+  errors: [],
+  time: "0s 1ms"
+}
+```
+
+Output testB:
+
+```ts
+{
+  passedAll: false,
+  passed: 2,
+  failed: 1,
+  totalTests: 3,
+  successes: [
+    {
+      method: "required",
+      name: "value_name",
+      expect: "value other than undefined",
+      received: 123
+    },
+    {
+      method: "number",
+      name: "value_name",
+      expect: "number type",
+      received: 123
+    }
+  ],
+  errors: [
+    {
+      method: "float",
+      type: "invalid value",
+      name: "value_name",
+      expect: "float type",
+      received: 123,
+      message: "value_name must be a float!"
+    }
+  ],
+  time: "0s 1ms"
+}
+```

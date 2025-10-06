@@ -1,0 +1,57 @@
+---
+title: "Introduction to loadEnv"
+description: "Learn how to use the loadEnv utility in VkrunJS to manage environment variables with schema validation and type inference."
+---
+
+# Introduction to loadEnv
+
+The `loadEnv` utility in VkrunJS provides an advanced way to **load, parse, and validate** environment variables from `.env` files. Unlike traditional `.env` loaders, `loadEnv` offers **schema validation**, **automatic type inference**, **variable interpolation**, and **multi-file support**, making environment configuration more reliable and maintainable.
+
+## Key Features
+
+| Feature                                | Description                                                                                                      |
+| -------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| 🔄 **Auto Parsing**                    | Automatically parses **booleans, numbers, arrays, and objects** when assigned to variables.                      |
+| ✅ **Schema Validation**               | Ensures correctness with strict typing.                                                                          |
+| 🔍 **Debug Mode**                      | Logs details for troubleshooting.                                                                                |
+| 🔄 **Multi-File Support**              | Supports merging multiple `.env` files.                                                                          |
+| 🛠 **Configurable Override**            | Decide whether to overwrite existing `process.env` values.                                                       |
+| 🔀 **Interpolation**                   | Expands references within `.env` files.                                                                          |
+| 🌍 **Environment-Based Loading**       | Loads `.env.NODE_ENV` if `NODE_ENV` is set (e.g., `.env.test`, `.env.production`). Defaults to `.env` otherwise. |
+| 🔒 **Schema Validation (Optional)**    | Enforce type safety by defining a schema for environment variables, avoiding misconfigurations.                  |
+| 🔍 **Type Inference**                  | Automatically parses **booleans, numbers, arrays, and objects** when variables are retrieved via `loadEnv()`.    |
+| 🔢 **Manual Typing or Auto-Inference** | Supports explicit typing using `<T>` or **automatic inference** with `InferOut<typeof schema>`.                  |
+| 🔗 **Variable Interpolation**          | Expands variables referencing other variables (e.g., `API_URL="$BASE_URL/api"`).                                 |
+| 📂 **Multiple File Support**           | Allows loading from multiple `.env` files, merging their values.                                                 |
+| 🔄 **Configurable Override Behavior**  | Controls whether existing `process.env` variables are overridden.                                                |
+| 🛠 **Graceful Error Handling**          | Ignores invalid lines, missing files, and malformed JSON, providing safe defaults.                               |
+
+---
+
+## Quick Start
+
+### 1️⃣ Creating a `.env` File
+
+Create a `.env` file in your project root:
+
+```env
+API_KEY="your-api-key"
+DEBUG=true
+PORT=3000
+```
+
+### 2️⃣ Using `loadEnv()`
+
+```ts
+import { loadEnv } from "vkrun";
+
+const envs = loadEnv();
+
+console.log(envs.API_KEY); // "your-api-key"
+console.log(envs.DEBUG); // true
+console.log(envs.PORT); // 3000
+```
+
+> **Note:** `loadEnv()` **automatically parses** booleans and numbers when assigned to a variable.
+
+---

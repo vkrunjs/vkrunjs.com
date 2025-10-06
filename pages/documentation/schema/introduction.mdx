@@ -1,0 +1,45 @@
+---
+title: "Schema - Introduction"
+description: "The Schema module in VkrunJS provides a powerful and flexible way to validate and structure data in JavaScript and TypeScript applications. It supports building simple to complex validation rules with intuitive chaining methods, ensuring data integrity and reliability across your application."
+---
+
+## Schema - Introduction
+
+Schema is a module of VkrunJS designed for runtime data validation. It provides a comprehensive set of tools to validate and structure data in JavaScript and TypeScript projects. With Schema, you can define simple or complex validation rules to ensure the integrity of your application's data.
+
+Schemas are created by chaining validation methods, making it intuitive to define and manage data validation logic. Schema offers a robust, customizable, and scalable solution for your validation needs.
+
+### Quick Start
+
+- Import schema.
+- Chain methods to build a schema.
+- After completing the schema, call a validation method with the input value:
+  - [`.validate(value: any): boolean`](/schema/validation-types/validate)
+  - [`.validateAsync(value: any): Promise<boolean>`](/schema/validation-types/validate-async)
+  - [`.test(value: any, valueName?: string): Tests`](/schema/validation-types/test)
+  - [`.testAsync(value: any, valueName: string): Promise<Tests>`](/schema/validation-types/test-async)
+  - [`.throw(value: any, valueName?: string, ClassError?: ErrorTypes): void`](/schema/validation-types/throw)
+  - [`.throwAsync(value: any, valueName?: string, ClassError?: ErrorTypes): Promise<void>`](/schema/validation-types/throw-async)
+  - [`.parse(value: any, valueName?: string): any`](/schema/validation-types/parse)
+  - [`.parseAsync(value: any, valueName?: string): Promise<any>`](/schema/validation-types/parse-async)
+
+The following example demonstrates a simple schema for validating a user object:
+
+```ts
+import { schema } from "vkrun";
+
+const userSchema = schema().object({
+  id: schema().string().UUID(),
+  fullName: schema().string().minWord(2),
+  email: schema().string().email(),
+});
+
+// Validates the data against the schema
+const isValid = userSchema.validate({
+  id: "3ef7c105-c4ea-444d-bf47-e2e1a49ea613",
+  fullName: "John Doe",
+  email: "john.doe@example.com",
+});
+
+console.log(isValid); // true
+```

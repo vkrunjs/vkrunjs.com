@@ -1,0 +1,94 @@
+---
+title: "Schema Custom"
+description: "The .custom method allows you to define custom validation logic and optionally transform the value within a schema."
+---
+
+## Schema - custom
+
+The `.custom` method adds custom validation logic to a schema. It enables full control over how a value is validated, and allows for value transformation if needed. You can implement custom logic either synchronously or asynchronously, depending on your validation flow.
+
+---
+
+### Content
+
+- [Quick Start](#quick-start)
+- [Context Object](#context-object)
+- [With Transformation](#with-transformation)
+- [Async Support](#async-support)
+
+---
+
+### Quick Start
+
+```ts
+import { schema } from "vkrun";
+
+const customSchema = schema()
+  .string()
+  .custom((ctx) => {
+    if (ctx.value === "valid") {
+      ctx.success(ctx.value);
+    } else {
+      ctx.failed("Validation failed");
+    }
+  });
+
+console.log(customSchema.parse("valid")); // "valid"
+```
+
+---
+
+### Context Object
+
+The callback provided to `.custom()` receives a `context` object with the following properties:
+
+- **`value`**: The current value being validated.
+- **`success(newValue)`**: Marks the validation as successful, optionally transforming the value.
+- **`failed(message)`**: Marks the validation as failed with an error message.
+
+---
+
+### With Transformation
+
+You can enforce a new output type by providing a generic type to `.custom<T>()`.
+
+```ts
+const transformedSchema = schema()
+  .string()
+  .custom<number>((ctx) => {
+    if (ctx.value === "convert") {
+      ctx.success(42); // value becomes number
+    } else {
+      ctx.failed("Invalid input");
+    }
+  });
+
+console.log(transformedSchema.parse("convert")); // 42
+```
+
+---
+
+### Async Support
+
+The `.custom()` method supports async validation when used with `testAsync()`, `parseAsync()`, etc.
+
+```ts
+const asyncSchema = schema()
+  .string()
+  .custom(async (ctx) => {
+    const isValid = await Promise.resolve(ctx.value === "yes");
+
+    if (isValid) {
+      ctx.success(ctx.value);
+    } else {
+      ctx.failed("Not allowed");
+    }
+  });
+
+const result = await asyncSchema.parseAsync("yes");
+console.log(result); // "yes"
+```
+
+---
+
+Use `.custom()` when you need complete control over the validation logic, or when built-in methods are not enough to express your validation rules.

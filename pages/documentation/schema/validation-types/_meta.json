@@ -1,0 +1,10 @@
+{
+  "validate": ".validate",
+  "validate-async": ".validateAsync",
+  "test": ".test",
+  "test-async": ".testAsync",
+  "throw": ".throw",
+  "throw-async": ".throwAsync",
+  "parse": ".parse",
+  "parse-async": ".parseAsync"
+}

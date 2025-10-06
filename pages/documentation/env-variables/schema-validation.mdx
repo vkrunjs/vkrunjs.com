@@ -1,0 +1,28 @@
+---
+title: "Schema Validation"
+description: "Ensure correctness with strict typing by defining a schema for environment variables in loadEnv."
+---
+
+# Schema Validation
+
+## Defining a Schema for Validation
+
+```ts
+import { schema, loadEnv, InferOut } from "vkrun";
+
+const envSchema = schema().object({
+  API_KEY: schema().string(),
+  DEBUG: schema().boolean(),
+  PORT: schema().number().integer(),
+});
+
+type EnvsType = InferOut<typeof envSchema>;
+
+const envs = loadEnv<EnvsType>({ schema: envSchema });
+
+console.log(envs.PORT); // 3000
+```
+
+> If validation fails, `loadEnv()` **throws an error**, preventing misconfigurations.
+
+---

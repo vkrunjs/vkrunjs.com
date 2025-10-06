@@ -1,0 +1,12 @@
+{
+  "overview": "OVERVIEW",
+  "router": "ROUTER",
+  "middlewares": "MIDDLEWARES",
+  "super-request": "SUPER REQUEST",
+  "schema": "SCHEMA",
+  "jwt": "JWT",
+  "logger": "LOGGER",
+  "env-variables": "ENV VARIABLES",
+  "mime": "MIME TYPE",
+  "community": "COMMUNITY"
+}

@@ -1,0 +1,30 @@
+---
+title: "Schema NotRequired"
+description: "Learn how to use the .notRequired method in Schema to validate if a value is not required and can be undefined."
+---
+
+## Schema - NotRequired
+
+The `.notRequired()` method is used to specify that a value is not required, meaning it can be `undefined`. By default, Schema treats the value as required, meaning it must be different from `undefined`. When a value is not required and should only be validated if provided (i.e., other than `undefined`), we use the `.notRequired()` method.
+
+---
+
+### Example
+
+Below is an example of how to use `.notRequired()` to validate a value that is not required and can be `undefined`:
+
+```ts
+import { schema } from "vkrun";
+
+const exampleSchema = schema().string().notRequired();
+
+const validateA = exampleSchema.validate(undefined);
+const validateB = exampleSchema.validate("hi");
+const validateC = exampleSchema.validate(null);
+const validateD = exampleSchema.validate(123);
+
+console.log(validateA); // true
+console.log(validateB); // true
+console.log(validateC); // false
+console.log(validateD); // false
+```

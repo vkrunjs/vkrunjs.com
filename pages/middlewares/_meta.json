@@ -1,8 +1,0 @@
-{
-  "cors": "CORS",
-  "rate-limit": "Rate Limit",
-  "swagger-ui": "Swagger UI",
-  "serve-static-file": "Serve Static File",
-  "validate-request-data": "Validate Request Data",
-  "upload": "Upload"
-}

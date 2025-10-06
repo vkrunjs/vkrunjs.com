@@ -1,0 +1,11 @@
+{
+  "string": ".string",
+  "number": ".number",
+  "big-int": ".bigInt",
+  "boolean": ".boolean",
+  "date": ".date",
+  "object": ".object",
+  "buffer": ".buffer",
+  "function": ".function",
+  "array": ".array"
+}

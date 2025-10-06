@@ -1,0 +1,100 @@
+---
+title: 'Schema String'
+description: 'The .string method validates whether a value is of type string. It provides a foundation for handling textual data in your application, allowing you to define additional rules like length, patterns, and formats to suit various use cases such as names, emails, or general string inputs.'
+---
+
+## Schema - String
+
+The `.string` method is used to validate whether a given value is of type `string`. It ensures that the input meets the expected data type criteria and can be further combined with additional validation methods to define specific rules for string inputs, such as length restrictions, patterns, or formats.
+
+This method is the foundation for validating textual data in your application, providing flexibility to handle diverse use cases like validating names, emails, or any string-based input.
+
+---
+
+### Content
+
+- [Quick Start](#quick-start)
+- [Error Messages](#error-messages)
+  - [Default Error Message](#default-error-message)
+  - [Custom Error Messages](#custom-error-messages)
+
+---
+
+### Quick Start
+
+Below is an example of how to use `.string` to validate whether a value is a valid string:
+
+```ts
+import { schema } from 'vkrun'
+
+const exampleSchema = schema().string()
+
+const validateA = exampleSchema.validate('any text')
+const validateB = exampleSchema.validate(false)
+
+console.log(validateA) // true
+console.log(validateB) // false
+```
+
+---
+
+### Error Messages
+
+The `.string` method provides robust error messages to help identify issues during validation. These messages can be used as is or customized for specific use cases.
+
+#### Default Error Message
+
+If no custom error message is provided, the `.string` method generates the following default message:
+
+```
+"[valueName] must be a string type!"
+```
+
+This message dynamically replaces `[valueName]` with the name of the variable being validated, providing clarity about the source of the error.
+
+### Example
+
+```ts
+import { schema } from 'vkrun'
+
+const value = 123
+
+const exampleSchema = schema().string()
+
+const defaultResult = exampleSchema.parse(value, 'value_name')
+```
+
+**Throw:**
+
+```
+value_name must be a string type!
+```
+
+#### Custom Error Messages
+
+To make error messages more descriptive or tailored to specific use cases, you can define custom messages using keywords like `[value]` and `[valueName]`. These keywords are replaced dynamically with the actual value and the name of the variable being validated.
+
+#### Supported Keywords
+
+- **`[value]`**: The actual value being validated.
+- **`[valueName]`**: The name of the value being validated.
+
+### Example
+
+```ts
+import { schema } from 'vkrun'
+
+const value = 123
+
+const exampleSchema = schema().string({
+	message: '[valueName] must be of type string, but received [value]!',
+})
+
+const customResult = exampleSchema.parse(value, 'value_name')
+```
+
+**Throw:**
+
+```
+value_name must be of type string, but received 123!
+```

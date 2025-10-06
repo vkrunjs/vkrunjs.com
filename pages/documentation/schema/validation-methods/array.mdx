@@ -1,0 +1,269 @@
+---
+title: 'Schema Array'
+description: 'Learn how to use the .array method in Schema to validate arrays with specific element schemas and constraints.'
+---
+
+## Schema - Array
+
+The `.array()` method is used to validate whether a given value is an array and ensures that each element in the array adheres to a specified schema. It is a powerful tool for validating structured data, such as lists of strings, numbers, objects, or other types, with customizable validation rules for array elements.
+
+This method accepts a schema for the array items, ensuring that each element in the array satisfies the provided schema. You can also supply an optional configuration object to customize the error message.
+
+---
+
+### Content
+
+- [Quick Start](#quick-start)
+- [Error Messages](#error-messages)
+  - [Default Error Message](#default-error-message)
+  - [Custom Error Messages](#custom-error-messages)
+- [Examples with Different Schemas](#examples-with-different-schemas)
+
+---
+
+### Quick Start
+
+Below is an example of how to use `.array()` to validate whether a value is an array and its elements meet a specific schema:
+
+```ts
+import { schema } from 'vkrun'
+
+const arraySchema = schema().array(schema().string())
+
+const validateA = arraySchema.validate(['string', 'another string']) // Valid array of strings
+const validateB = arraySchema.validate('not an array') // Invalid, not an array
+const validateC = arraySchema.validate([1, 2]) // Invalid, elements are not strings
+
+console.log(validateA) // true
+console.log(validateB) // false
+console.log(validateC) // false
+```
+
+---
+
+### Error Messages
+
+The `.array()` method provides robust error messages to help identify issues during validation. These messages can be used as is or customized for specific use cases.
+
+#### Default Error Message
+
+If no custom error message is provided, the `.array()` method generates the following default message when the input is not an array:
+
+```
+"[valueName] must be an array type!"
+```
+
+This message dynamically replaces `[valueName]` with the name of the variable being validated. For element-specific validation errors, the error messages from the provided element schema are used.
+
+### Example
+
+```ts
+import { schema } from 'vkrun'
+
+const value = 'not an array'
+
+const arraySchema = schema().array(schema().string())
+
+const defaultResult = arraySchema.parse(value, 'array_value')
+```
+
+**Throw:**
+
+```
+array_value must be an array!
+```
+
+#### Custom Error Messages
+
+To make error messages more descriptive or tailored to specific use cases, you can define custom messages for the `.array()` method using keywords like `[value]` and `[valueName]`. These keywords are replaced dynamically with the actual value and the name of the variable being validated.
+
+#### Supported Keywords
+
+- **`[value]`**: The actual value being validated.
+- **`[valueName]`**: The name of the value being validated.
+
+### Example
+
+```ts
+import { schema } from 'vkrun'
+
+const value = 123
+
+const arraySchema = schema().array(schema().string(), {
+	message: '[valueName] [value] is not a valid array!',
+})
+
+const customResult = arraySchema.parse(value, 'array_value')
+```
+
+**Throw:**
+
+```
+array_value 123 is not a valid array!
+```
+
+---
+
+### Examples with Different Schemas
+
+The `.array()` method can be used with various schemas to validate different types of array elements. Below are examples demonstrating its flexibility.
+
+#### String Elements
+
+Validates if the elements inside the array are strings:
+
+```ts
+const arraySchema = schema().array(schema().string())
+
+const validateA = arraySchema.validate(['hello', 'world'])
+const validateB = arraySchema.validate([1, 2])
+
+console.log(validateA) // true
+console.log(validateB) // false
+```
+
+#### Number Elements
+
+Validates if the elements inside the array are numbers:
+
+```ts
+const arraySchema = schema().array(schema().number())
+
+const validateA = arraySchema.validate([1, 2, 3])
+const validateB = arraySchema.validate([1, '2'])
+
+console.log(validateA) // true
+console.log(validateB) // false
+```
+
+#### Boolean Elements
+
+Validates if the elements inside the array are booleans:
+
+```ts
+const arraySchema = schema().array(schema().boolean())
+
+const validateA = arraySchema.validate([true, false])
+const validateB = arraySchema.validate([true, 'false'])
+
+console.log(validateA) // true
+console.log(validateB) // false
+```
+
+#### Object Elements
+
+Validates if the elements inside the array are objects matching a specific schema:
+
+```ts
+const arraySchema = schema().array(
+	schema().object({
+		id: schema().string().UUID(),
+		fullName: schema().string().minWord({ min: 2 }),
+	})
+)
+
+const validateA = arraySchema.validate([
+	{
+		id: '3ef7c105-c4ea-444d-bf47-e2e1a49ea613',
+		fullName: 'Full Name',
+	},
+])
+const validateB = arraySchema.validate([
+	{
+		id: '3ef7c105-c4ea-444d-bf47-e2e1a49ea613',
+	},
+])
+
+console.log(validateA) // true
+console.log(validateB) // false
+```
+
+#### Nullable Elements
+
+Validates if the array can accept `null` values for its elements:
+
+```ts
+const arraySchema = schema().array(schema().string().nullable())
+
+const validateA = arraySchema.validate([null, 'string'])
+const validateB = arraySchema.validate([undefined, 'string'])
+
+console.log(validateA) // true
+console.log(validateB) // false
+```
+
+#### Not Required Array
+
+Validates if the array itself is not required:
+
+```ts
+const arraySchema = schema().array(schema().string()).notRequired()
+
+const validateA = arraySchema.validate(undefined) // Allowed because it's not required
+const validateB = arraySchema.validate(['value']) // Valid array
+
+console.log(validateA) // true
+console.log(validateB) // true
+```
+
+#### Buffer Elements
+
+Validates if the elements inside the array are buffers:
+
+```ts
+const arraySchema = schema().array(schema().buffer())
+
+const validateA = arraySchema.validate([Buffer.from('test'), Buffer.from('test')])
+const validateB = arraySchema.validate([true, 'test'])
+
+console.log(validateA) // true
+console.log(validateB) // false
+```
+
+#### Function Elements
+
+Validates if the elements inside the array are functions:
+
+```ts
+const arraySchema = schema().array(schema().function())
+
+const validateA = arraySchema.validate([() => {}, () => {}])
+const validateB = arraySchema.validate([() => {}, 'test'])
+
+console.log(validateA) // true
+console.log(validateB) // false
+```
+
+#### Date Elements
+
+Validates if the elements inside the array are valid dates:
+
+```ts
+const arraySchema = schema().array(schema().date())
+
+const validateA = arraySchema.validate([new Date(), new Date()])
+const validateB = arraySchema.validate([new Date(), '2025-03-19'])
+
+console.log(validateA) // true
+console.log(validateB) // false
+```
+
+#### OneOf Elements
+
+Validates if the array elements match one of the specified schemas:
+
+```ts
+const arraySchema = schema().array(schema().oneOf([schema().string(), schema().boolean()]))
+
+const validateA = arraySchema.validate([true, 'hello'])
+const validateB = arraySchema.validate([1, 'hello'])
+
+console.log(validateA) // true
+console.log(validateB) // false
+```
+
+---
+
+### Conclusion
+
+The `.array()` method provides a flexible and powerful way to validate arrays and their elements by specifying a schema for the array items. By combining it with other schema methods like `.string()`, `.number()`, `.object()`, or advanced constraints like `.oneOf()``, you can ensure your data adheres to complex validation rules. Custom error messages and support for nullable or optional arrays further enhance its versatility, making it ideal for validating structured data in various use cases.

@@ -1,0 +1,86 @@
+---
+title: "Schema ParseTo"
+description: "The .parseTo method allows you to transform values before running validations. It enables chained conversions such as converting strings to numbers, dates, booleans, and more."
+---
+
+## Schema - ParseTo
+
+The `.parseTo` method is used to **convert a value into a different type** before applying further validations. It is commonly used when input data comes in a raw format (like a string) and needs to be converted before validating its properties.
+
+This method is especially powerful when you need to ensure values like strings representing numbers, booleans, or dates are properly handled within your schema logic.
+
+---
+
+### Content
+
+- [Quick Start](#quick-start)
+- [Supported Conversions](#supported-conversions)
+- [Output Access](#output-access)
+- [Examples](#examples)
+
+---
+
+### Quick Start
+
+The `.parseTo()` method returns an object with conversion methods. You can chain one of the following methods to transform the value before validation:
+
+```ts
+schema().string().parseTo().number();
+```
+
+In this example, a string like `"123"` is automatically converted to the number `123`, and numeric validations can be applied afterward.
+
+---
+
+### Supported Conversions
+
+The following methods can be chained after `.parseTo()`:
+
+- `.number()`
+- `.bigInt()`
+- `.boolean()`
+- `.buffer()`
+- `.date()`
+- `.array(schema)`
+- `.object(schema)`
+
+---
+
+### Output Access
+
+After using `.parseTo()`, the final converted value is available on the `.value` property when using `.test()` or `.testAsync()`.
+
+```ts
+const result = schema().string().parseTo().number().test("42");
+console.log(result.value); // 42
+```
+
+---
+
+### Examples
+
+#### Example: String to Number
+
+```ts
+import { schema } from "vkrun";
+
+const stringToNumber = schema().string().parseTo().number();
+
+const result = stringToNumber.test("123");
+console.log(result.value); // 123
+```
+
+#### Example: String to Date
+
+```ts
+import { schema } from "vkrun";
+
+const stringToDate = schema().string().parseTo().date();
+
+const result = stringToDate.test("2024-01-01T00:00:00.000Z");
+console.log(result.value instanceof Date); // true
+```
+
+---
+
+Use `.parseTo()` whenever you want to validate values as a different type than their original input — with safe, built-in conversions.

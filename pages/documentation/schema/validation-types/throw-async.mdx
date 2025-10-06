@@ -1,0 +1,46 @@
+---
+title: "Schema ThrowAsync"
+description: "The .throwAsync method validates a value asynchronously against a predefined schema and throws an error if the validation fails. This method is particularly useful in scenarios where validation failures need to halt further execution or when custom error handling is required. It supports Promises, allowing for seamless integration with asynchronous workflows."
+---
+
+## Schema - ThrowAsync
+
+The `.throwAsync` method performs the same functionality as `.throw`, but works asynchronously, throwing an error if the value fails validation.
+
+---
+
+### Syntax
+
+```ts
+.throwAsync(value: any, valueName?: string, ClassError?: ErrorTypes): Promise<void>
+```
+
+- **value**: The value or a Promise of the value to be validated.
+- **valueName**: A string used to reference the value in the error message.
+- **ClassError** (optional): A custom error class to be used when throwing the error.
+
+---
+
+### Example
+
+The following example demonstrates how to use `.throwAsync` to validate a value asynchronously and throw an error if validation fails:
+
+```ts
+import { schema } from "vkrun";
+
+const schema = schema().number();
+
+try {
+  const value = async (): Promise<string> => {
+    return await new Promise((resolve) => {
+      setTimeout(() => {
+        resolve("123");
+      }, 100);
+    });
+  };
+
+  schema.throwAsync(value(), "value_name");
+} catch (error) {
+  console.error(error.message); // "value_name must be a number type!"
+}
+```

@@ -1,0 +1,28 @@
+---
+title: 'Schema Min (Date)'
+description: 'Learn how to use the .min method in Schema to validate date inputs with a minimum date constraint.'
+---
+
+## Schema - Min (Date)
+
+The `.min` method is used to validate whether a given date is greater than or equal to a specified minimum date. It ensures that the input value meets the minimum date requirement, making it useful for scenarios like setting a minimum birthdate, deadline, or event date.
+
+This method is particularly useful for validating dates where you need to enforce a lower bound, such as ensuring a date is not earlier than a certain reference date.
+
+---
+
+### Example: Date Validation with `.min`
+
+Below is an example of how to use `.min` to validate whether a date is greater than or equal to a reference date:
+
+```ts
+import { schema } from 'vkrun'
+
+const exampleSchema = schema().date().min({ min: new Date(2020, 4, 5) }) // May 5, 2020
+
+const validateA = exampleSchema.validate(new Date(2020, 4, 5)) // true
+const validateB = exampleSchema.validate(new Date(2020, 4, 4)) // false
+
+console.log(validateA) // true
+console.log(validateB) // false
+```

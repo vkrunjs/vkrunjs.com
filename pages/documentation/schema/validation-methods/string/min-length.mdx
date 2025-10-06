@@ -1,0 +1,28 @@
+---
+title: 'Schema MinLength (String)'
+description: 'The .minLength method validates that a given string meets a specified minimum length. It ensures the string contains at least the required number of characters, making it ideal for enforcing input constraints such as passwords, usernames, or other critical string data.'
+---
+
+## Schema - MinLength (String)
+
+The `.minLength` method is used to validate whether a given string meets the minimum length requirement. It ensures that the input string contains at least the specified number of characters, providing a way to enforce length constraints on user input or other string-based data.
+
+This method is particularly useful in scenarios where a minimum character count is critical, such as password fields, usernames, or any input where shorter values might be invalid.
+
+---
+
+### Example
+
+Below is an example of how to use `.minLength` to validate whether a string meets the required length:
+
+```ts
+import { schema } from 'vkrun'
+
+const exampleSchema = schema().string().minLength({ min: 5 })
+
+const validateA = exampleSchema.validate('12345')
+const validateB = exampleSchema.validate('1234')
+
+console.log(validateA) // true
+console.log(validateB) // false
+```

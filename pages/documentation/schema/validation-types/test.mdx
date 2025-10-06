@@ -1,0 +1,103 @@
+---
+title: "Schema Test"
+description: "The `.test` method synchronously validates a value against a predefined schema and provides comprehensive results. It details both passed and failed validations, enabling precise debugging and understanding of validation outcomes. This method is ideal for scenarios where immediate feedback on the validation process is required."
+---
+
+## Schema - Test
+
+The `.test` method validates a value against a predefined schema and provides detailed test results, including both successful and failed validations. It is especially useful for debugging and understanding why a validation failed.
+
+---
+
+### Syntax
+
+```ts
+.test(value: any, valueName?: string): Tests
+```
+
+- **value**: The value to be validated.
+- **valueName**: A string used to reference the value in the validation output.
+
+---
+
+### Example
+
+The following example demonstrates how to use `.test` to validate a number and inspect the results:
+
+```ts
+import { schema } from "vkrun";
+
+const schema = schema().number().float();
+
+const testA = schema.test(123.5, "value_name");
+const testB = schema.test(123, "value_name");
+```
+
+Output testA:
+
+```ts
+{
+  passedAll: true,
+  passed: 3,
+  failed: 0,
+  totalTests: 3,
+  successes: [
+    {
+      method: "required",
+      name: "value_name",
+      expect: "value other than undefined",
+      received: 123.5
+    },
+    {
+      method: "number",
+      name: "value_name",
+      expect: "number type",
+      received: 123.5
+    },
+    {
+      method: "float",
+      name: "value_name",
+      expect: "float type",
+      received: 123.5
+    }
+  ],
+  errors: [],
+  time: "0s 1ms"
+}
+```
+
+Output testB:
+
+```ts
+{
+  passedAll: false,
+  passed: 2,
+  failed: 1,
+  totalTests: 3,
+  successes: [
+    {
+      method: "required",
+      name: "value_name",
+      expect: "value other than undefined",
+      received: 123
+    },
+    {
+      method: "number",
+      name: "value_name",
+      expect: "number type",
+      received: 123
+    }
+  ],
+  errors: [
+    {
+      method: "float",
+      type: "invalid value",
+      name: "value_name",
+      expect: "float type",
+      received: 123,
+      message: "value_name must be a float!"
+    }
+  ],
+  time: "0s 1ms"
+}
+```

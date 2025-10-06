@@ -1,0 +1,186 @@
+.page {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
+
+  width: 100%;
+  min-height: 100vh;
+}
+
+.wrapperHome {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  padding-top: 24px;
+  gap: 16px;
+
+  @media (min-width: 1024px) {
+    flex-direction: row;
+    gap: 56px;
+  }
+}
+
+.wrapperHome svg:first-of-type {
+  width: 200px;
+  height: auto;
+
+  @media (min-width: 1024px) {
+    width: 100%;
+    max-width: 500px;
+  }
+}
+
+.wrapperHome pre:first-of-type {
+  width: 100%;
+  height: auto;
+  white-space: pre-wrap;
+}
+
+.title {
+  color: #52de5b;
+  margin: 40px 0 24px 0;
+
+  font-size: 40px;
+  font-family: "Ubuntu", sans-serif;
+  text-align: center;
+  font-weight: bold;
+
+  @media (min-width: 768px) {
+    margin: 56px 0 32px 0;
+    font-size: 40px;
+  }
+}
+
+.subTitle {
+  color: white;
+  margin-top: 16px;
+
+  font-size: 22px;
+  font-family: "Ubuntu", sans-serif;
+  text-align: center;
+
+  @media (min-width: 768px) {
+    margin-top: 32px;
+    font-size: 40px;
+  }
+}
+
+.wrapperButtons {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+
+  width: 100%;
+  gap: 24px;
+  margin-top: 16px;
+
+  @media (min-width: 768px) {
+    flex-direction: row;
+    margin-top: 24px;
+  }
+}
+
+.wrapperButtons a:first-of-type {
+  background-color: #52de5b;
+  color: black;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 16px 32px;
+  border-radius: 50px;
+
+  font-size: 18px;
+  font-weight: bold;
+
+  @media (min-width: 768px) {
+    width: max-content;
+    font-size: 22px;
+  }
+}
+
+.wrapperButtons a:last-of-type {
+  color: white;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 16px 32px;
+  border: 2px solid white;
+  border-radius: 50px;
+
+  font-size: 18px;
+  font-weight: bold;
+
+  @media (min-width: 768px) {
+    width: max-content;
+    font-size: 22px;
+  }
+}
+
+.featuresGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  margin-top: 48px;
+  width: 100%;
+  max-width: 1200px;
+}
+
+.featureCard {
+  background: #1c1c1c;
+  border-left: 4px solid #52de5b;
+  border-right: 4px solid #52de5b;
+  padding: 24px;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.featureCard svg {
+  width: 48px;
+  height: 48px;
+}
+
+.featureCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.featureCard h3 {
+  color: #52de5b;
+  font-size: 22px;
+  font-weight: bold;
+  margin: 8px 0;
+}
+
+.featureCard h4 {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 12px;
+}
+
+.featureCard p {
+  font-size: 15px;
+  line-height: 1.6;
+  color: #ccc;
+}
+
+@media (min-width: 768px) {
+  .featuresGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .featureCard svg {
+    width: 96px;
+    height: 96px;
+  }
+}

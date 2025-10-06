@@ -1,0 +1,51 @@
+---
+title: "Schema Alias"
+description: "Learn how to use the .alias method in Schema to rename properties for validation and error messages."
+---
+
+## Schema - Alias
+
+The `.alias` method is used to rename a property in a schema for validation purposes. It allows you to change the key name for validation and error messages, which is particularly useful when you need to provide more user-friendly or human-readable names in error messages without altering the actual data structure.
+
+This method is essential when validating structured data like user profiles or form submissions, especially when the original property names are not suitable for display in error messages.
+
+---
+
+### Signature
+
+```ts
+.alias(valueName: string): Schema
+```
+
+- **valueName**: The alias name to be displayed in validation error messages.
+- **Returns**: The schema instance, allowing method chaining.
+
+📌 **Note**: This method only affects error message output. It does **not** rename the actual key in the validated data.
+
+---
+
+### Example: Comparing Validation with and without `.alias()`
+
+```ts
+import { schema } from "vkrun";
+
+// Without alias
+const noAliasSchema = schema().object({
+  username: schema().string(),
+});
+
+const resultNoAlias = noAliasSchema.test({ username: 123 });
+console.log(resultNoAlias.errors[0].message);
+// "username must be a string type!"
+
+// With alias
+const aliasSchema = schema().object({
+  username: schema().string().alias("user name"),
+});
+
+const resultWithAlias = aliasSchema.test({ username: 123 });
+console.log(resultWithAlias.errors[0].message);
+// "user name must be a string type!"
+```
+
+This demonstrates how `.alias()` helps make error messages more readable while keeping the original structure intact.
