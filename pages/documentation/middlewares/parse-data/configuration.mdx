@@ -1,86 +1,140 @@
 ---
 title: "Parse Data Configuration"
-description: "Learn how to configure the Parse Data middleware for your application."
+description: "Configuration reference for Parse Data middleware."
 ---
 
-## Parse Data Configuration
+# Parse Data Configuration
 
-The Parse Data middleware provides a range of configuration options to customize its behavior. These options allow you to control which types of data are parsed and enable additional features like SQL injection prevention.
+The `parseData` middleware offers full control over how data is parsed, validated, and protected.  
+It can be configured globally via `app.parseData()` or per route via `parseData(config)`.
 
 ---
 
-### Default Configuration
-
-By default, the Parse Data middleware is configured as follows:
+## Configuration Structure
 
 ```ts
-{
-  urlencoded: true,  // Enables parsing of URL-encoded form data
-  params: true,      // Enables parsing of URL parameters
-  query: true,       // Enables parsing of query parameters
-  json: true,        // Enables parsing of JSON body data
-  formData: true,    // Enables parsing of multipart/form-data (including file uploads)
-  escapeSQL: false   // Disables SQL escaping by default
-}
+parseData({
+  body: {
+    type: "application/json", // MIME type filter (string or RegExp)
+    raw: false, // Store unparsed Buffer in req.rawBody
+    inflate: true, // Enable gzip/deflate/br decompression
+    limit: 10 * 1024 * 1024, // Max size (10MB default)
+  },
+  parse: {
+    query: true, // Parse query parameters
+    params: true, // Parse URL parameters
+    json: true, // Parse JSON bodies
+    urlencoded: true, // Parse x-www-form-urlencoded bodies
+    formData: true, // Parse multipart/form-data bodies
+  },
+  security: {
+    escapeSQL: true, // Enable SQL sanitization
+    verify: (req, rawBuffer) => {
+      /* Custom verification logic */
+    },
+  },
+});
 ```
 
-This default setup ensures compatibility with most use cases while maintaining performance and security.
+---
+
+## ⚙️ Body Options
+
+| Option      | Type                 | Default            | Description                                                                        |
+| ----------- | -------------------- | ------------------ | ---------------------------------------------------------------------------------- |
+| **type**    | `string` or `RegExp` | `undefined`        | Restricts parsing to specific MIME types (e.g. `"application/json"`, `/^text\//`). |
+| **raw**     | `boolean`            | `false`            | If `true`, stores unparsed body buffer in `req.rawBody`.                           |
+| **inflate** | `boolean`            | `true`             | Enables decompression for `gzip`, `deflate`, or `br`-encoded requests.             |
+| **limit**   | `number`             | `10 * 1024 * 1024` | Defines max request body size (default 10MB).                                      |
 
 ---
 
-### Configuration Options
+## 🧩 Parse Options
 
-Here are the available options for configuring Parse Data:
-
-1. **`urlencoded`** (boolean):
-   - Enables or disables parsing of URL-encoded form data.
-   - Default: `true`.
-
-2. **`params`** (boolean):
-   - Enables or disables parsing of URL parameters.
-   - Default: `true`.
-
-3. **`query`** (boolean):
-   - Enables or disables parsing of query string parameters.
-   - Default: `true`.
-
-4. **`json`** (boolean):
-   - Enables or disables parsing of JSON data in the request body.
-   - Default: `true`.
-
-5. **`formData`** (boolean):
-   - Enables or disables parsing of multipart form data (including file uploads).
-   - Default: `true`.
-
-6. **`escapeSQL`** (boolean):
-   - If enabled, all parsed strings are sanitized to prevent SQL injection attacks.
-   - Default: `false`.
+| Option         | Type      | Default | Description                                              |
+| -------------- | --------- | ------- | -------------------------------------------------------- |
+| **query**      | `boolean` | `true`  | Enables query string parsing.                            |
+| **params**     | `boolean` | `true`  | Enables URL parameter parsing.                           |
+| **json**       | `boolean` | `true`  | Enables parsing for `application/json` requests.         |
+| **urlencoded** | `boolean` | `true`  | Enables parsing for `application/x-www-form-urlencoded`. |
+| **formData**   | `boolean` | `true`  | Enables parsing for `multipart/form-data`.               |
 
 ---
 
-### Custom Configuration Example
+## 🔒 Security Options
 
-To apply custom configurations, pass an options object to the `parseData` middleware:
+| Option        | Type                       | Default     | Description                                                           |
+| ------------- | -------------------------- | ----------- | --------------------------------------------------------------------- |
+| **escapeSQL** | `boolean`                  | `false`     | Sanitizes user input to mitigate SQL injection.                       |
+| **verify**    | `(req, rawBuffer) => void` | `undefined` | Allows pre-parsing verification (useful for HMAC/webhook validation). |
+
+---
+
+## Example — Per Route Configuration
 
 ```ts
-import v from "vkrun"
-
-const app = v.App()
-
-app.parseData({
-  urlencoded: true, // Enable URL-encoded form data parsing
-  params: false,    // Disable URL parameters parsing
-  query: true,      // Enable query string parsing
-  json: false,      // Disable JSON body parsing
-  formData: true,   // Enable multipart form data parsing
-  escapeSQL: true   // Enable SQL injection prevention
-})
-
-app.get("/example", (request: v.Request, response: v.Response) => {
-  response.status(200).json({ message: "Custom Parse Data configuration applied!" })
-})
-
-app.server().listen(3000, () => {
-  console.log("Server started with custom Parse Data configuration")
-})
+router.post(
+  "/secure-upload",
+  parseData({
+    body: {
+      type: "multipart/form-data",
+      limit: 5 * 1024 * 1024, // 5MB limit
+      inflate: true,
+    },
+    security: {
+      escapeSQL: true,
+      verify: (req, raw) => {
+        const signature = req.headers["x-signature"];
+        if (!verifySignature(raw, signature))
+          throw new Error("Invalid signature");
+      },
+    },
+  }),
+  (req, res) => {
+    console.log(req.body, req.files);
+    res.status(200).end();
+  }
+);
 ```
+
+---
+
+## 🧱 Global vs Route-Level Priority
+
+| Level                           | Behavior                                 |
+| ------------------------------- | ---------------------------------------- |
+| **Global (`app.parseData()`)**  | Applies defaults to all routes.          |
+| **Route (`parseData(config)`)** | Overrides global settings for the route. |
+
+Example:
+
+```ts
+app.parseData({ body: { inflate: true } });
+
+router.post(
+  "/raw",
+  parseData({ body: { raw: true } }), // Overrides global inflate
+  (req, res) => {
+    console.log(req.rawBody.toString("utf-8"));
+    res.status(200).end();
+  }
+);
+```
+
+---
+
+## 🧪 Error Handling Summary
+
+| Code  | Message                      | Cause                    |
+| ----- | ---------------------------- | ------------------------ |
+| `400` | Invalid Request Data         | Malformed JSON or body   |
+| `400` | Invalid Compressed Data      | Decompression failed     |
+| `415` | Unsupported Content-Encoding | Compression disabled     |
+| `413` | Payload Too Large            | Request exceeds `limit`  |
+| `400` | Invalid Request Verification | `security.verify` failed |
+
+---
+
+### ✅ Best Practices
+
+- Use route-level configuration for endpoints with custom verification or MIME restrictions.- Keep `inflate: true` for clients that send compressed data.- Always apply `body.limit` to prevent denial-of-service via large payloads.- Use `security.verify` only when raw body access is needed (e.g., webhooks).- Combine `escapeSQL` with parameterized queries for maximum protection.

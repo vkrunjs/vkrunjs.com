@@ -1,0 +1,35 @@
+---
+title: "Body: Decompression (`body.inflate`)"
+description: "How `body.inflate` controls automatic decompression of gzip/deflate/br encoded request bodies."
+---
+
+## `body.inflate` — Automatic decompression
+
+`body.inflate` enables the middleware to accept compressed request payloads and transparently decompress them before parsing. Supported encodings:
+
+- `gzip`
+- `deflate`
+- `br` (Brotli)
+
+### Default
+- `inflate: true` by default (recommended).
+
+### Behavior
+- If `inflate` is `true` and the request includes `Content-Encoding: gzip|deflate|br`, the middleware will attempt to decompress the stream and then parse it according to `Content-Type`.
+- If decompression fails, the middleware returns `400 Invalid Compressed Data`.
+- If `inflate` is `false` and the request is compressed, the middleware returns `415 Unsupported Content-Encoding`.
+
+### Example
+```ts
+// Accept gzipped JSON payloads
+parseData({ body: { inflate: true, type: "application/json" } })
+```
+
+### Security and limits
+- Decompression is applied **after** `security.verify` completes (so `verify` sees the original bytes when `body.raw: true`).
+- Be careful with decompression bombs — always use `limit` to bound memory usage.
+- Use streaming decompression internally; parseData handles async-safe stream reading.
+
+### Best practices
+- Keep `inflate: true` if you expect clients to send compressed requests.
+- Combine with `limit` and a reasonable timeout at the server level to avoid resource exhaustion.

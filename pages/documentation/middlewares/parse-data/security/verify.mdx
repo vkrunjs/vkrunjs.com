@@ -1,0 +1,67 @@
+---
+title: "Request Verification (`security.verify`)"
+description: "Learn how to use the security.verify callback in parseData to authenticate and validate incoming requests before parsing."
+---
+
+## Introduction
+
+The `security.verify` option in the `parseData` middleware allows you to **validate the authenticity and integrity of incoming requests** — typically webhooks from external services (such as Stripe, PicPay, GitHub, or PayPal).
+
+Unlike typical parsing, this step runs **before any data transformation or decompression**, using the **raw, unparsed request body (`Buffer`)** to calculate or verify a cryptographic signature.
+
+---
+
+## How It Works
+
+When you enable `security.verify`, the `parseData` middleware executes the following pipeline internally:
+
+1. **Reads the raw request body** into a `Buffer` (`req.rawBody`).
+2. **Calls your custom `verify(req, rawBody)` function**.
+3. If your function throws an error:
+   - The request is immediately rejected with:
+     - `400 Bad Request`
+     - Message: `Invalid Request Verification`
+4. If verification succeeds:
+   - Parsing continues (e.g. JSON, form-data, etc.).
+   - You can safely use `req.body` knowing the payload is authentic.
+
+---
+
+## Example — Secure Webhook Verification
+
+```ts
+import crypto from "crypto";
+import { parseData } from "vkrun";
+
+function verifySignature(rawBody: Buffer, signature: string) {
+  const secret = process.env.WEBHOOK_SECRET!;
+  const expected = crypto
+    .createHmac("sha256", secret)
+    .update(rawBody)
+    .digest("hex");
+
+  return crypto.timingSafeEqual(
+    Buffer.from(signature, "utf8"),
+    Buffer.from(expected, "utf8")
+  );
+}
+
+router.post(
+  "/webhook",
+  parseData({
+    body: { raw: true },
+    security: {
+      verify: (req, rawBody) => {
+        const signature = req.headers["x-signature"];
+        if (!verifySignature(rawBody, signature)) {
+          throw new Error("Invalid signature");
+        }
+      },
+    },
+  }),
+  (req, res) => {
+    console.log(req.rawBody.toString()); // Raw, unparsed buffer
+    res.status(200).end();
+  }
+);
+```

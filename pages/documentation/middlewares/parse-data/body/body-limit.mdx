@@ -1,0 +1,33 @@
+---
+title: "Body: Size Limit (`body.limit`)"
+description: "How `body.limit` enforces maximum request body size to prevent abuse and memory exhaustion."
+---
+
+## `body.limit` — Maximum allowed body size
+
+`body.limit` configures a maximum number of bytes the middleware will accept for request bodies. The default is **10 MB** (10 * 1024 * 1024).
+
+### Behavior
+- If a request body exceeds the configured `limit`, the middleware aborts parsing and returns:
+  - `413 Payload Too Large`
+- When `body.raw: true`, the raw buffer size is also subject to this limit.
+
+### Example
+```ts
+// 1 MB limit
+parseData({ body: { limit: 1 * 1024 * 1024 } })
+```
+
+### Recommended limits
+- Small JSON APIs: 1–5 MB
+- File uploads (multipart): per-file and total limit; consider 5–50 MB depending on use case
+- Webhook endpoints: 100 KB–1 MB (usually small payloads)
+
+### Implementation notes
+- Limits apply to the **decompressed** payload (i.e., after inflate), except the rawBuffer captured before decompression counts against the same configured limit to avoid large compressed payload bypasses.
+- The middleware streams data and enforces the limit while reading; it does not buffer unbounded content.
+
+### Best practices
+- Always set a sensible `limit` when `body.raw: true` is enabled.
+- For multipart uploads, enforce per-file size and total request size separately if possible.
+- Return helpful error messages (via the standardized error responses) so clients can adjust payload size.

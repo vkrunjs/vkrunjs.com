@@ -9,38 +9,42 @@ The Parse Data middleware parses JSON data from request bodies and converts it i
 
 ### Example
 
-Request:
+#### Client-side:
 
 ```ts
 fetch("/data", {
   method: "POST",
   headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({ count: "10", active: "true" })
-})
+  body: JSON.stringify({ count: "10", active: "true" }),
+});
 ```
 
-Server-side:
+#### Server-side:
 
 ```ts
-import v from "vkrun"
+import v from "vkrun";
 
-const vkrun = v.App()
+const vkrun = v.App();
 
-vkrun.post("/data", (
-  request: v.Request<{
-    body: {
-      count: number
-      active: boolean
-    }
-  }>,
-  response: v.Response
-) => {
-  console.log(request.body)
-  // Output: { count: 10, active: true }
-  response.status(200).end()
-})
+vkrun.post(
+  "/data",
+  (
+    request: v.Request<{
+      body: {
+        count: number;
+        active: boolean;
+      };
+    }>,
+    response: v.Response
+  ) => {
+    console.log(request.body);
+    // Output: { count: 10, active: true }
+    response.status(200).end();
+  }
+);
 ```
 
 In this example:
+
 - `"10"` is converted to a number.
 - `"true"` is converted to a boolean.

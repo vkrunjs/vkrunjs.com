@@ -1,0 +1,6 @@
+{
+  "body-type": "MIME Type Filter",
+  "body-raw": "Raw Buffer Capture",
+  "body-inflate": "Decompression",
+  "body-limit": "Size Limit"
+}

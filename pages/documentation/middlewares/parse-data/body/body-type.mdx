@@ -1,0 +1,41 @@
+---
+title: "Body: MIME Type Filter (`body.type`)"
+description: "How the `body.type` option restricts parsing to specific Content-Types (string or RegExp)."
+---
+
+## `body.type` — MIME type filtering
+
+The `body.type` option lets you **restrict body parsing** to requests whose `Content-Type` header matches a specific MIME type or a regular expression. When a request's content type does **not** match the filter, **body parsing is skipped** — but `query` and `params` parsing still occur.
+
+### Accepted values
+- `string` — Exact match (e.g. `application/json`).
+- `RegExp` — Pattern match (e.g. `/^text\//` or `/^multipart\//`).
+
+### Examples
+
+#### Exact match
+```ts
+parseData({ body: { type: "application/json" } })
+```
+Only requests with `Content-Type: application/json` (or `application/json; charset=utf-8`) will have their bodies parsed.
+
+#### RegExp match (wildcard)
+```ts
+parseData({ body: { type: /^text\// } })
+```
+Matches `text/plain`, `text/csv`, etc.
+
+### Charset handling
+`body.type` performs a MIME match that tolerates charset parameters.  
+`application/json; charset=utf-8` will match `application/json`.
+
+### Behavior notes
+- If `body.type` is set and the content type does **not** match:
+  - `req.body` remains `undefined`
+  - `req.files` remains `undefined`
+  - `req.query` and `req.params` are still parsed per configuration
+- Use `body.type` to harden endpoints that should accept only a specific payload format (e.g., strict JSON APIs).
+
+### Best practices
+- Use `RegExp` for broad families (e.g., `/^image\//` or `/^multipart\//`).
+- Combine `body.type` with `limit` and `inflate` for precise input control.

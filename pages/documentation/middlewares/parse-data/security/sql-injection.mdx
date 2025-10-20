@@ -1,0 +1,138 @@
+---
+title: "SQL Injection Prevention"
+description: "How Parse Data protects against SQL injection attacks (implementation details)."
+---
+
+## SQL Injection Protection (implementation details)
+
+`parseData`'s `security.escapeSQL` uses a helper called `parseEscapeSQL` under the hood. The tests for `parseEscapeSQL` define its precise behavior — this section documents that behavior so you can accurately explain it in the docs and rely on it when auditing or extending the sanitizer.
+
+### When `parseEscapeSQL` modifies input
+
+`parseEscapeSQL(value)` returns one of:
+
+- the original `value` (unchanged), **if**:
+
+  - `value` is **not a string**, or
+  - `value` is a string **without SQL keywords** _and_ **without special characters that need escaping**.
+
+- an **escaped string wrapped in single quotes**, **if**:
+  - the string contains **any SQL keyword** (case-insensitive match against keywords such as `SELECT`, `INSERT`, `UPDATE`, `DELETE`, `FROM`, `WHERE`, `UNION`, `WAITFOR`, `SLEEP`, `OR`, `AND`, etc.), **or**
+  - the string contains **special characters** that must be escaped (see mapping below).
+
+> In other words: presence of SQL keywords OR presence of special characters triggers escaping and wrapping.
+
+---
+
+### Special characters and their escaped forms
+
+When escaping is applied, `parseEscapeSQL` replaces the following characters with these sequences, then wraps the whole result in single quotes:
+
+| Original               | Escaped                        |
+| ---------------------- | ------------------------------ |
+| `\0` (null)            | `\0`                           |
+| `\b` (backspace)       | `\b`                           |
+| `\t` (tab)             | `\t`                           |
+| `\n` (newline)         | `\n`                           |
+| `\r` (carriage return) | `\r`                           |
+| `\x1a` (substitute)    | `\Z`                           |
+| `"` (double quote)     | `\"`                           |
+| `'` (single quote)     | `''` (duplicated single quote) |
+| `\` (backslash)        | `\\`                           |
+| `` ` `` (backtick)     | `\``                           |
+
+Examples:
+
+- Input: `SELECT * FROM users WHERE name = 'John'`  
+  Output: `''SELECT * FROM users WHERE name = ''John''''` (single quotes duplicated and whole string wrapped)
+
+- Input: `admin' --`  
+  Output: `''admin'' --'`
+
+---
+
+### SQL keyword detection
+
+The sanitizer checks for a broad list of SQL-related keywords case-insensitively (examples include, but are not limited to):
+
+```
+SELECT, INSERT, UPDATE, DELETE, FROM, WHERE, UNION, OR, AND, WAITFOR, SLEEP, DROP, EXEC, DATABASE, JSON_EXTRACT
+```
+
+If any of these keywords appear in the string, `parseEscapeSQL` treats the input as potentially dangerous and applies escaping even if some characters are ASCII letters or digits.
+
+The detection is intentionally permissive to catch obfuscated or mixed-case payloads (e.g. `SeLeCt`, `UNion`, etc.) and Unicode variations.
+
+---
+
+### Behavior notes & edge cases
+
+- **Non-string values** (`number`, `boolean`, `null`, `undefined`) are returned unchanged.
+- **Strings without keywords or special chars** are left as-is (no wrapping or escaping).
+- **Strings with only special characters** (even without SQL keywords) are escaped and wrapped. Tests assert this behavior for single characters like `"
+"` or `" "`.
+- **Stacked queries, comments, and time-based payloads** (e.g., `; DROP TABLE users; --`, `SLEEP`, `WAITFOR`) are escaped to reduce risk.
+- **Unicode, multi-byte, and case-variant attacks** are handled by keyword detection and by escaping special characters; Unicode whitespace and punctuation can be preserved but still trigger wrapping if keywords or special characters are present.
+- **Encoded payloads** such as hex-encoded strings (e.g., `0x61646d696e`) are treated as strings and will be wrapped if a SQL keyword is present, but parseEscapeSQL does not decode hex by itself.
+
+---
+
+## Examples
+
+#### Client-side:
+
+```ts
+fetch("/data", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    userInput: "SELECT * FROM users WHERE name = 'John'",
+  }),
+});
+```
+
+#### Server-side:
+
+```ts
+import v from "vkrun";
+
+const vkrun = v.App();
+
+vkrun.parseData({
+  security: {
+    escapeSQL: true, // Enable SQL escaping
+  },
+});
+
+vkrun.post(
+  "/data",
+  (
+    request: v.Request<{
+      body: {
+        userInput: string;
+      };
+    }>,
+    response: v.Response
+  ) => {
+    console.log(request.body);
+    // Output: { userInput: "'SELECT * FROM users WHERE name = ''John'''" } // Escaped input
+    response.status(200).json({ sanitizedInput: request.body.userInput });
+  }
+);
+```
+
+> Note: keep using parameterized queries or prepared statements in your DB code — `escapeSQL` is defense-in-depth, not a replacement for safe DB APIs.
+
+---
+
+### Why wrap the whole string in single quotes?
+
+Wrapping the sanitized result in single quotes ensures that, even if the string is later interpolated into a SQL query (which you should avoid — prefer parameterized queries), it remains contained as a literal string in most SQL dialects. Duplicating single quotes (`'` → `''`) is the standard SQL escaping for single quotes inside string literals.
+
+---
+
+### Recommendation
+
+- **Keep this sanitizer**, but treat it as a **defense-in-depth** mechanism — it is not a substitute for properly parameterized queries and prepared statements.
+- Use `security.escapeSQL` in `parseData` to sanitize incoming strings, especially when legacy parts of the codebase still perform manual SQL string interpolation.
+- Prefer to **refactor database access** to use parameterized queries / ORMs that bind parameters instead of concatenating strings.

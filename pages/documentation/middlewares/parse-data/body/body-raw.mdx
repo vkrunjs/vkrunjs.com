@@ -1,0 +1,45 @@
+---
+title: "Body: Raw Buffer Capture (`body.raw`)"
+description: "How `body.raw` keeps the original request body buffer accessible on `req.rawBody`."
+---
+
+## `body.raw` — Access the raw request Buffer
+
+Setting `body.raw: true` instructs `parseData` to preserve the **unparsed** request body as a `Buffer` on `req.rawBody`. This is essential for cryptographic signature verification and other integrity checks that require the exact bytes received over the wire.
+
+### Why `rawBody` matters
+- Signature verification (HMAC, RSA, etc.) must run over the **exact bytes** the provider sent.
+- Using a parsed representation (stringified JSON or normalized line endings) may break signature calculations.
+- `rawBody` allows you to run `security.verify(req, rawBody)` safely.
+
+### Example (HMAC)
+```ts
+import crypto from "crypto";
+
+function verifySignature(rawBody: Buffer, headerSig: string) {
+  const secret = process.env.WEBHOOK_SECRET!;
+  const expected = crypto.createHmac("sha256", secret).update(rawBody).digest("hex");
+  return crypto.timingSafeEqual(Buffer.from(headerSig, "utf8"), Buffer.from(expected, "utf8"));
+}
+
+router.post(
+  "/webhook",
+  parseData({ body: { raw: true }, security: { verify: (req, raw) => {
+    const sig = req.headers["x-signature"];
+    if (!verifySignature(raw, sig)) throw new Error("Invalid signature");
+  }}}),
+  (req, res) => {
+    // rawBuffer available as req.rawBody; parsed body may be available after verification
+    res.status(200).end();
+  }
+);
+```
+
+### Behavior notes
+- `body.raw: true` stores the original bytes before decompression. If `inflate` is true, the middleware will decompress the compressed stream for parsing **after** verification; raw remains the original received bytes.
+- Keep memory implications in mind: `req.rawBody` holds the entire body in memory.
+
+### Best practices
+- Always set `body.raw: true` when using `security.verify`.
+- Use `limit` to cap buffer size and prevent DoS via large payloads.
+- Avoid manipulating `req.rawBody` in application code; treat it as read-only.
